@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+   <title>MTRG Database</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <link rel="stylesheet" type="text/css" href="main.css">
+
+   <!-- Scripts that load external HTML for header, footer, etc. -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script>
+   $(document).ready(function(){
+      $('#loadedNavbar').load("common/navbar.html");
+   });
+   </script>
+   <script>
+   $(document).ready(function(){
+      $('#loadedFooter').load("common/footer.html");
+   });
+   </script>
+
+</head>
+<body>
+   
+   <div id="loadedNavbar"></div>
+
+   <header class="page-header header container-fluid">
+      <div class="overlay"></div>
+      <div class="description">
+         <h1>Yeah, it's turtle time.</h1>
+         <p>Welcome to the UCF Marine Turtle Research Group! This website hosts our database of sea turtle data, focusing on sea turtle biology, ecology, behavior, and conservation across all sea turtle life stages—from eggs to adults. </p>
+         <a href="about.html">
+            <button class="btn btn-outline-secondary btn-lg">Learn More</button>
+         </a>
+      </div>
+   </header>
+
+   <div id="loadedFooter"></div>
+
+
+   <!-- Loaded script libraries -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+   <script src="main.js"></script>
+</body>
+</html>
