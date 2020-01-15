@@ -8,6 +8,24 @@ console.log(turtleimg);
 
 class Lagoon extends Component {
 
+  constructor(props){
+    super(props)
+
+    this.state = {
+      turtle_id: '',
+      tags: [],
+      morphometrics: '',
+      clutches: [],
+      encounter: '',
+      metadata: '',
+      //jwt: this.props.location.state.jwt,
+      result: '',
+      redirect: false,
+    }
+
+  //  this.handleSubmit = this.handleSubmit.bind(this)
+
+  }
 
   render() {
     return(
