@@ -1,5 +1,4 @@
-# SD1
-Turtle Tracking Project: Front-end
+# SD1 Turtle Tracking Project: Front-end
 
 install react!!!
 
