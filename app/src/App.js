@@ -37,7 +37,7 @@ function App() {
           {/* Logged in pages */}
           <Route exact path='/home' component={Home} />
           <Route exact path='/reports' component={ReportsList} />
-          <Route exact path='/reports/id' component={SingleReport} />
+          <Route exact path='/reports/:id' component={SingleReport} />
           <Route exact path='/new-report' component={NewReport} />
           <Route exact path='/new-report/lagoon' component={Lagoon} />
 
