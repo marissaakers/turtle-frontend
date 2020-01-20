@@ -1,34 +1,39 @@
 import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
+import ExternalNavbar from '../../components/external-navbar';
+import ExternalFooter from '../../components/external-footer';
+import '../shared/external.css';
+
+const TITLE = 'MTRG Database'
 
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-
-    }
+    this.state = {}
   }
   render() {
     return(
-      <div>
-        <h1>{this.props.name}Landing Page</h1>
-        <p>
-          {this.props.color}
-        </p>
-        <ul>
-          <li><a href="/">Landing Page</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/contact">Contact</a></li>
-          <li><a href="/login">Login</a></li>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/reports">Reports</a></li>
-          <li><a href="/reports/1">Report id=1</a></li>
-          <li><a href="/new-report">New Report</a></li>
-          <li><a href="/new-report/lagoon">Lagoon Form</a></li>
-          <li><a href="error">Error</a></li>
-        </ul>
+      <>
+        <Helmet>
+          <title>{ TITLE }</title>
+        </Helmet>
 
-      </div>
+        <ExternalNavbar />
+
+        <header class="page-header header container-fluid">
+          <div class="overlay"></div>
+          <div class="description">
+            <h1>Yeah, it's turtle time.</h1>
+            <p class="pb-3">Welcome to the UCF Marine Turtle Research Group! This website hosts our database of sea turtle data, focusing on sea turtle biology, ecology, behavior, and conservation across all sea turtle life stages—from eggs to adults. </p>
+            <a href="about">
+              <button class="btn btn-outline-secondary btn-lg">Learn More</button>
+            </a>
+          </div>
+        </header>
+
+        <ExternalFooter />
+      </>
     );
   }
 }

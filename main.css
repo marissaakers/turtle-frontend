@@ -1,0 +1,177 @@
+body {
+  padding: 0;
+  margin: 0;
+  background: #222;
+}
+
+
+/*--- navigation bar ---*/
+.navbar {
+  background: #edcf1c;
+  -webkit-box-shadow: 0px 5px 24px -1px rgba(0,0,0,0.52);
+  -moz-box-shadow: 0px 5px 24px -1px rgba(0,0,0,0.52);
+  box-shadow: 0px 5px 24px -1px rgba(0,0,0,0.52);
+  z-index:2;
+}
+.nav-link,
+.navbar-brand {
+  color: #1a1913;
+  cursor: pointer;
+}
+.navbar-brand:hover {
+  color: #ffffff;
+}
+
+.nav-link {
+  margin-right: 1em !important;
+}
+.nav-link:hover {
+  color: #ffffff;
+}
+.navbar-collapse {
+  justify-content: flex-end;
+}
+
+@media (max-width: 575.98px) {
+  .description {
+    left: 0;
+    padding: 0 0px;
+    position: absolute;
+    top: 10%;
+    transform: none;
+    text-align: center;
+  }
+  
+  .description h1 {
+    font-size: 2em;
+  }
+  
+  .description p {
+    font-size: 1.2rem;
+  }
+  
+  .features {
+    margin: 0;
+  }
+}
+
+
+/*--- header ---*/
+.header {
+  background-image: url('images/ucf_turtle_sunset.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  min-height: 100%;
+  min-width: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+#login-button {
+  padding: 5px 14px;
+  font-size: 17px;
+  border:1px solid #1a1913;
+  background:#1a1913;
+  border-radius: 1;
+  color:#f5e998;
+  float: right;
+}
+#login-button:hover {
+  border:1px solid #fff;
+  background:#fff;
+  color:#000;
+}
+
+/*--- homepage description --*/
+.description {
+  left: 50%;
+  position: absolute;
+  top: 45%;
+  transform: translate(-50%, -55%);
+  text-align: center;
+}
+.description h1 {
+  color: #edcf1c;
+}
+.description p {
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.description button {
+  border:1px solid #ebc800;
+  background:#ebc800;
+  border-radius: 0;
+  color:#1a1913;
+  -webkit-box-shadow: 0px 5px 24px -2px rgba(0,0,0,0.52);
+  -moz-box-shadow: 0px 5px 24px -2px rgba(0,0,0,0.52);
+  box-shadow: 0px 5px 24px -2px rgba(0,0,0,0.52);
+}
+.description button:hover {
+  border:1px solid #fff;
+  background:#fff;
+  color:#000;
+}
+
+
+/*--- about page ---*/
+.show-bg-picture {
+   background: transparent;
+   min-height: 5%;
+   height: 5%;
+}
+
+@media screen and (max-width: 575.98px) {
+  .col-sm-4 {
+    text-align: center;
+    margin: 25px 0;
+  }
+
+  .about-description .button-wrapper {
+    text-align: center; 
+  }
+
+}
+
+.about-description {
+  padding: 60px 50px;
+}
+
+.about-description button {
+  border:1px solid #ebc800;
+  background:#ebc800;
+  border-radius: 0;
+  color:#1a1913;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+.bg-grey {
+  background-color: #f6f6f6;
+}
+
+/*--- contact us ---*/
+
+
+/*--- footer ---*/
+.page-footer {
+  background-color: #222;
+  color: #ccc;
+  padding: 60px 0 30px;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.footer-copyright {
+  color: #666;
+  padding: 0px 0;
+}
