@@ -22,6 +22,7 @@ class Login extends React.Component {
       <ExternalNavbar />
 
       <h1 class="pt-4 pb-3">Login page - Work in progress</h1>
+      <p><a href="home">Link to user homepage (as if logged in).</a></p>
 
       <ExternalFooter />
     </>
