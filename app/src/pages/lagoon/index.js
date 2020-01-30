@@ -34,10 +34,10 @@ class Lagoon extends Component {
        axios.get('https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/lagoon')
          .then(res => {
            const data = res.data.data; // get the data array instead of object
-           this.setState({ data, loading: false });
+           this.setState({ data});
          })
          .catch(err => { // log request error and prevent access to undefined state
-           this.setState({ loading: false, error: true });
+           this.setState({ isLoading: false});
            console.error(err);
          })
      }
@@ -46,6 +46,39 @@ class Lagoon extends Component {
 
        const data = {
 
+/*
+         encounter_date:
+          //species:
+         capture_time:
+         tag_number:
+         NEED PIT TAG
+         living_tags:
+         curved_length:
+         straight_length:
+         minimum_length:
+         plastron_length:
+         curved_width:
+         straight_width:
+         tail_length_pl_vent:
+         tail_length_pl_tip:
+         head_width:
+         body_depth:
+         paps:
+         paps_regression:
+         photos:
+         pap_photos:
+         leeches:
+         leech_eggs:
+         FLIPPER DAMAGE
+         SHELL DAMAGE
+         entered_date:
+         entered_by:
+         TAG SCARS
+         blood:
+         skin_1:
+         scute:
+         other_for:
+         */
 
        };
 
