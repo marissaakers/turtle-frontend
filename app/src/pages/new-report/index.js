@@ -23,6 +23,7 @@ class NewReport extends React.Component {
         <h3>Choose new report format:</h3>
         <ul>
           <li><a href='new-report/lagoon'>Lagoon</a></li>
+          <li><a href='new-report/lagoonmetadata'>Lagoon Metadata</a></li>
         </ul>
         <InternalFooter />
       </>

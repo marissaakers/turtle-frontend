@@ -21,6 +21,7 @@ import Error from 'pages/error';
 // New report pages
 import NewReport from 'pages/new-report';
 import Lagoon from 'pages/lagoon';
+import LagoonMetadata from 'pages/metadata';
 
 
 function App() {
@@ -41,6 +42,8 @@ function App() {
           <Route exact path='/reports/:id' component={SingleReport} />
           <Route exact path='/new-report' component={NewReport} />
           <Route exact path='/new-report/lagoon' component={Lagoon} />
+          <Route exact path='/new-report/lagoonmetadata' component={LagoonMetadata} />
+
 
           <Route component={Error} />  {/* When no other route matches */}
         </Switch>

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button'
+import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap'
 import { Link }from 'react-router-dom'
 import turtleimg from '../images/lagoonturtle.png';
 import { Helmet } from 'react-helmet';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
+import axios from "axios";
+
 
 const TITLE = 'New Lagoon report'
 console.log(turtleimg);
@@ -15,20 +17,45 @@ class Lagoon extends Component {
     super(props)
 
     this.state = {
-      turtle_id: '',
-      tags: [],
-      morphometrics: '',
-      clutches: [],
-      encounter: '',
-      metadata: '',
-      //jwt: this.props.location.state.jwt,
-      result: '',
+      data : [],
       redirect: false,
     }
 
-  //  this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this);
 
   }
+
+
+    onChange(e) {
+      this.setState({ [e.target.name]: e.target.value })
+    }
+
+    componentDidMount() {
+       axios.get('https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/lagoon')
+         .then(res => {
+           const data = res.data.data; // get the data array instead of object
+           this.setState({ data, loading: false });
+         })
+         .catch(err => { // log request error and prevent access to undefined state
+           this.setState({ loading: false, error: true });
+           console.error(err);
+         })
+     }
+     handleSubmit(e) {
+       e.preventDefault();
+
+       const data = {
+
+
+       };
+
+
+      axios.post('http://localhost:5555/data', { data })
+        .then(res => {
+          console.log(data);
+          console.log(this.state.data[0]);
+        })
+    }
 
   render() {
     return(
@@ -40,259 +67,159 @@ class Lagoon extends Component {
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
 
         <div class="container">
-          <h1><b>LAGOON DATA SHEET</b></h1><br></br><br></br>
 
-          <form>
-          <div class="form-row">
-            <div class="col-sm-6 text-left">
+            <h1><b>LAGOON DATA SHEET</b></h1><br></br><br></br>
 
-
-              <label for="validationDefault01">Date: </label>
-               <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/> <br></br>
+            <form>
+            <div class="form-row">
+              <div class="col-sm-6 text-left">
 
 
-              <label for="validationDefault01">Species: </label>
-              <div class="btn-toolbar" role="toolbar" aria-label="Species Options">
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">Cc</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">Cm</button>
-                  </div>
-                  <div class="btn-group" role="group" >
-                      <button type="button" class="btn btn-outline-success">Other</button>
-                      <div class="col-sm-11">
-                      <input type="other" class="form-control" id="lagoonData" />
-                      </div>
-                  </div>
-                </div><br></br>
-
-            <label for="validationDefault01">Capture Time: </label>
-                <div class="col-sm-11">
-                <input type="captureTime" class="form-control" id="lagoonData"  placeholder="Capture Time"/>
-                </div><br></br>
-
-
-            <p>Tag #'s:</p>
-            <div class="col-sm-11">
-            <input type="turtle" class="form-control" id="lagoonData"  placeholder="LF RF"/>
-            </div><br></br>
-
-
-            <p>PIT Tag:  Scanned:</p>
-              <div class="col-sm-11">
-              <div class="btn-toolbar" role="toolbar" aria-label="Living Tags">
-                  <div class="btn-group mr-2" role="group" aria-label="Yes Option">
-                      <button type="button" class="btn btn-outline-success">Yes</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" aria-label="No Option">
-                      <button type="button" class="btn btn-outline-success">No</button>
+                <div class="form-group row">
+                  <label for="example-date-input" class="col-4 col-form-label">Date</label>
+                  <div class="col-6">
+                    <input class="form-control" type="date"  id="example-date-input"/>
                   </div>
                 </div>
-              </div><br></br>
 
-            <p>Living Tags:</p>
-              <div class="btn-toolbar" role="toolbar" aria-label="Living Tags">
-                  <div class="btn-group mr-2" role="group" aria-label="Yes Option">
-                      <button type="button" class="btn btn-outline-success">Yes</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" aria-label="No Option">
-                      <button type="button" class="btn btn-outline-success">No</button>
-                  </div>
-                  <div class="btn-group" role="group" aria-label="Other Option">
-                      <button type="button" class="btn btn-outline-success">Other</button>
-                      <div class="col-sm-11">
-                      <input type="tags" class="form-control" id="lagoonData" />
-                      </div>
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Species:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Cc</option>
+                     <option>Cm</option>
+                     <option>Other</option>
+                   </select>
                   </div>
                 </div>
-                <br></br>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Capture Time:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Tag #'s':</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Pit Tag: Scanned:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Living Tags:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                     <option>Other</option>
+                   </select>
+                  </div>
+                </div>
+
+              <h4>Morphometrics:</h4>
 
 
-            <h4>Morphometrics:</h4>
-
-            <p>Curved Length (notch-tip) in cm:</p>
-              <div class="col-sm-5">
-              <input type="morphometrics" class="form-control" id="curved_width" />
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Curved Length (notch-tip) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
               </div>
-            <p>Straight Length (notch-tip) in cm:</p>
-              <div class="col-sm-5">
-              <input type="morphometrics" class="form-control" id="straight_width" />
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Straight Length (notch-tip) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
               </div>
-            <p>Minimum Length (notch-tip) in cm:</p>
-              <div class="col-sm-5">
-              <input type="morphometrics" class="form-control" id="minimum_length" />
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Minimum Length (notch-tip) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
               </div>
-            <p>Plastron Length (tape) in cm:</p>
-              <div class="col-sm-5">
-              <input type="morphometrics" class="form-control" id="plastron_length" />
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Plastron Length (tape) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
               </div>
-            <p>Weight in kg:</p>
-              <div class="col-sm-5">
-              <input type="morphometrics" class="form-control" id="weight" />
-              </div>
-            <p> * tare scale </p>
 
 
-            <h5>Paps:
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option0"/>
-                  <label class="form-check-label" for="inlineCheckbox1">0</label>
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Weight in kg: *tare scale</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option1"/>
-                  <label class="form-check-label" for="inlineCheckbox2">1</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2"/>
-                  <label class="form-check-label" for="inlineCheckbox3">2</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"/>
-                  <label class="form-check-label" for="inlineCheckbox4">3</label>
-                </div> </h5>
+              </div>
 
-            <h5>Regression:
-            <div class="btn-toolbar" role="toolbar" >
-                <div class="btn-group mr-2" role="group" aria-label="Yes Option">
-                    <button type="button" class="btn btn-outline-success">Yes</button>
-                </div>
-                <div class="btn-group mr-2" role="group" aria-label="No Option">
-                    <button type="button" class="btn btn-outline-success">No</button>
-                </div>
-                <div class="btn-group" role="group" aria-label="Not Avail Option">
-                    <button type="button" class="btn btn-outline-success">N/A</button>
-                    <div class="col-sm-11">
-                    <input type="regression" class="form-control" id="lagoonData" />
+              <h5>Paps:
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option0"/>
+                    <label class="form-check-label" for="inlineCheckbox1">0</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option1"/>
+                    <label class="form-check-label" for="inlineCheckbox2">1</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2"/>
+                    <label class="form-check-label" for="inlineCheckbox3">2</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"/>
+                    <label class="form-check-label" for="inlineCheckbox4">3</label>
+                  </div> </h5>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-4 col-form-label">Regression:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Yes</option>
+                       <option>No</option>
+                       <option>Other</option>
+                       <option>partial</option>
+                       <option>complete</option>
+                     </select>
                     </div>
-                </div>
-              </div>
-              </h5>
-            <h5>Photos:</h5>
-              <div class="btn-toolbar" role="toolbar">
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">Yes</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">No</button>
-                  </div>
-                </div>
-            <h5>Pap Photos:</h5>
-              <div class="btn-toolbar" role="toolbar">
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">Yes</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">No</button>
-                  </div>
-                </div>
-            <h5>Leeches:</h5>
-              <div class="btn-toolbar" role="toolbar" >
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">Yes</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">No</button>
-                  <div class="col-sm-11">
-                  <input type="turtle" class="form-control" id="lagoonData"  placeholder="Where"/>
-                  </div> </div>
-                </div>
-            <h5>Leech Eggs:</h5>
-              <div class="btn-toolbar" role="toolbar" >
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">Yes</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">No</button>
-                  <div class="col-sm-11">
-                  <input type="turtle" class="form-control" id="lagoonData"  placeholder="Where"/>
-                  </div></div>
-                </div>
-            <h5>Flipper Damage:</h5>
-              <div class="col-sm-11">
-              <input type="flipper" class="form-control" id="lagoonData" />
-              </div>
-            <br></br>
-            <h5>Shell Damage:</h5>
-              <div class="col-sm-11">
-              <input type="shell" class="form-control" id="lagoonData" />
-              </div>
-            <br></br>
-            <h4>Notes:</h4>
-              <div class="col-sm-11">
-              <input type="notes" class="form-control" id="lagoonData" />
-              </div>
-            <p><i>Describe scale and scute</i></p>
-            <p><i>abnormalities, condition of</i></p>
-            <p><i>turtle, etc.</i></p>
-
-
-            </div>
-
-
-            <div class="col-sm-5 text-left">
-
-            <p>Capture Type:</p>
-              <div class="btn-toolbar" role="toolbar" >
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">New</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">Old</button>
-                  </div>
-                  <div class="btn-group" role="group" >
-                      <button type="button" class="btn btn-outline-success">Strange Recap</button>
-                  </div> <br></br>
-              </div>
-
-              <p><br></br><b>Tag Scars:</b></p>
-              <p>LF:</p>
-              <div class="btn-toolbar" role="toolbar" >
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">Y</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">N</button>
-                  </div>
-              </div>
-              <p>RF:</p>
-              <div class="btn-toolbar" role="toolbar" >
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">Y</button>
-                  </div>
-                  <div class="btn-group mr-2" role="group" >
-                      <button type="button" class="btn btn-outline-success">N</button>
-                  </div>
-              </div>
-              <br></br>
-
-              <p><br></br><br></br>Curved Width (widest) in cm:</p>
-                <div class="col-sm-5">
-                <input type="turtle" class="form-control" id="lagoonData" />
-                </div>
-              <p>Straight Width (widest) in cm:</p>
-                <div class="col-sm-5">
-                <input type="turtle" class="form-control" id="lagoonData" />
-                </div>
-              <p>Tail Length:PL-vent in cm:</p>
-                <div class="col-sm-5">
-                <input type="turtle" class="form-control" id="lagoonData" />
-                </div>
-              <p>PL-tip in cm:</p>
-                <div class="col-sm-5">
-                <input type="turtle" class="form-control" id="lagoonData" />
-                </div>
-              <p>Head Width (straight) in cm:</p>
-                <div class="col-sm-5">
-                <input type="turtle" class="form-control" id="lagoonData" />
-                </div>
-              <p>Body Depth (straight) in cm:</p>
-                  <div class="col-sm-5">
-                  <input type="turtle" class="form-control" id="lagoonData" />
                   </div>
 
-              <h4><br></br>Samples:</h4>
-              <h5>Blood:</h5>
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-4 col-form-label">Photos:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Yes</option>
+                       <option>No</option>
+                     </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-4 col-form-label">Pap Photos:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Yes</option>
+                       <option>No</option>
+                     </select>
+                    </div>
+                  </div>
+
+
+              <h5>Leeches:</h5>
                 <div class="btn-toolbar" role="toolbar" >
                     <div class="btn-group mr-2" role="group" >
                         <button type="button" class="btn btn-outline-success">Yes</button>
@@ -300,23 +227,147 @@ class Lagoon extends Component {
                     <div class="btn-group mr-2" role="group" >
                         <button type="button" class="btn btn-outline-success">No</button>
                     <div class="col-sm-11">
-                    <input type="turtle" class="form-control" id="lagoonData"  placeholder="For"/>
+                    <input type="turtle" class="form-control" id="lagoonData"  placeholder="Where"/>
+                    </div> </div>
+                  </div>
+              <h5>Leech Eggs:</h5>
+                <div class="btn-toolbar" role="toolbar" >
+                    <div class="btn-group mr-2" role="group" >
+                        <button type="button" class="btn btn-outline-success">Yes</button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" >
+                        <button type="button" class="btn btn-outline-success">No</button>
+                    <div class="col-sm-11">
+                    <input type="turtle" class="form-control" id="lagoonData"  placeholder="Where"/>
                     </div></div>
                   </div>
+              <h5>Flipper Damage:</h5>
+                <div class="col-sm-11">
+                <input type="flipper" class="form-control" id="lagoonData" />
+                </div>
+              <br></br>
+              <h5>Shell Damage:</h5>
+                <div class="col-sm-11">
+                <input type="shell" class="form-control" id="lagoonData" />
+                </div>
+              <br></br>
+              <h4>Notes:</h4>
+                <div class="col-sm-11">
+                <input type="notes" class="form-control" id="lagoonData" />
+                </div>
+              <p><i>Describe scale and scute</i></p>
+              <p><i>abnormalities, condition of</i></p>
+              <p><i>turtle, etc.</i></p>
 
-              <h5>Skin:</h5>
-                    <div class="btn-toolbar" role="toolbar" >
-                        <div class="btn-group mr-2" role="group" >
-                            <button type="button" class="btn btn-outline-success">Yes</button>
-                        </div>
-                        <div class="btn-group mr-2" role="group" >
-                            <button type="button" class="btn btn-outline-success">No</button>
-                        <div class="col-sm-11">
-                        <input type="turtle" class="form-control" id="lagoonData"  placeholder="For"/>
-                        </div></div>
+
+              </div>
+
+
+              <div class="col-sm-5 text-left">
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Data Entered By:</label>
+                <div class="col-8">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Data Verified By:</label>
+                <div class="col-8">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Capture Type:</label>
+                <div class="col-6">
+                <select class="form-control" id="exampleFormControlSelect1">
+                   <option>New</option>
+                   <option>Old</option>
+                   <option>Strange Recap</option>
+                 </select>
+                </div>
+              </div>
+
+                <p><br></br><b>Tag Scars:</b></p>
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">LF:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">RF:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
+                  </div>
+                </div>
+
+                <br></br>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Curved Width (widest) in cm:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Straight Width (widest) in cm:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Tail Length:PL-vent in cm:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">PL-tip in cm:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Head Width (straight) in cm:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Body Depth (straight) in cm:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <h4><br></br>Samples:</h4>
+                <h5>Blood:</h5>
+                  <div class="btn-toolbar" role="toolbar" >
+                      <div class="btn-group mr-2" role="group" >
+                          <button type="button" class="btn btn-outline-success">Yes</button>
+                      </div>
+                      <div class="btn-group mr-2" role="group" >
+                          <button type="button" class="btn btn-outline-success">No</button>
+                      <div class="col-sm-11">
+                      <input type="turtle" class="form-control" id="lagoonData"  placeholder="For"/>
+                      </div></div>
                     </div>
 
-              <h5>Scute:</h5>
+                <h5>Skin:</h5>
                       <div class="btn-toolbar" role="toolbar" >
                           <div class="btn-group mr-2" role="group" >
                               <button type="button" class="btn btn-outline-success">Yes</button>
@@ -328,29 +379,37 @@ class Lagoon extends Component {
                           </div></div>
                       </div>
 
-              <h5>Other Samples:</h5>
-              <div class="col-sm-11">
-              <input type="turtle" class="form-control" id="lagoonData" />
+                <h5>Scute:</h5>
+                        <div class="btn-toolbar" role="toolbar" >
+                            <div class="btn-group mr-2" role="group" >
+                                <button type="button" class="btn btn-outline-success">Yes</button>
+                            </div>
+                            <div class="btn-group mr-2" role="group" >
+                                <button type="button" class="btn btn-outline-success">No</button>
+                            <div class="col-sm-11">
+                            <input type="turtle" class="form-control" id="lagoonData"  placeholder="For"/>
+                            </div></div>
+                        </div>
+
+                <h5>Other Samples:</h5>
+                <div class="col-sm-11">
+                <input type="turtle" class="form-control" id="lagoonData" />
+                </div>
+
+                <img src={turtleimg} width = "300"/>
+
+                <br></br>
+                <p>Double Checked By:</p>
+                  <div class="col-sm-11">
+                  <input type="turtle" class="form-control" id="lagoonData" />
+                  </div>
+
               </div>
+              </div>
+            </form>
 
-              <img src={turtleimg} width = "300"/>
-
-              <h4><br></br><br></br>Dispostition of Specimen:</h4>
-              <p>Entered By:</p>
-                <div class="col-sm-11">
-                <input type="turtle" class="form-control" id="lagoonData" />
-                </div>
-              <p>Checked By By:</p>
-                <div class="col-sm-11">
-                <input type="turtle" class="form-control" id="lagoonData" />
-                </div>
-
-            </div>
-            </div>
-          </form>
-
-          <button type="button" class="btn btn-primary">SUBMIT</button>
-        </div>
+            <button type="button" class="btn btn-primary">SUBMIT</button>
+          </div>
 
         <InternalFooter />
       </>
