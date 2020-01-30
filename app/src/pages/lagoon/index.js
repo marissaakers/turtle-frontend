@@ -441,7 +441,7 @@ class Lagoon extends Component {
               </div>
             </form>
 
-            <button type="button" class="btn btn-primary">SUBMIT</button>
+            <button type="submit" class="btn btn-primary">SUBMIT</button>
           </div>
 
         <InternalFooter />
