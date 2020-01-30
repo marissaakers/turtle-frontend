@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
 import { Link }from 'react-router-dom'
 import turtleimg from '../images/lagoonturtle.png';
+import { Helmet } from 'react-helmet';
+import InternalNavbar from '../../components/internal-navbar';
+import InternalFooter from '../../components/internal-footer';
 
-
+const TITLE = 'New Lagoon report'
 console.log(turtleimg);
 
 class Lagoon extends Component {
@@ -29,8 +32,14 @@ class Lagoon extends Component {
 
   render() {
     return(
-      <div class="container">
+      <>
+        <Helmet>
+          <title>{ TITLE }</title>
+        </Helmet>
+        <InternalNavbar />
+        <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
 
+        <div class="container">
           <h1><b>LAGOON DATA SHEET</b></h1><br></br><br></br>
 
           <form>
@@ -343,7 +352,9 @@ class Lagoon extends Component {
           <button type="button" class="btn btn-primary">SUBMIT</button>
         </div>
 
-    )
+        <InternalFooter />
+      </>
+    );
   }
 }
 

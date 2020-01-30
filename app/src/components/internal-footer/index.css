@@ -1,13 +1,13 @@
 /*--- footer ---*/
-.int-page-footer {
-  background-color: #222;
-  color: #ccc;
+.page-footer {
+  background-color: #ffff;
+  color: #bbb;
   padding: 60px 0 30px;
   position: absolute;
   left: 0;
   right: 0;
 }
-.int-footer-copyright {
-  color: #666;
+.footer-copyright {
+  color: #bbb;
   padding: 0px 0;
 }

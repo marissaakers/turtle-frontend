@@ -5,7 +5,7 @@ class ExternalFooter extends React.Component {
   render() {
     return(
       <>
-        <footer class="page-footer">
+        <footer class="int-page-footer">
            <div class="container">
               <div class="row">
                  <div class="col-lg-8 col-md-8 col-sm-12">
