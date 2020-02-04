@@ -39,7 +39,7 @@ class Home extends React.Component {
                   </a>
                 </div>
                 <div class="col-sm-4 p-3">
-                  <a href="/error">
+                  <a href="/data-analytics">
                     <img src={require('./graph.png')} width='90%' />
                     <h4 class="pt-4">Analyze data</h4>
                   </a>

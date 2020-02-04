@@ -4,6 +4,7 @@ import axios from "axios";
 import {Link} from 'react-router-dom';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
+import '../shared/internal.css';
 
 const TITLE = 'MTRG - Reports list'
 
@@ -19,7 +20,19 @@ class ReportsList extends React.Component {
 
   async componentDidMount() {
     this.setState({isLoading: true});
-    const data = await axios.get('https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/lagoon');
+    const data = await axios.post(
+      'https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/lagoon/query',
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'crossorigin':'true',
+          'withCredentials': 'true',
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      },
+
+      { "test": "test" });
+
     this.setState(data);
     this.setState({isLoading: false});
     console.log(this.state.data);
@@ -90,6 +103,69 @@ class ReportsList extends React.Component {
 
         <h3>MTRG - Reports List</h3>
         <p>Here we will have a table of the reports in the database.</p>
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="filter-section col-sm-3 mr-1 ml-1 border pr-0 pl-0">
+              <div class="filter-section-title">
+                <h5><b>Species</b></h5>
+              </div>
+              <select class="form-control" id="exampleFormControlSelect1">
+                 <option>Loggerhead</option>
+                 <option>Green sea turtle</option>
+                 <option>Leatherback</option>
+                 <option>Other</option>
+              </select>
+            </div>
+            <div class="col-sm-3 mr-1 ml-1 border pr-0 pl-0">
+              <div class="filter-section-title">
+                <h5><b>Date</b></h5>
+              </div>
+
+              <div class="row  pb-2 pt-1">
+                <div class="col-sm-3">
+                  Start date
+                </div>
+                <div class="col-sm-9">
+                  <input class="form-control" type="date"  id="example-date-input"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                  End date
+                </div>
+                <div class="col-sm-9">
+                  <input class="form-control" type="date"  id="example-date-input"/>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-sm-5 mr-1 ml-1 border pr-0 pl-0">
+              <div class="filter-section-title">
+                <h5><b>People</b></h5>
+              </div>
+              <div class="row">
+                <div class="col-sm-4 ml-1 mr-3 text-right">
+                  <p>Verified by</p>
+                  <p>Investigated by</p>
+                  <p>Entered by</p>
+                </div>
+                <div class="col-sm-7">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row p-3 justify-content-center">
+            <button type="submit" class="btn btn-primary filter-update-btn">Update</button>
+          </div>
+        </div>
+
+        <hr class="pb-4" />
 
         <table className="table table-striped table-hover">
           <thead>

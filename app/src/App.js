@@ -17,6 +17,7 @@ import Login from 'pages/login';
 import Home from 'pages/home';
 import ReportsList from 'pages/reports-list';
 import SingleReport from 'pages/single-report';
+import DataAnalytics from 'pages/data-analytics'
 import Error from 'pages/error';
 // New report pages
 import NewReport from 'pages/new-report';
@@ -40,6 +41,7 @@ function App() {
           <Route exact path='/reports' component={ReportsList} />
           <Route exact path='/reports/example-turtle' component={SingleReport} />
           <Route exact path='/reports/:id' component={SingleReport} />
+          <Route exact path='/data-analytics' component={DataAnalytics} />
           <Route exact path='/new-report' component={NewReport} />
           <Route exact path='/new-report/lagoon' component={Lagoon} />
           <Route exact path='/new-report/lagoonmetadata' component={LagoonMetadata} />

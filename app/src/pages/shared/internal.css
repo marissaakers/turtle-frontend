@@ -1,0 +1,16 @@
+body {
+  padding: 0;
+  margin: 0;
+  background: #222;
+}
+
+/*--- Reports list ---*/
+
+.filter-section-title {
+  background-color: #ededed;
+  text-align: center;
+}
+
+.filter-update-btn {
+  /*wip*/
+}
