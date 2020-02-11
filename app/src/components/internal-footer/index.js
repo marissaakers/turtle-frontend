@@ -5,7 +5,7 @@ class InternalFooter extends React.Component {
   render() {
     return(
       <>
-        <footer class="page-footer">
+        <footer className="page-footer">
           <hr />
           <p>© 2020 Copyright: MTRG</p>
         </footer>

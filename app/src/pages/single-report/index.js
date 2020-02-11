@@ -44,15 +44,15 @@ class SingleReport extends React.Component {
         tagsList.push( <li>{ _data.tags[i].tag_number }</li> )
       }
       const netsList = [];
-      for (var i = 0; i < _encounter.metadata.nets.length; i++) {
+      for (i = 0; i < _encounter.metadata.nets.length; i++) {
         netsList.push( <li>Net ID { _encounter.metadata.nets[i].net_id }</li> )
       }
       const incidentalCapturesList = [];
-      for (var i = 0; i < _encounter.metadata.incidental_captures.length; i++) {
+      for (i = 0; i < _encounter.metadata.incidental_captures.length; i++) {
         incidentalCapturesList.push( <li>Incidental capture ID { _encounter.metadata.incidental_captures[i].incidental_capture_id }</li> )
       }
       const sampleList = [];
-      for (var i = 0; i < _encounter.samples.length; i++) {
+      for (i = 0; i < _encounter.samples.length; i++) {
         sampleList.push( <li>Sample ID { _encounter.samples[i].samples_id }</li> )
       }
 
