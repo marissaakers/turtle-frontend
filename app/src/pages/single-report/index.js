@@ -61,7 +61,7 @@ class SingleReport extends React.Component {
           <h3>MTRG - View report #{ this.state.encounterNum }</h3>
           <p>Here we display the values of the report.</p>
 
-          <div align="left" class="pl-4">
+          <div align="left" className="pl-4">
             <h4><b>General</b></h4>
             <p>Encounter ID: { _encounter.encounter_id }</p>
             <p>Encounter date: { _encounter.encounter_date }</p>
