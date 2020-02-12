@@ -204,44 +204,43 @@ class SingleReport extends React.Component {
 
 
                 <h5>Leeches:</h5>
-                  <div class="btn-toolbar" role="toolbar" >
-                      <div class="btn-group mr-2" role="group" >
-                          <button type="button" class="btn btn-outline-success">Yes</button>
-                      </div>
-                      <div class="btn-group mr-2" role="group" >
-                          <button type="button" class="btn btn-outline-success">No</button>
-                      <div class="col-sm-11">
-                      <input type="turtle" class="form-control" id="lagoonData"  placeholder="Where"/>
-                      </div> </div>
-                    </div>
-                <h5>Leech Eggs:</h5>
-                  <div class="btn-toolbar" role="toolbar" >
-                      <div class="btn-group mr-2" role="group" >
-                          <button type="button" class="btn btn-outline-success">Yes</button>
-                      </div>
-                      <div class="btn-group mr-2" role="group" >
-                          <button type="button" class="btn btn-outline-success">No</button>
-                      <div class="col-sm-11">
-                      <input type="turtle" class="form-control" id="lagoonData"  placeholder="Where"/>
-                      </div></div>
-                    </div>
-                <h5>Flipper Damage:</h5>
-                  <div class="col-sm-11">
-                  <input type="flipper" class="form-control" value={ _encounter.morphometrics.flipper_carapace } id="lagoonData" />
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Leeches:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
                   </div>
-                <br></br>
-                <h5>Shell Damage:</h5>
-                  <div class="col-sm-11">
-                  <input type="shell" class="form-control" value={ _encounter.morphometrics.carapace_damage } id="lagoonData" />
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Leech Eggs:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
                   </div>
-                <br></br>
+                </div>
+
+                <h5>Damage:</h5>
+                <div class="form-group">
+                  <label for="comment">Flipper Damage:</label>
+                  <textarea class="form-control" rows="5" value={ _encounter.morphometrics.flipper_carapace } id="comment"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="comment">Shell Damage:</label>
+                  <textarea class="form-control" rows="5" value={ _encounter.morphometrics.carapace_damage } id="comment"></textarea>
+                </div>
+
+
                 <h4>Notes:</h4>
-                  <div class="col-sm-11">
-                  <input type="notes" class="form-control" id="lagoonData" />
+                  <div class="form-group">
+                    <label for="comment">Describe scale and scute abnormalities, condition of turtle, etc.</label>
+                    <textarea class="form-control" rows="5" id="comment"></textarea>
                   </div>
-                <p><i>Describe scale and scute</i></p>
-                <p><i>abnormalities, condition of</i></p>
-                <p><i>turtle, etc.</i></p>
 
 
                 </div>
@@ -352,41 +351,35 @@ class SingleReport extends React.Component {
                     { sampleList }
                   </ul>
 
-                  <h5>Blood:</h5>
-                    <div class="btn-toolbar" role="toolbar" >
-                        <div class="btn-group mr-2" role="group" >
-                            <button type="button" class="btn btn-outline-success">Yes</button>
-                        </div>
-                        <div class="btn-group mr-2" role="group" >
-                            <button type="button" class="btn btn-outline-success">No</button>
-                        <div class="col-sm-11">
-                        <input type="turtle" class="form-control" id="lagoonData"  placeholder="For"/>
-                        </div></div>
-                      </div>
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-4 col-form-label">Blood Samples:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Yes</option>
+                       <option>No</option>
+                     </select>
+                    </div>
+                  </div>
 
-                  <h5>Skin:</h5>
-                        <div class="btn-toolbar" role="toolbar" >
-                            <div class="btn-group mr-2" role="group" >
-                                <button type="button" class="btn btn-outline-success">Yes</button>
-                            </div>
-                            <div class="btn-group mr-2" role="group" >
-                                <button type="button" class="btn btn-outline-success">No</button>
-                            <div class="col-sm-11">
-                            <input type="turtle" class="form-control" id="lagoonData"  placeholder="For"/>
-                            </div></div>
-                        </div>
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-4 col-form-label">Skin Samples:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Yes</option>
+                       <option>No</option>
+                     </select>
+                    </div>
+                  </div>
 
-                  <h5>Scute:</h5>
-                          <div class="btn-toolbar" role="toolbar" >
-                              <div class="btn-group mr-2" role="group" >
-                                  <button type="button" class="btn btn-outline-success">Yes</button>
-                              </div>
-                              <div class="btn-group mr-2" role="group" >
-                                  <button type="button" class="btn btn-outline-success">No</button>
-                              <div class="col-sm-11">
-                              <input type="turtle" class="form-control" id="lagoonData"  placeholder="For"/>
-                              </div></div>
-                          </div>
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-4 col-form-label">Scute Samples:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Yes</option>
+                       <option>No</option>
+                     </select>
+                    </div>
+                  </div>
 
                   <img src={turtleimg} width = "300"/>
 
