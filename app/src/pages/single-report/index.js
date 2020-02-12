@@ -81,11 +81,8 @@ class SingleReport extends React.Component {
                   <div class="form-group row">
                     <label for="example-text-input" class="col-4 col-form-label">Species:</label>
                     <div class="col-6">
-                    <select class="form-control" value={ _encounter.species } id="exampleFormControlSelect1">
-                       <option>Cc</option>
-                       <option>Cm</option>
-                       <option>Other</option>
-                     </select>
+                    <input class="form-control" type="text" value={ _encounter.species } id="example-text-input"/>
+
                     </div>
                   </div>
 
@@ -390,11 +387,6 @@ class SingleReport extends React.Component {
                               <input type="turtle" class="form-control" id="lagoonData"  placeholder="For"/>
                               </div></div>
                           </div>
-
-                  <h5>Other Samples:</h5>
-                  <div class="col-sm-11">
-                  <input type="turtle" class="form-control" id="lagoonData" />
-                  </div>
 
                   <img src={turtleimg} width = "300"/>
 
