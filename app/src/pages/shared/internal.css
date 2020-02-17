@@ -10,6 +10,11 @@ body {
   top: 8px;
 }
 
+.choose-form-highlight-button {
+  background: #d6d6d6 !important;
+  /* color: #ffffff !important; */
+}
+
 /*--- Reports list ---*/
 
 .filter-section-title {

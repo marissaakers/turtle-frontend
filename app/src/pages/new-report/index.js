@@ -15,14 +15,30 @@ class NewReport extends React.Component {
       previewImages: [
         require('./lagoon-preview.png'),
         require('./lagoon-metadata-preview.png'),
-        ,
-        
-      ]
+        2,
+        3
+      ],
+      highlightedBoxNum: 0
     }
   }
 
-  mousedOverFormOption = (linkNum) => {
+  mousedOverFormOption = (event, linkNum) => {
     this.setState({previewImage: this.state.previewImages[linkNum]});
+    this.setState({highlightedBoxNum: linkNum});
+  }
+
+  mouseLeftFormOption = (event) => {
+
+  }
+
+  getBoxHighlightedClassName = (boxNum) => {
+    let returnStr = "btn btn-light border btn-block mb-2 rounded-0 "
+    if (boxNum === this.state.highlightedBoxNum) {
+      return (returnStr + "choose-form-highlight-button");
+    }
+    else {
+      return returnStr;
+    }
   }
 
   render() {
@@ -54,8 +70,9 @@ class NewReport extends React.Component {
                 <div className="row">
                   <a role="button"
                      href='new-report/lagoon'
-                     className="btn btn-light border btn-block mb-2 rounded-0"
-                     onMouseOver={this.mousedOverFormOption.bind(this, 0)} >
+                     className={ this.getBoxHighlightedClassName(0)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 0)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
                       <h5><b>Lagoon</b></h5>
                       <p>This is a description.</p>
@@ -65,8 +82,9 @@ class NewReport extends React.Component {
                 <div className="row">
                   <a role="button"
                      href='new-report/lagoonmetadata'
-                     className="btn btn-light border btn-block mb-2 rounded-0"
-                     onMouseOver={this.mousedOverFormOption.bind(this, 1)} >
+                     className={ this.getBoxHighlightedClassName(1)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 1)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
                       <h5><b>Lagoon Metadata</b></h5>
                       <p>This is a description.</p>
@@ -76,8 +94,9 @@ class NewReport extends React.Component {
                 <div className="row">
                   <a role="button"
                      href='new-report/lagoon'
-                     className="btn btn-light border btn-block mb-2 rounded-0"
-                     onMouseOver={this.mousedOverFormOption.bind(this, 2)} >
+                     className={ this.getBoxHighlightedClassName(2)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 2)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
                       <h5><b>Placeholder</b></h5>
                       <p>This is a description.</p>
@@ -87,8 +106,9 @@ class NewReport extends React.Component {
                 <div className="row">
                   <a role="button"
                      href='new-report/lagoon'
-                     className="btn btn-light border btn-block mb-2 rounded-0"
-                     onMouseOver={this.mousedOverFormOption.bind(this, 3)} >
+                     className={ this.getBoxHighlightedClassName(3)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 3)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
                       <h5><b>Placeholder</b></h5>
                       <p>This is a description.</p>
