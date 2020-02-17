@@ -225,6 +225,17 @@ class ReportsList extends React.Component {
             <div className="row pb-2 pt-2">
               <div className="col-sm-3 mr-1 ml-1 border pr-0 pl-0">
                 <div className="filter-section-title">
+                  <h5><b>Tags</b></h5>
+                </div>
+                <div className="pr-2 pl-2">
+                  { tagInputBlock }
+                </div>
+              </div>
+            </div>
+            
+            <div className="row pb-2 pt-2">
+              <div className="col-sm-3 mr-1 ml-1 border pr-0 pl-0">
+                <div className="filter-section-title">
                   <h5><b>Species</b></h5>
                 </div>
                 <div className="pr-2 pl-2">
@@ -307,16 +318,6 @@ class ReportsList extends React.Component {
                       name='entered_by'
                       onChange={this.myChangeHandler} />
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="row pb-2 pt-2">
-              <div className="col-sm-3 mr-1 ml-1 border pr-0 pl-0">
-                <div className="filter-section-title">
-                  <h5><b>Tags</b></h5>
-                </div>
-                <div className="pr-2 pl-2">
-                  { tagInputBlock }
                 </div>
               </div>
             </div>
