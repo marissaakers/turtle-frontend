@@ -162,6 +162,29 @@ body {
 /*--- contact us ---*/
 
 
+/*--- login ---*/
+@media all and (min-width: 480px) {
+
+  .Login {
+    padding: 60px;
+    max-width: 420px;
+    margin-top: 60px;
+    margin-bottom: 100px;
+  }
+
+  .Login form {
+    margin: 0 auto;
+    min-width: 320px;
+    max-width: 320px;
+  }
+}
+
+#login-page-button {
+  font-size: 17px;
+  border-radius: 1;
+}
+
+
 /*--- footer ---*/
 .page-footer {
   background-color: #222;
