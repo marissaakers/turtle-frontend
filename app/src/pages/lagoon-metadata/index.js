@@ -98,49 +98,57 @@ class LagoonMetadata extends Component {
 
           <h1><b>LAGOON METADATA SHEET</b></h1><br></br><br></br>
 
-      <div class="container text-left">
+      <div class="container-fluid text-left">
       <form action="" onSubmit={this.handleSubmit}>
 
 
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-3">
+
           <div class="form-group row">
-            <label for="example-date-input" class="col-2 col-form-label">Date</label>
+            <label for="example-date-input" class="col-3 col-form-label">Date</label>
             <div class="col-6">
               <input class="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Location</label>
+            <label for="example-text-input" class="col-3 col-form-label">Location</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "metadata_location" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Investigators</label>
+            <label for="example-text-input" class="col-3 col-form-label">Investigators</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "metadata_investigators" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
+          </div>
+          <div class="col-sm-3">
+
           <h5><b>Turtle Capture Data: </b></h5>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Cc:</label>
+            <label for="example-text-input" class="col-3 col-form-label">Cc:</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "number_of_cc_captured" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Cm:</label>
+            <label for="example-text-input" class="col-3 col-form-label">Cm:</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "number_of_cm_captured" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Other:</label>
+            <label for="example-text-input" class="col-3 col-form-label">Other:</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "number_of_other_captured" onChange={e => this.onChange(e)} />
             </div>
@@ -151,183 +159,182 @@ class LagoonMetadata extends Component {
 
           <h7><b>Net Deploy: </b></h7>
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Start:</label>
+            <label for="example-text-input" class="col-3 col-form-label">Start:</label>
             <div class="col-6">
-              <input class="form-control" type="text" name= "net_deploy_start_time" onChange={e => this.onChange(e)} />
+            <input class="form-control" type="time"   id="example-time-input"/>
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">End:</label>
+            <label for="example-text-input" class="col-3 col-form-label">End:</label>
             <div class="col-6">
-              <input class="form-control" type="text" name= "net_deploy_end_time" onChange={e => this.onChange(e)} />
+            <input class="form-control" type="time"   id="example-time-input"/>
             </div>
           </div>
 
           <h7><b>Net Retreival: </b></h7>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Start:</label>
+            <label for="example-text-input" class="col-3 col-form-label">Start:</label>
             <div class="col-6">
-              <input class="form-control" type="text" name= "net_retrieval_start_time" onChange={e => this.onChange(e)} />
+            <input class="form-control" type="time"   id="example-time-input"/>
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">End:</label>
+            <label for="example-text-input" class="col-3 col-form-label">End:</label>
             <div class="col-6">
-              <input class="form-control" type="text" name= "net_retrieval_end_time" onChange={e => this.onChange(e)} />
+            <input class="form-control" type="time"   id="example-time-input"/>
             </div>
           </div>
 
-
+          </div>
+          <div class="col-sm-3">
 
           <h5><b>Environmental Data: </b></h5>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Water Sample:</label>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"/>
-            <label class="form-check-label" for="inlineRadio1">Yes</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"/>
-            <label class="form-check-label" for="inlineRadio2">No</label>
-          </div>
-          </div>
-
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Wind Spd/Dir:</label>
+            <label for="example-text-input" class="col-3 col-form-label">Water Sample:</label>
             <div class="col-6">
-              <input class="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+              <select class="form-control" id="exampleFormControlSelect1">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Time:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="environment_time" onChange={e => this.onChange(e)} />
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">Wind Spd/Dir:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+              </div>
             </div>
-          </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Weather:</label>
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">Time:</label>
+              <div class="col-6">
+              <input class="form-control" type="time"   id="example-time-input"/>
+              </div>
+            </div>
 
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"/>
-            <label class="form-check-label" for="inlineRadio1">Sunny</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"/>
-            <label class="form-check-label" for="inlineRadio2">Partly Cloudy</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"/>
-            <label class="form-check-label" for="inlineRadio3">Overcast</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4"/>
-            <label class="form-check-label" for="inlineRadio3">Rain</label>
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">Weather:</label>
+              <div class="col-6">
+                <select class="form-control" id="exampleFormControlSelect1">
+                  <option>Sunny</option>
+                  <option>Partly Cloudy</option>
+                  <option>Overcast</option>
+                  <option>Rain</option>
+                </select>
+              </div>
+              </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">Air Temp:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="air_temp" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <h7><b>Water Temp: </b></h7>
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">Surface:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="water_temp_surface" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">1m:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="water_temp_1_m" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">2m:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="water_temp_2_m" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">Bottom:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="water_temp_bottom" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <h7><b>Salinity: </b></h7>
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">Surface:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="salinity_surface" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">1m:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="salinity_1_m" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">2m:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="salinity_2_m" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-3 col-form-label">Bottom:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="salinity_bottom" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+
+            </div>
+            <div class="col-sm-3">
+
+
+            <h5><b>Incidental Capture Data: </b></h5>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-4 col-form-label">Species:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="species" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-4 col-form-label">Time:</label>
+              <div class="col-6">
+              <input class="form-control" type="time"   id="example-time-input"/>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-4 col-form-label">Measurement:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="measurement" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-text-input" class="col-4 col-form-label">Notes:</label>
+              <div class="col-6">
+                <input class="form-control" type="text" name="notes" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
           </div>
         </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Air Temp:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="air_temp" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
+        <button type="submit" class="btn btn-primary">SUBMIT</button>
 
-          <h7><b>Water Temp: </b></h7>
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Surface:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="water_temp_surface" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">1m:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="water_temp_1_m" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">2m:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="water_temp_2_m" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Bottom:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="water_temp_bottom" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <h7><b>Salinity: </b></h7>
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Surface:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="salinity_surface" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">1m:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="salinity_1_m" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">2m:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="salinity_2_m" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Bottom:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="salinity_bottom" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-
-          <h5><b>Incidental Capture Data: </b></h5>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Species:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="species" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Time:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="capture_time" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Measurement:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="measurement" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Notes:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name="notes" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary">SUBMIT</button>
+      </div>
 
       </form>
 

@@ -393,8 +393,7 @@ class TridentMetadata extends Component {
                     <option>Rain</option>
                   </select>
                 </div>
-
-            </div>
+                </div>
 
               <div class="form-group row">
                 <label for="example-text-input" class="col-3 col-form-label">Air Temp:</label>
