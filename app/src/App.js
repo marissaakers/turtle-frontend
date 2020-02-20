@@ -22,7 +22,8 @@ import Error from 'pages/error';
 // New report pages
 import NewReport from 'pages/new-report';
 import Lagoon from 'pages/lagoon';
-import LagoonMetadata from 'pages/metadata';
+import TridentMetadata from 'pages/trident-metadata';
+import LagoonMetadata from 'pages/lagoon-metadata';
 
 
 function App() {
@@ -44,7 +45,9 @@ function App() {
           <Route exact path='/data-analytics' component={DataAnalytics} />
           <Route exact path='/new-report' component={NewReport} />
           <Route exact path='/new-report/lagoon' component={Lagoon} />
-          <Route exact path='/new-report/lagoonmetadata' component={LagoonMetadata} />
+          <Route exact path='/new-report/lagoon-metadata' component={LagoonMetadata} />
+          <Route exact path='/new-report/trident-metadata' component={TridentMetadata} />
+
 
 
           <Route component={Error} />  {/* When no other route matches */}
