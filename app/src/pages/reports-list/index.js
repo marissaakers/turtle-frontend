@@ -33,7 +33,7 @@ class ReportsList extends React.Component {
     this.setState({isLoading: true});
     console.log("Sent JSON = " + json);
     const data = await axios.post(
-      'https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/lagoon/query',
+      'https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/lagoon/mini_query',
       json,
       { headers: {'Content-Type': 'application/json'} }
     );
@@ -121,6 +121,10 @@ class ReportsList extends React.Component {
     this.state.form.tags.pop();
   }
 
+  renderTagInputBlock() {
+
+  }
+
   render() {
     let displayBlock;
     let _data = this.state.data;
@@ -139,45 +143,51 @@ class ReportsList extends React.Component {
     }
     else {
       for (let i = 0; i < _data.length; i++) {
-        for (let j = 0; j < _data[i].encounters.length; j++) {
 
-          let turtleRow = [];
-          let turtleRowFields = [
-            _data[i].encounters[j].encounter_id,
-            _data[i].turtle_id,
-            _data[i].encounters[j].encounter_date,
-            _data[i].encounters[j].species,
-            _data[i].encounters[j].type,
-            _data[i].encounters[j].metadata.metadata_location,
-            _data[i].encounters[j].entered_by
-          ];
+        let turtleRow = [];
+        let turtleRowFields = [
+          _data[i].encounter_id,
+          _data[i].turtle_id,
+          _data[i].encounter_date,
+          _data[i].species,
+          _data[i].type,
+          _data[i].metadata_location,
+          _data[i].entered_by
+        ];
 
-          for (let k = 0; k < turtleRowFields.length; k++) {
-            turtleRow.push(
-              <td key={key++}>
-                <Link to={{
-                  pathname: '/reports/' + _data[i].encounters[j].encounter_id,
-                  state: {
-                    turtleData: _data[i],
-                    encounterNum: j
-                  }}}>
-                  { turtleRowFields[k] }
-                </Link>
-              </td>
-            );
+        // Replace null values with 'Null'
+        for (let j = 0; j < turtleRowFields.length; j++) {
+          if (turtleRowFields[j] === null) {
+            turtleRowFields[j] = "–";
           }
+        }
 
-          turtleRows.push(
-            <tr key={key++}>
-              { turtleRow }
-            </tr>
+        for (let k = 0; k < turtleRowFields.length; k++) {
+          turtleRow.push(
+            <td key={key++}>
+              <Link to={{
+                pathname: '/reports/' + _data[i].encounter_id,
+                state: {
+                  turtleData: _data[i],
+                  // encounterNum: j
+                }}}>
+                { turtleRowFields[k] }
+              </Link>
+            </td>
           );
         }
+
+        turtleRows.push(
+          <tr key={key++}>
+            { turtleRow }
+          </tr>
+        );
       }
 
       displayBlock = null;
     }
 
+    // this.renderTagInputBlock();
     // Tag input block
     for (let i = 0; i < this.state.numTagInputs; i++) {
       let tagName = 'tag-' + i;
@@ -208,6 +218,7 @@ class ReportsList extends React.Component {
       </div>
     )
 
+
     return(
       <>
         <Helmet>
@@ -232,7 +243,7 @@ class ReportsList extends React.Component {
                 </div>
               </div>
             </div>
-            
+
             <div className="row pb-2 pt-2">
               <div className="col-sm-3 mr-1 ml-1 border pr-0 pl-0">
                 <div className="filter-section-title">
@@ -339,6 +350,7 @@ class ReportsList extends React.Component {
 
         <hr className="pb-4" />
 
+        {/* Data table header */}
         <table className="table table-striped table-hover">
           <thead>
             <tr>

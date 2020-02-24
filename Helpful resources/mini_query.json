@@ -1,0 +1,29 @@
+[
+    {
+        "type": "lagoon",
+        "metadata_location": "DEV TEST LOCATION",
+        "entered_by": null,
+        "encounter_id": 364,
+        "species": "Chelonia mydas",
+        "encounter_date": "2019-08-19",
+        "turtle_id": 450
+    },
+    {
+        "type": "lagoon",
+        "metadata_location": "DEV TEST LOCATION",
+        "entered_by": null,
+        "encounter_id": 365,
+        "species": "Chelonia mydas",
+        "encounter_date": "2019-08-19",
+        "turtle_id": 451
+    },
+    {
+        "type": "lagoon",
+        "metadata_location": null,
+        "entered_by": null,
+        "encounter_id": 407,
+        "species": "Chelonia mydas",
+        "encounter_date": "2019-08-13",
+        "turtle_id": 493
+    }
+]
