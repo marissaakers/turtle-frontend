@@ -93,7 +93,7 @@ class NewReport extends React.Component {
                 </div>
                 <div className="row">
                   <a role="button"
-                     href='new-report/trident-metadata'
+                     href='new-report/trident'
                      className={ this.getBoxHighlightedClassName(2)}
                      onMouseOver={(e) => {this.mousedOverFormOption(e, 2)}}
                      onMouseLeave={this.mouseLeftFormOption} >

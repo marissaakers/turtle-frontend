@@ -108,21 +108,21 @@ class LagoonMetadata extends Component {
           <div class="col-sm-3">
 
           <div class="form-group row">
-            <label for="example-date-input" class="col-3 col-form-label">Date</label>
+            <label for="example-date-input" class="col-4 col-form-label">Date</label>
             <div class="col-6">
               <input class="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">Location</label>
+            <label for="example-text-input" class="col-4 col-form-label">Location</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "metadata_location" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">Investigators</label>
+            <label for="example-text-input" class="col-4 col-form-label">Investigators</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "metadata_investigators" onChange={e => this.onChange(e)} />
             </div>
@@ -134,21 +134,21 @@ class LagoonMetadata extends Component {
           <h5><b>Turtle Capture Data: </b></h5>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">Cc:</label>
+            <label for="example-text-input" class="col-4 col-form-label">Cc:</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "number_of_cc_captured" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">Cm:</label>
+            <label for="example-text-input" class="col-4 col-form-label">Cm:</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "number_of_cm_captured" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">Other:</label>
+            <label for="example-text-input" class="col-4 col-form-label">Other:</label>
             <div class="col-6">
               <input class="form-control" type="text" name= "number_of_other_captured" onChange={e => this.onChange(e)} />
             </div>
@@ -159,14 +159,14 @@ class LagoonMetadata extends Component {
 
           <h7><b>Net Deploy: </b></h7>
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">Start:</label>
+            <label for="example-text-input" class="col-4 col-form-label">Start:</label>
             <div class="col-6">
             <input class="form-control" type="time"   id="example-time-input"/>
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">End:</label>
+            <label for="example-text-input" class="col-4 col-form-label">End:</label>
             <div class="col-6">
             <input class="form-control" type="time"   id="example-time-input"/>
             </div>
@@ -175,14 +175,14 @@ class LagoonMetadata extends Component {
           <h7><b>Net Retreival: </b></h7>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">Start:</label>
+            <label for="example-text-input" class="col-4 col-form-label">Start:</label>
             <div class="col-6">
             <input class="form-control" type="time"   id="example-time-input"/>
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">End:</label>
+            <label for="example-text-input" class="col-4 col-form-label">End:</label>
             <div class="col-6">
             <input class="form-control" type="time"   id="example-time-input"/>
             </div>
@@ -194,7 +194,7 @@ class LagoonMetadata extends Component {
           <h5><b>Environmental Data: </b></h5>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-3 col-form-label">Water Sample:</label>
+            <label for="example-text-input" class="col-4 col-form-label">Water Sample:</label>
             <div class="col-6">
               <select class="form-control" id="exampleFormControlSelect1">
                 <option>Yes</option>
@@ -205,21 +205,21 @@ class LagoonMetadata extends Component {
 
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">Wind Spd/Dir:</label>
+              <label for="example-text-input" class="col-4 col-form-label">Wind Spd/Dir:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">Time:</label>
+              <label for="example-text-input" class="col-4 col-form-label">Time:</label>
               <div class="col-6">
               <input class="form-control" type="time"   id="example-time-input"/>
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">Weather:</label>
+              <label for="example-text-input" class="col-4 col-form-label">Weather:</label>
               <div class="col-6">
                 <select class="form-control" id="exampleFormControlSelect1">
                   <option>Sunny</option>
@@ -231,7 +231,7 @@ class LagoonMetadata extends Component {
               </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">Air Temp:</label>
+              <label for="example-text-input" class="col-4 col-form-label">Air Temp:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="air_temp" onChange={e => this.onChange(e)} />
               </div>
@@ -239,28 +239,28 @@ class LagoonMetadata extends Component {
 
             <h7><b>Water Temp: </b></h7>
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">Surface:</label>
+              <label for="example-text-input" class="col-4 col-form-label">Surface:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="water_temp_surface" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">1m:</label>
+              <label for="example-text-input" class="col-4 col-form-label">1m:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="water_temp_1_m" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">2m:</label>
+              <label for="example-text-input" class="col-4 col-form-label">2m:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="water_temp_2_m" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">Bottom:</label>
+              <label for="example-text-input" class="col-4 col-form-label">Bottom:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="water_temp_bottom" onChange={e => this.onChange(e)} />
               </div>
@@ -268,28 +268,28 @@ class LagoonMetadata extends Component {
 
             <h7><b>Salinity: </b></h7>
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">Surface:</label>
+              <label for="example-text-input" class="col-4 col-form-label">Surface:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="salinity_surface" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">1m:</label>
+              <label for="example-text-input" class="col-4 col-form-label">1m:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="salinity_1_m" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">2m:</label>
+              <label for="example-text-input" class="col-4 col-form-label">2m:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="salinity_2_m" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-3 col-form-label">Bottom:</label>
+              <label for="example-text-input" class="col-4 col-form-label">Bottom:</label>
               <div class="col-6">
                 <input class="form-control" type="text" name="salinity_bottom" onChange={e => this.onChange(e)} />
               </div>
