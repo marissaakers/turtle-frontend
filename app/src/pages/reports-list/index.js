@@ -168,8 +168,7 @@ class ReportsList extends React.Component {
               <Link to={{
                 pathname: '/reports/' + _data[i].encounter_id,
                 state: {
-                  turtleData: _data[i],
-                  // encounterNum: j
+                  encounterId: _data[i].encounter_id
                 }}}>
                 { turtleRowFields[k] }
               </Link>

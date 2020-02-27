@@ -1,0 +1,78 @@
+Use any of the following filters in POST request:
+{
+  "turtle_ids": [ 431, 432, 433 ],
+  "tags" : [ "ABCDEF", "LMNOP"]
+  "encounter_id": 866
+}
+
+To get:
+{
+    "investigated_by": "TMD,KRM,JRK,CAL,JJP,DR,JCY,RMS,Franko,EES,DOC,GLF,MP,Matt Larsen",
+    "leeches_where": "None seen.",
+    "turtle_id": 931,
+    "verified_date": null,
+    "entered_by": null,
+    "entered_date": null,
+    "leech_eggs": false,
+    "pap_photos": true,
+    "paps_present": true,
+    "other": null,
+    "metadata_id": 41,
+    "leech_eggs_where": null,
+    "notes": "Tag HH6108 & HH6109 bent\n2.1cm x 2.6cm pap RR",
+    "species": "Chelonia mydas",
+    "encounter_id": 866,
+    "encounter_time": "10:59:00",
+    "living_tags": null,
+    "morphometrics": {
+        "flipper_damage": null,
+        "straight_length": 43.7,
+        "carapace_damage": null,
+        "tail_length_pl_vent": 5.5,
+        "tail_length_pl_tip": 7.1,
+        "encounter": 866,
+        "plastron_length": 36.9,
+        "curved_width": 41.5,
+        "straight_width": 35.3,
+        "morphometrics_id": 853,
+        "body_depth": 15.6,
+        "head_width": 6.5,
+        "curved_length": 46.2,
+        "turtle": 931,
+        "weight": 10.3,
+        "minimum_length": 43.3
+    },
+    "verified_by": null,
+    "encounter_date": "2019-06-03",
+    "pap_category": 1,
+    "photos": null,
+    "samples": {},
+    "leeches": false,
+    "paps_regression": "No",
+    "tags": [
+        {
+            "tag_scars": null,
+            "tag_type": null,
+            "tag_id": 2658,
+            "tag_number": "982000408563932",
+            "active": null,
+            "turtle": 931
+        },
+        {
+            "tag_scars": null,
+            "tag_type": null,
+            "tag_id": 2659,
+            "tag_number": "HH6107",
+            "active": null,
+            "turtle": 931
+        },
+        {
+            "tag_scars": null,
+            "tag_type": null,
+            "tag_id": 2660,
+            "tag_number": "HH6110",
+            "active": null,
+            "turtle": 931
+        }
+    ]
+}
