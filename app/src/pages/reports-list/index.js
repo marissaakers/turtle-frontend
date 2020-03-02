@@ -16,6 +16,8 @@ class ReportsList extends React.Component {
     this.state = {
       isLoading: true,
       numTagInputs: 1,
+      resultsPerPage: 60,
+      currentPage: 1,
       data: {},
       form: {
         species: 'all',
@@ -105,6 +107,19 @@ class ReportsList extends React.Component {
     this.setState({form: myForm});
   }
 
+  setPageNum = (newNum) => {
+    console.log("Old currentPage # = " + this.state.currentPage + ", new # = " + newNum);
+    if (newNum < 1) {
+      this.setState({currentPage: 1});
+    }
+    else if (newNum > Math.floor(this.state.data.length / this.state.resultsPerPage) + 1) {
+      this.setState({currentPage: Math.floor(this.state.data.length / this.state.resultsPerPage)});
+    }
+    else {
+      this.setState({currentPage: newNum});
+    }
+  }
+
   addTagInput = (event) => {
     event.preventDefault();
     let n = this.state.numTagInputs;
@@ -121,15 +136,12 @@ class ReportsList extends React.Component {
     this.state.form.tags.pop();
   }
 
-  renderTagInputBlock() {
-
-  }
-
   render() {
     let displayBlock;
     let _data = this.state.data;
     let turtleRows = [];
     let tagInputBlock = [];
+    let pageNumberPicker = [];
 
     let key = 0;
 
@@ -142,8 +154,32 @@ class ReportsList extends React.Component {
       )
     }
     else {
-      for (let i = 0; i < _data.length; i++) {
+      displayBlock = null;
 
+      // Fill out data table
+      let startIndex = 0;
+      let length = _data.length;
+      console.log("current page = " + this.state.currentPage);
+      if (this.state.currentPage > 1) {
+        if ((this.state.currentPage - 1) * this.state.resultsPerPage > _data.length) {
+          console.error("Trying to load results greater than " + _data.length + ", when " +
+                        "max number of results that can be displayed is " +
+                        (this.state.currentPage - 1) * this.state.resultsPerPage + ".");
+        }
+        else {
+          startIndex = (this.state.currentPage - 1) * this.state.resultsPerPage;
+        }
+      }
+      if (_data.length > this.state.resultsPerPage) {
+        if (_data.length - startIndex < this.state.resultsPerPage) {
+          length = _data.length - startIndex;
+        }
+        else {
+          length = this.state.resultsPerPage;
+        }
+      }
+      console.log("startIndex = " + startIndex + ", length = " + length + ", _data.length = " + _data.length);
+      for (let i = startIndex; i < startIndex + length; i++) {
         let turtleRow = [];
         let turtleRowFields = [
           _data[i].encounter_id,
@@ -183,7 +219,30 @@ class ReportsList extends React.Component {
         );
       }
 
-      displayBlock = null;
+      // Create page number picker
+      let temp = [];
+      console.log("_data.length = " + _data.length);
+      temp.push( <a href="#" onClick={() => this.setPageNum(1)}>&lt;&lt;</a> );
+      temp.push( <a href="#" onClick={() => this.setPageNum(this.state.currentPage-1)}> &lt;</a> );
+      for (let i = 1; i <= Math.floor(_data.length / this.state.resultsPerPage) + 1; i++) {
+        if (this.state.currentPage === i) {
+          temp.push(
+            <b> {i}</b>
+          )
+        }
+        else {
+          temp.push(
+            <a href="#" onClick={() => this.setPageNum(i)}> {i}</a>
+          )
+        }
+      }
+      temp.push( <a href="#" onClick={() => this.setPageNum(this.state.currentPage+1)}> &gt;</a> );
+      temp.push( <a href="#" onClick={() => this.setPageNum(Math.floor(_data.length / this.state.resultsPerPage))}> &gt;&gt;</a> );
+      // (this.state.currentPage - 1) * this.state.resultsPerPage;
+      // << < 1 2 3 4 5 > >>
+      pageNumberPicker.push(
+        <p>{temp}</p>
+      )
     }
 
     // this.renderTagInputBlock();
@@ -367,6 +426,7 @@ class ReportsList extends React.Component {
           </tbody>
         </table>
 
+        { pageNumberPicker }
         { displayBlock }
 
         <InternalFooter />
