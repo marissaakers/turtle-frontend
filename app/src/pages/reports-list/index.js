@@ -16,13 +16,13 @@ class ReportsList extends React.Component {
     this.state = {
       isLoading: true,
       numTagInputs: 1,
-      resultsPerPage: 60,
+      resultsPerPage: 20,
       currentPage: 1,
       data: {},
       form: {
         species: 'all',
-        encounter_date_start: '01/01/0000',
-        encounter_date_end: '12/31/9999',
+        encounter_date_start: '',
+        encounter_date_end: '',
         tags: [],
         verified_by: '',
         investigated_by: '',
@@ -46,7 +46,7 @@ class ReportsList extends React.Component {
   }
 
   async componentDidMount() {
-    this.loadReportsList('{}');
+    this.loadReportsList('{"encounter_date_start":"01/01/0001"}');
   }
 
   mySubmitHandler = (event) => {
@@ -222,26 +222,26 @@ class ReportsList extends React.Component {
       // Create page number picker
       let temp = [];
       console.log("_data.length = " + _data.length);
-      temp.push( <a href="#" onClick={() => this.setPageNum(1)}>&lt;&lt;</a> );
-      temp.push( <a href="#" onClick={() => this.setPageNum(this.state.currentPage-1)}> &lt;</a> );
+      temp.push( <a href="#" key={key++} onClick={() => this.setPageNum(1)}>&lt;&lt;</a> );
+      temp.push( <a href="#" key={key++} onClick={() => this.setPageNum(this.state.currentPage-1)}> &lt;</a> );
       for (let i = 1; i <= Math.floor(_data.length / this.state.resultsPerPage) + 1; i++) {
         if (this.state.currentPage === i) {
           temp.push(
-            <b> {i}</b>
+            <b key={key++}> {i}</b>
           )
         }
         else {
           temp.push(
-            <a href="#" onClick={() => this.setPageNum(i)}> {i}</a>
+            <a href="#" key={key++} onClick={() => this.setPageNum(i)}> {i}</a>
           )
         }
       }
-      temp.push( <a href="#" onClick={() => this.setPageNum(this.state.currentPage+1)}> &gt;</a> );
-      temp.push( <a href="#" onClick={() => this.setPageNum(Math.floor(_data.length / this.state.resultsPerPage))}> &gt;&gt;</a> );
+      temp.push( <a href="#" key={key++} onClick={() => this.setPageNum(this.state.currentPage+1)}> &gt;</a> );
+      temp.push( <a href="#" key={key++} onClick={() => this.setPageNum(Math.floor(_data.length / this.state.resultsPerPage))}> &gt;&gt;</a> );
       // (this.state.currentPage - 1) * this.state.resultsPerPage;
       // << < 1 2 3 4 5 > >>
       pageNumberPicker.push(
-        <p>{temp}</p>
+        <p key={key++}>{temp}</p>
       )
     }
 
@@ -289,8 +289,10 @@ class ReportsList extends React.Component {
         <h3>MTRG - Reports List</h3>
         <p>View list of database entries. Use filters to narrow down your search.</p>
 
+        {/* FILTERS */}
         <div className="container">
           <form onSubmit={this.mySubmitHandler}>
+            {/* Row 1 */}
             <div className="row pb-2 pt-2">
               <div className="col-sm-3 mr-1 ml-1 border pr-0 pl-0">
                 <div className="filter-section-title">
@@ -302,7 +304,10 @@ class ReportsList extends React.Component {
               </div>
             </div>
 
+            {/* Row 2 */}
             <div className="row pb-2 pt-2">
+
+              {/* Species filter */}
               <div className="col-sm-3 mr-1 ml-1 border pr-0 pl-0">
                 <div className="filter-section-title">
                   <h5><b>Species</b></h5>
@@ -313,13 +318,15 @@ class ReportsList extends React.Component {
                     onChange={this.myChangeHandler}
                     value={this.state.form.species}>
                      <option value="all">All</option>
-                     <option value="Loggerhead">Loggerhead</option>
-                     <option value="Green sea turtle">Green sea turtle</option>
-                     <option value="Leatherback">Leatherback</option>
+                     <option value="Caretta caretta">Loggerhead (Caretta caretta)</option>
+                     <option value="Chelonia mydas">Green sea turtle (Chelonia mydas)</option>
+                     <option value="Eretmochelys imbricata">Leatherback (Eretmochelys imbricata)</option>
                      <option>Other</option>
                   </select>
                 </div>
               </div>
+
+              {/* Date filter */}
               <div className="col-sm-3 mr-1 ml-1 border pr-0 pl-0">
                 <div className="filter-section-title">
                   <h5><b>Date</b></h5>
@@ -349,8 +356,9 @@ class ReportsList extends React.Component {
                     </div>
                   </div>
                 </div>
-
               </div>
+
+              {/* People filter */}
               <div className="col-sm mr-1 ml-1 border pr-0 pl-0">
                 <div className="filter-section-title">
                   <h5><b>People</b></h5>
@@ -391,6 +399,7 @@ class ReportsList extends React.Component {
               </div>
             </div>
 
+            {/* Submit buttons */}
             <div className="row p-3 justify-content-center">
               <button
                type="submit"
