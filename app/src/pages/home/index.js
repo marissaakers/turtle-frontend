@@ -33,7 +33,7 @@ class Home extends React.Component {
                   </a>
                 </div>
                 <div class="col-sm-4 p-3">
-                  <a href="/reports">
+                  <a href="/reports-list/lagoon">
                     <img src={require('./search.png')} width='90%' />
                     <h4 class="pt-4">View data</h4>
                   </a>

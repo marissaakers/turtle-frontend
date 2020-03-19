@@ -21,6 +21,9 @@ body {
   background-color: #ededed;
   text-align: center;
 }
+.filter-section-title > p {
+  font-size: 16px;
+}
 .filter-update-btn {
   /*wip*/
 }

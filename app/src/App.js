@@ -15,7 +15,11 @@ import Contact from 'pages/contact';
 import Login from 'pages/login';
 // Logged in pages
 import Home from 'pages/home';
-import ReportsList from 'pages/reports-list';
+import ReportsListBeach from 'pages/reports-list-beach';
+import ReportsListLagoon from 'pages/reports-list-lagoon';
+import ReportsListOffshore from 'pages/reports-list-offshore';
+import ReportsListTrident from 'pages/reports-list-trident';
+
 import SingleReport from 'pages/single-report';
 import DataAnalytics from 'pages/data-analytics'
 import Error from 'pages/error';
@@ -40,7 +44,11 @@ function App() {
 
           {/* Logged in pages */}
           <Route exact path='/home' component={Home} />
-          <Route exact path='/reports' component={ReportsList} />
+          <Route exact path='/reports-list/beach' component={ReportsListBeach} />
+          <Route exact path='/reports-list/lagoon' component={ReportsListLagoon} />
+          <Route exact path='/reports-list/offshore' component={ReportsListOffshore} />
+          <Route exact path='/reports-list/trident' component={ReportsListTrident} />
+
           <Route exact path='/reports/example-turtle' component={SingleReport} />
           <Route exact path='/reports/:id' component={SingleReport} />
           <Route exact path='/data-analytics' component={DataAnalytics} />
