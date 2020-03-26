@@ -16,7 +16,8 @@ class NewReport extends React.Component {
         require('./lagoon-preview.png'),
         require('./lagoon-metadata-preview.png'),
         2,
-        3
+        3,
+        4
       ],
       highlightedBoxNum: 0
     }
@@ -111,6 +112,18 @@ class NewReport extends React.Component {
                      onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
                       <h5><b>Trident Metadata</b></h5>
+                      <p>This is a description.</p>
+                    </div>
+                  </a>
+                </div>
+                <div className="row">
+                  <a role="button"
+                     href='new-report/survey-midreach'
+                     className={ this.getBoxHighlightedClassName(4)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 4)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
+                    <div className="choose-form-button-contents pl-2" align="left">
+                      <h5><b>Midreach Survey</b></h5>
                       <p>This is a description.</p>
                     </div>
                   </a>

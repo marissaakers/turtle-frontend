@@ -29,6 +29,7 @@ import Lagoon from 'pages/lagoon';
 import Trident from 'pages/trident';
 import TridentMetadata from 'pages/trident-metadata';
 import LagoonMetadata from 'pages/lagoon-metadata';
+import SurveyMidreach from 'pages/survey-midreach';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
           <Route exact path='/new-report/trident' component={Trident} />
           <Route exact path='/new-report/lagoon-metadata' component={LagoonMetadata} />
           <Route exact path='/new-report/trident-metadata' component={TridentMetadata} />
+          <Route exact path='/new-report/survey-midreach' component={SurveyMidreach} />
 
 
 
