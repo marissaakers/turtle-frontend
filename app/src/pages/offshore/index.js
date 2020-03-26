@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap'
 import { Link }from 'react-router-dom'
-import turtleimg from '../images/lagoonturtle.png';
 import { Helmet } from 'react-helmet';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
@@ -9,10 +8,9 @@ import '../shared/internal.css';
 import axios from "axios";
 
 
-const TITLE = 'New Lagoon report'
-console.log(turtleimg);
+const TITLE = 'New Offshore Report'
 
-class Lagoon extends Component {
+class Offshore extends Component {
 
   constructor(props){
     super(props)
@@ -102,11 +100,35 @@ class Lagoon extends Component {
 
         <div className="container-fluid">
 
-            <h1><b>LAGOON DATA SHEET</b></h1>
+            <h1><b>OFFSHORE DATA SHEET</b></h1>
 
             <form>
             <div className="justify-content-center row pb-2 pt-2">
             <div className="col-sm-10 mr-2 ml-2 border pr-0 pl-5 pb-3 pt-3">
+
+            <div class="form-row text-left">
+
+              <div class="form-group col-sm-3 mr-5">
+                    <label for="trip" class="col-10 col-form-label">Trip #:</label>
+                    <input class="form-control" type="text" id="example-text-input"/>
+              </div>
+
+
+
+              <div class="form-group col-sm-3 mr-5 ml-5">
+              <label for="species" class="col-10 col-form-label">Species:</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Cc</option>
+                       <option>Cm</option>
+                     </select>
+              </div>
+
+
+              <div class="form-group col-sm-3 ml-5">
+                <label for="species" class="col-10 col-form-label">Capture Habitat:</label>
+                    <input class="form-control" type="text" id="example-text-input"/>
+                    </div>
+            </div>
 
             <div class="form-row">
               <div class="col-sm-6 text-left">
@@ -440,4 +462,4 @@ class Lagoon extends Component {
 
 
 
-export default Lagoon;
+export default Offshore;

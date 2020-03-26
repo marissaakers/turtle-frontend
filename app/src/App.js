@@ -26,7 +26,10 @@ import Error from 'pages/error';
 // New report pages
 import NewReport from 'pages/new-report';
 import Lagoon from 'pages/lagoon';
+import Beach from 'pages/beach';
+import BeachInventory from 'pages/beach-inventory';
 import Trident from 'pages/trident';
+import Offshore from 'pages/offshore';
 import TridentMetadata from 'pages/trident-metadata';
 import LagoonMetadata from 'pages/lagoon-metadata';
 import SurveyMidreach from 'pages/survey-midreach';
@@ -55,10 +58,13 @@ function App() {
           <Route exact path='/data-analytics' component={DataAnalytics} />
           <Route exact path='/new-report' component={NewReport} />
           <Route exact path='/new-report/lagoon' component={Lagoon} />
+          <Route exact path='/new-report/beach' component={Beach} />
           <Route exact path='/new-report/trident' component={Trident} />
+          <Route exact path='/new-report/offshore' component={Offshore} />
           <Route exact path='/new-report/lagoon-metadata' component={LagoonMetadata} />
           <Route exact path='/new-report/trident-metadata' component={TridentMetadata} />
           <Route exact path='/new-report/survey-midreach' component={SurveyMidreach} />
+          <Route exact path='/new-report/beach-inventory' component={BeachInventory} />
 
 
 
