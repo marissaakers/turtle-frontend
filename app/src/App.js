@@ -15,6 +15,7 @@ import Contact from 'pages/contact';
 import Login from 'pages/login';
 // Logged in pages
 import Home from 'pages/home';
+import ReportsListHub from 'pages/reports-list-hub';
 import ReportsListBeach from 'pages/reports-list-beach';
 import ReportsListLagoon from 'pages/reports-list-lagoon';
 import ReportsListOffshore from 'pages/reports-list-offshore';
@@ -48,6 +49,7 @@ function App() {
 
           {/* Logged in pages */}
           <Route exact path='/home' component={Home} />
+          <Route exact path='/reports-list' component={ReportsListHub} />
           <Route exact path='/reports-list/beach' component={ReportsListBeach} />
           <Route exact path='/reports-list/lagoon' component={ReportsListLagoon} />
           <Route exact path='/reports-list/offshore' component={ReportsListOffshore} />
