@@ -94,7 +94,7 @@ class BeachInventory extends Component {
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
 
 
-      <h1><b>BEACH DATA SHEET</b></h1>
+      <h1><b>BEACH INVENTORY SHEET</b></h1>
 
       <div class="container-fluid">
       <form action="" onSubmit={this.handleSubmit}>
@@ -198,14 +198,14 @@ class BeachInventory extends Component {
           <div class="col-sm-6">
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-5 col-form-label">Inventoried by:</label>
+            <label for="example-text-input" class="col-6 col-form-label">Inventoried by:</label>
             <div class="col-6">
             <input class="form-control" type="text" id="example-text-input"/>
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-5 col-form-label">Emergence:</label>
+            <label for="example-text-input" class="col-6 col-form-label">Emergence:</label>
             <div class="col-6">
                 <select class="form-control" id="exampleFormControlSelect1">
                     <option>Yes</option>
@@ -215,7 +215,7 @@ class BeachInventory extends Component {
             </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-5 col-form-label">Can(s) in place:</label>
+              <label for="example-text-input" class="col-6 col-form-label">Can(s) in place:</label>
               <div class="col-6">
                   <select class="form-control" id="exampleFormControlSelect1">
                       <option>S</option>
@@ -225,7 +225,7 @@ class BeachInventory extends Component {
               </div>
 
             <div class="form-group row">
-              <label for="example-text-input" class="col-5 col-form-label">Predated:</label>
+              <label for="example-text-input" class="col-6 col-form-label">Predated:</label>
               <div class="col-6">
                   <select class="form-control" id="exampleFormControlSelect1">
                       <option>Yes</option>
@@ -235,7 +235,7 @@ class BeachInventory extends Component {
               </div>
 
               <div class="form-group row">
-                <label for="example-text-input" class="col-5 col-form-label">Post Hatch:</label>
+                <label for="example-text-input" class="col-6 col-form-label">Post Hatch:</label>
                 <div class="col-6">
                     <select class="form-control" id="exampleFormControlSelect1">
                         <option>Yes</option>
@@ -245,7 +245,7 @@ class BeachInventory extends Component {
                 </div>
 
                 <div class="form-group row">
-                  <label for="example-text-input" class="col-5 col-form-label">Washed over:</label>
+                  <label for="example-text-input" class="col-6 col-form-label">Washed over:</label>
                   <div class="col-6">
                       <select class="form-control" id="exampleFormControlSelect1">
                           <option>Yes</option>
@@ -255,7 +255,7 @@ class BeachInventory extends Component {
                   </div>
 
                   <div class="form-group row">
-                    <label for="example-text-input" class="col-5 col-form-label">Inundated:</label>
+                    <label for="example-text-input" class="col-6 col-form-label">Inundated:</label>
                     <div class="col-6">
                         <select class="form-control" id="exampleFormControlSelect1">
                             <option>Yes</option>
@@ -265,7 +265,7 @@ class BeachInventory extends Component {
                     </div>
 
                   <div class="form-group row">
-                    <label for="example-text-input" class="col-5 col-form-label">Washed out:</label>
+                    <label for="example-text-input" class="col-6 col-form-label">Washed out:</label>
                     <div class="col-6">
                         <select class="form-control" id="exampleFormControlSelect1">
                             <option>Complete</option>
@@ -276,7 +276,7 @@ class BeachInventory extends Component {
                     </div>
 
                   <div class="form-group row">
-                    <label for="example-text-input" class="col-5 col-form-label">Washed out post hatch:</label>
+                    <label for="example-text-input" class="col-6 col-form-label">Washed out post hatch:</label>
                     <div class="col-6">
                         <select class="form-control" id="exampleFormControlSelect1">
                             <option>Yes</option>
@@ -286,7 +286,7 @@ class BeachInventory extends Component {
                     </div>
 
                   <div class="form-group row">
-                    <label for="example-text-input" class="col-5 col-form-label">Poached:</label>
+                    <label for="example-text-input" class="col-6 col-form-label">Poached:</label>
                     <div class="col-6">
                         <select class="form-control" id="exampleFormControlSelect1">
                             <option>Yes</option>
@@ -339,7 +339,7 @@ class BeachInventory extends Component {
 
 
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6 pl-3">
 
           <h5><b>DAMAGED EGGS:</b></h5>
 

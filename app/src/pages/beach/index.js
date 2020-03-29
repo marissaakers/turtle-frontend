@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
 import { Link }from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
@@ -18,7 +19,7 @@ class Beach extends Component {
     this.state = {
       data : [],
       error: false,
-
+      redirect:false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,58 +30,35 @@ class Beach extends Component {
     this.setState({ [e.target.name]: e.target.value })
   }
 
-  componentDidMount() {
-     axios.get('https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/lagoon')
-       .then(res => {
-         const data = res.data.data; // get the data array instead of object
-         this.setState({ data});
-       })
-       .catch(err => { // log request error and prevent access to undefined state
-         this.setState({ isLoading: false});
-         console.error(err);
-       })
+  renderRedirect = () => {
+   if (this.state.redirect) {
+     return <Redirect to='/new-report/beach-inventory' />
    }
-   handleSubmit(e) {
+ }
+
+
+  handleSubmit = async(e) => {
      e.preventDefault();
 
-     const data = {
-       metadata_date: this.state.metadata_date ? this.state.metadata_date : this.state.data[0].metadata_date,
-       metadata_location: this.state.metadata_location ? this.state.metadata_location : this.state.data[0].metadata_location,
-       metadata_investigators: this.state.metadata_investigators ? this.state.metadata_investigators : this.state.data[0].metadata_investigators,
-       number_of_cc_captured: this.state.number_of_cc_captured ? this.state.number_of_cc_captured : this.state.data[0].number_of_cc_captured,
-       number_of_cm_captured: this.state.number_of_cm_captured ? this.state.number_of_cm_captured : this.state.data[0].number_of_cm_captured,
-       number_of_other_captured: this.state.number_of_other_captured ? this.state.number_of_other_captured : this.state.data[0].number_of_other_captured,
-       net_deploy_start_time: this.state.net_deploy_start_time ? this.state.net_deploy_start_time : this.state.data[0].net_deploy_start_time,
-       net_deploy_end_time: this.state.net_deploy_end_time ? this.state.net_deploy_end_time : this.state.data[0].net_deploy_end_time,
-       net_retrieval_start_time: this.state.net_retrieval_start_time ? this.state.net_retrieval_start_time : this.state.data[0].net_retrieval_start_time,
-       net_retrieval_end_time: this.state.net_retrieval_end_time ? this.state.net_retrieval_end_time : this.state.data[0].net_retrieval_end_time,
-       water_sample: this.state.water_sample ? this.state.water_sample : this.state.data[0].water_sample,
-       wind_dir: this.state.wind_dir ? this.state.wind_dir : this.state.data[0].wind_dir,
-       environment_time: this.state.environment_time ? this.state.environment_time : this.state.data[0].environment_time,
-       weather: this.state.weather ? this.state.weather : this.state.data[0].weather,
-       air_temp: this.state.air_temp ? this.state.air_temp : this.state.data[0].air_temp,
-       water_temp_surface: this.state.water_temp_surface ? this.state.water_temp_surface : this.state.data[0].water_temp_surface,
-       water_temp_1_m: this.state.water_temp_1_m ? this.state.water_temp_1_m : this.state.data[0].water_temp_1_m,
-       water_temp_2_m: this.state.water_temp_2_m ? this.state.water_temp_2_m : this.state.data[0].water_temp_2_m,
-       water_temp_bottom: this.state.water_temp_bottom ? this.state.water_temp_bottom : this.state.data[0].water_temp_bottom,
-       salinity_surface: this.state.salinity_surface ? this.state.salinity_surface : this.state.data[0].salinity_surface,
-       salinity_1_m: this.state.salinity_1_m ? this.state.salinity_1_m : this.state.data[0].salinity_1_m,
-       salinity_2_m: this.state.salinity_2_m ? this.state.salinity_2_m : this.state.data[0].salinity_2_m,
-       salinity_bottom: this.state.salinity_bottom ? this.state.salinity_bottom : this.state.data[0].salinity_bottom,
-       species: this.state.species ? this.state.species : this.state.data[0].species,
-       capture_time: this.state.capture_time ? this.state.capture_time : this.state.data[0].capture_time,
-       measurement: this.state.measurement ? this.state.measurement : this.state.data[0].measurement,
-       notes: this.state.notes ? this.state.notes : this.state.data[0].notes,
 
-       blank: this.state.blank ? this.state.blank : this.state.data[0].blank
+     const data = {
+
+
      };
 
 
-    axios.post('http://localhost:5555/data', { data })
-      .then(res => {
-        console.log(data);
-        console.log(this.state.data[0]);
-      })
+
+     axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/lagoon/metadata/insert',
+       data, { headers: {'Content-Type': 'application/json'} })
+         .then(res => {
+           console.log(data)
+           console.log("Successfully posted!")
+           this.setState({redirect:true})
+         })
+         .catch(error => {
+           console.log(error.response)
+           console.log("Error.")
+         });
   }
   render() {
 
@@ -92,11 +70,12 @@ class Beach extends Component {
         <InternalNavbar />
 
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
+        <p align="right" className="pr-5"><a href="/new-report/beach-inventory">see beach inventory sheet →</a></p>
 
 
       <h1><b>BEACH DATA SHEET</b></h1>
 
-      <div class="container-fluid">
+      <div className="container-fluid">
       <form action="" onSubmit={this.handleSubmit}>
 
       <div className="justify-content-center row pb-2 pt-2">
@@ -104,38 +83,38 @@ class Beach extends Component {
 
 
 
-      <div class="container-fluid text-left">
-        <div class="row">
-          <div class="col-sm-6">
+      <div className="container-fluid text-left">
+        <div className="row">
+          <div className="col-sm-6">
 
-          <div class="row">
-          <div class="col-sm-6">
+          <div className="row">
+          <div className="col-sm-6">
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">45 days:</label>
-            <div class="col-6">
-            <input class="form-control" type="text" id="example-text-input"/>
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">45 days:</label>
+            <div className="col-7">
+            <input className="form-control" type="text" id="example-text-input"/>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">70 days:</label>
-            <div class="col-6">
-            <input class="form-control" type="text" id="example-text-input"/>
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">70 days:</label>
+            <div className="col-7">
+            <input className="form-control" type="text" id="example-text-input"/>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Stake #:</label>
-            <div class="col-6">
-            <input class="form-control" type="text" id="example-text-input"/>
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Stake #:</label>
+            <div className="col-7">
+            <input className="form-control" type="text" id="example-text-input"/>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Species:</label>
-            <div class="col-6">
-            <select class="form-control" id="exampleFormControlSelect1">
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Species:</label>
+            <div className="col-7">
+            <select className="form-control" id="exampleFormControlSelect1">
                <option>Cc</option>
                <option>Cm</option>
                <option>Dm</option>
@@ -143,10 +122,10 @@ class Beach extends Component {
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Capture Type:</label>
-            <div class="col-6">
-                <select class="form-control" id="exampleFormControlSelect1">
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Capture Type:</label>
+            <div className="col-7">
+                <select className="form-control" id="exampleFormControlSelect1">
                     <option>New</option>
                     <option>Old</option>
                     <option>Strange Recap</option>
@@ -156,74 +135,74 @@ class Beach extends Component {
 
 
 
-          <div class="form-group row">
-            <label for="example-date-input" class="col-4 col-form-label">Date:</label>
-            <div class="col-6">
-              <input class="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
+          <div className="form-group row">
+            <label htmlFor="example-date-input" className="col-5 col-form-label">Date:</label>
+            <div className="col-7">
+              <input className="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Time:</label>
-            <div class="col-6">
-            <input class="form-control" type="time"   id="example-time-input"/>
-            </div>
-          </div>
-
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Activity:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Location:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" name= "metadata_location" onChange={e => this.onChange(e)} />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Lat N:</label>
-            <div class="col-6">
-            <input class="form-control" type="text" id="example-text-input"/>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Long W:</label>
-            <div class="col-6">
-            <input class="form-control" type="text" id="example-text-input"/>
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Time:</label>
+            <div className="col-7">
+            <input className="form-control" type="time"   id="example-time-input"/>
             </div>
           </div>
 
 
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Activity:</label>
+            <div className="col-7">
+              <input className="form-control" type="text" onChange={e => this.onChange(e)} />
+            </div>
+          </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Investigators:</label>
-            <div class="col-6">
-              <input class="form-control" type="text" onChange={e => this.onChange(e)} />
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Location:</label>
+            <div className="col-7">
+              <input className="form-control" type="text" name= "metadata_location" onChange={e => this.onChange(e)} />
+            </div>
+          </div>
+
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Lat N:</label>
+            <div className="col-7">
+            <input className="form-control" type="text" id="example-text-input"/>
+            </div>
+          </div>
+
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Long W:</label>
+            <div className="col-7">
+            <input className="form-control" type="text" id="example-text-input"/>
+            </div>
+          </div>
+
+
+
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Investigators:</label>
+            <div className="col-7">
+              <input className="form-control" type="text" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
 
           </div>
-          <div class="col-sm-6">
+          <div className="col-sm-6">
 
           <h5><b>Tag Information: </b></h5>
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Prime Tag:</label>
-            <div class="col-6">
-            <input class="form-control" type="text" id="example-text-input"/>
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Prime Tag:</label>
+            <div className="col-7">
+            <input className="form-control" type="text" id="example-text-input"/>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Tag Scar:</label>
-            <div class="col-6">
-                <select class="form-control" id="exampleFormControlSelect1">
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Tag Scar:</label>
+            <div className="col-7">
+                <select className="form-control" id="exampleFormControlSelect1">
                     <option>LF</option>
                     <option>RF</option>
                     <option>NONE</option>
@@ -231,52 +210,52 @@ class Beach extends Component {
               </div>
             </div>
 
-        <div class="form-group row">
-              <label for="example-text-input" class="col-4 col-form-label">Tag #: LF/LR</label>
-              <div class="col-6">
-                    <input class="form-control" type="text" id="example-text-input"/>
+        <div className="form-group row">
+              <label htmlFor="example-text-input" className="col-5 col-form-label">Tag #: LF/LR</label>
+              <div className="col-7">
+                    <input className="form-control" type="text" id="example-text-input"/>
               </div>
         </div>
 
-          <div class="form-group row">
-                <label for="example-text-input" class="col-4 col-form-label">Tag #: RF/RR</label>
-                <div class="col-6">
-                    <input class="form-control" type="text" id="example-text-input"/>
+          <div className="form-group row">
+                <label htmlFor="example-text-input" className="col-5 col-form-label">Tag #: RF/RR</label>
+                <div className="col-7">
+                    <input className="form-control" type="text" id="example-text-input"/>
                 </div>
           </div>
 
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Pit Tag: Scanned:</label>
-            <div class="col-6">
-            <select class="form-control" id="exampleFormControlSelect1">
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Pit Tag: Scanned:</label>
+            <div className="col-7">
+            <select className="form-control" id="exampleFormControlSelect1">
                <option>Yes</option>
                <option>No</option>
              </select>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Pit Tag:</label>
-            <div class="col-6">
-                <select class="form-control" id="exampleFormControlSelect1">
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-5 col-form-label">Pit Tag:</label>
+            <div className="col-7">
+                <select className="form-control" id="exampleFormControlSelect1">
                     <option>New</option>
                     <option>Old</option>
                 </select>
               </div>
             </div>
 
-            <div class="form-group row">
-              <label for="example-date-input" class="col-4 col-form-label">Scanner #:</label>
-              <div class="col-6">
-                <input class="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
+            <div className="form-group row">
+              <label htmlFor="example-date-input" className="col-5 col-form-label">Scanner #:</label>
+              <div className="col-7">
+                <input className="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
-            <div class="form-group row">
-              <label for="example-text-input" class="col-4 col-form-label">Pit Tag: Location:</label>
-              <div class="col-6">
-                  <select class="form-control" id="exampleFormControlSelect1">
+            <div className="form-group row">
+              <label htmlFor="example-text-input" className="col-5 col-form-label">Pit Tag: Location:</label>
+              <div className="col-7">
+                  <select className="form-control" id="exampleFormControlSelect1">
                       <option>RR</option>
                       <option>RF</option>
                   </select>
@@ -288,157 +267,165 @@ class Beach extends Component {
 
           <h5><b>Morphometrics: </b></h5>
 
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md-5">
-                <label for="curved-length">Curved Length (notch-tip):</label>
-                <input class="form-control" type="text" id="example-text-input"/>
+          <div className="container border pt-2 mb-2">
+
+
+            <div className="form-row">
+              <div className="form-group col-md-6">
+                <label htmlFor="curved-length">Curved Length (notch-tip):</label>
+                <input className="form-control" type="text" id="example-text-input"/>
               </div>
-              <div class="form-group col-md-5">
-                <label for="curved-width">Curved Width (widest):</label>
-                <input class="form-control" type="text" id="example-text-input"/>
+              <div className="form-group col-md-6">
+                <label htmlFor="curved-width">Curved Width (widest):</label>
+                <input className="form-control" type="text" id="example-text-input"/>
               </div>
-              <div class="form-group col-md-5">
-                <label for="straight-length">Straight Length (notch-tip):</label>
-                <input class="form-control" type="text" id="example-text-input"/>
+              <div className="form-group col-md-6">
+                <label htmlFor="straight-length">Straight Length (notch-tip):</label>
+                <input className="form-control" type="text" id="example-text-input"/>
               </div>
-              <div class="form-group col-md-5">
-                <label for="straight-width">Straight Width (widest):</label>
-                <input type="form-control" class="form-control" placeholder="in cm"/>
+              <div className="form-group col-md-6">
+                <label htmlFor="straight-width">Straight Width (widest):</label>
+                <input type="form-control" className="form-control" placeholder="in cm"/>
               </div>
-              <div class="form-group col-md-5">
-                <label for="min-length">Minimum Length (notch-notch):</label>
-                <input type="form-control" class="form-control" placeholder="in cm"/>
+              <div className="form-group col-md-6">
+                <label htmlFor="min-length">Minimum Length (notch-notch):</label>
+                <input type="form-control" className="form-control" placeholder="in cm"/>
               </div>
-              <div class="form-group col-md-5">
-                <label for="tail-length">Tail Length: PL-vent</label>
-                <input type="form-control" class="form-control" placeholder="in cm"/>
+              <div className="form-group col-md-6">
+                <label htmlFor="tail-length">Tail Length: PL-vent</label>
+                <input type="form-control" className="form-control" placeholder="in cm"/>
               </div>
-              <div class="form-group col-md-5">
-                <label for="plastron-length">Plastron Length (tape):</label>
-                <input type="form-control" class="form-control" placeholder="in cm"/>
+              <div className="form-group col-md-6">
+                <label htmlFor="plastron-length">Plastron Length (tape):</label>
+                <input type="form-control" className="form-control" placeholder="in cm"/>
               </div>
-              <div class="form-group col-md-5">
-                <label for="pl-tip">PL-Tip:</label>
-                <input type="form-control" class="form-control" placeholder="in cm"/>
+              <div className="form-group col-md-6">
+                <label htmlFor="pl-tip">PL-Tip:</label>
+                <input type="form-control" className="form-control" placeholder="in cm"/>
               </div>
-              <div class="form-group col-md-5">
-                <label for="weight">Weight in kg: *tare scale</label>
-                <input type="form-control" class="form-control" placeholder="in kg"/>
+              <div className="form-group col-md-6">
+                <label htmlFor="weight">Weight in kg: *tare scale</label>
+                <input type="form-control" className="form-control" placeholder="in kg"/>
               </div>
-              <div class="form-group col-md-5">
-                <label for="head-width">Head Width (straight):</label>
-                <input type="form-control" class="form-control"/>
+              <div className="form-group col-md-6">
+                <label htmlFor="head-width">Head Width (straight):</label>
+                <input type="form-control" className="form-control"/>
               </div>
-              <div class="form-group col-md-5">
+              <div className="form-group col-md-6">
 
               </div>
             </div>
-          </form>
+
+          </div>
+
 
           <h5><b>For DC only: </b></h5>
-            <form>
-              <div class="form-row">
-                <div class="form-group col-md-3">
-                  <label for="inputEmail4">Outgoing crawl width:</label>
-                  <select class="form-control" id="exampleFormControlSelect1">
+
+              <div className="form-row">
+                <div className="form-group col-md-3">
+                  <label htmlFor="inputEmail4">Outgoing crawl width:</label>
+                  <select className="form-control" id="exampleFormControlSelect1">
                   <option>Yes</option>
                   <option>No</option>
                   </select>
                 </div>
 
-                <div class="form-group col-md-3">
-                  <label for="inputPassword4">Yolkless Collected?</label>
-                  <select class="form-control" id="exampleFormControlSelect1">
+                <div className="form-group col-md-3">
+                  <label htmlFor="inputPassword4">Yolkless Collected?</label>
+                  <select className="form-control" id="exampleFormControlSelect1">
                   <option>Yes</option>
                   <option>No</option>
                   </select>
                 </div>
 
-                <div class="form-group col-md-3">
-                  <label for="inputPassword4">Pink Spot Photo?</label>
-                  <select class="form-control" id="exampleFormControlSelect1">
+                <div className="form-group col-md-3">
+                  <label htmlFor="inputPassword4">Pink Spot Photo?</label>
+                  <select className="form-control" id="exampleFormControlSelect1">
                   <option>Yes</option>
                   <option>No</option>
                   </select>
                 </div>
 
-                <div class="form-group col-md-3">
-                  <label for="inputPassword4">Photo Taken By:</label>
-                  <input type="password" class="form-control" id="inputPassword4" />
+                <div className="form-group col-md-3">
+                  <label htmlFor="inputPassword4">Photo Taken By:</label>
+                  <input type="password" className="form-control" id="inputPassword4" />
 
                 </div>
 
               </div>
-            </form>
+
 
           </div>
-          <div class="col-sm-6 pl-5">
+          <div className="col-sm-6 pl-3">
 
 
           <h5>Samples:</h5>
-          <form>
-            <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Skin:</label>
-              <div class="col-3">
-                  <select class="form-control" id="exampleFormControlSelect1">
-                  <option>Yes</option>
-                  <option>No</option>
-                  </select>
-              </div>
-              <div class="col-4">
-                <input type="text" class="form-control" placeholder="For"/>
-              </div>
-            </div>
-          </form>
 
-          <form>
-            <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Skin 2:</label>
-              <div class="col-3">
-                  <select class="form-control" id="exampleFormControlSelect1">
-                  <option>Yes</option>
-                  <option>No</option>
-                  </select>
-              </div>
-              <div class="col-4">
-                <input type="text" class="form-control" placeholder="For"/>
-              </div>
-            </div>
-          </form>
 
-          <form>
-            <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Other:</label>
-              <div class="col-3">
-                  <select class="form-control" id="exampleFormControlSelect1">
+          <div className="container border pt-2 mb-2">
+            <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-2 col-form-label">Skin:</label>
+              <div className="col-3">
+                  <select className="form-control" id="exampleFormControlSelect1">
                   <option>Yes</option>
                   <option>No</option>
                   </select>
               </div>
-              <div class="col-4">
-                <input type="text" class="form-control" placeholder="For"/>
+              <div className="col-4">
+                <input type="text" className="form-control" placeholder="For"/>
               </div>
             </div>
-          </form>
+
+
+
+            <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-2 col-form-label">Skin 2:</label>
+              <div className="col-3">
+                  <select className="form-control" id="exampleFormControlSelect1">
+                  <option>Yes</option>
+                  <option>No</option>
+                  </select>
+              </div>
+              <div className="col-4">
+                <input type="text" className="form-control" placeholder="For"/>
+              </div>
+            </div>
+
+
+
+            <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-2 col-form-label">Other:</label>
+              <div className="col-3">
+                  <select className="form-control" id="exampleFormControlSelect1">
+                  <option>Yes</option>
+                  <option>No</option>
+                  </select>
+              </div>
+              <div className="col-4">
+                <input type="text" className="form-control" placeholder="For"/>
+              </div>
+            </div>
+
+
+          </div>
 
 
           <h5>Flipper Damage:</h5>
-          <div class="col-sm-15">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          <div className="col-sm-15">
+              <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
           </div>
 
           <h5>Shell Damage:</h5>
-          <div class="col-sm-15">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          <div className="col-sm-15">
+              <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
           </div>
 
 
           <br></br>
-          <div class="form-group row">
-            <label for="example-text-input" class="col-4 col-form-label">Paps:</label>
-            <div class="col-6">
-                <select class="form-control" id="exampleFormControlSelect1">
+          <div className="form-group row">
+            <label htmlFor="example-text-input" className="col-4 col-form-label">Paps:</label>
+            <div className="col-7">
+                <select className="form-control" id="exampleFormControlSelect1">
                     <option>seen</option>
                     <option>not seen</option>
                 </select>
@@ -448,119 +435,119 @@ class Beach extends Component {
 
           <h5><b>Clutch Data: </b></h5>
 
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">Clutch Deposited:</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
+
+            <div className="form-row">
+              <div className="form-group col-md-4">
+                <label htmlFor="inputEmail4">Clutch Deposited:</label>
+                    <select className="form-control" id="exampleFormControlSelect1">
                     <option>Yes</option>
                     <option>No</option>
                     </select>
                 </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Sand Type:</label>
-                  <select class="form-control" id="exampleFormControlSelect1">
+              <div className="form-group col-md-4">
+                <label htmlFor="inputPassword4">Sand Type:</label>
+                  <select className="form-control" id="exampleFormControlSelect1">
                   <option>Natural</option>
                   <option>Artificial</option>
                   </select>
                 </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Placement:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+              <div className="form-group col-md-4">
+                <label htmlFor="inputPassword4">Placement:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
               </div>
             </div>
-          </form>
+
 
 
 
           <h5><b>Nest Marking: </b></h5>
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">HIDDEN STAKE:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+
+            <div className="form-row">
+              <div className="form-group col-md-3">
+                <label htmlFor="inputEmail4">HIDDEN STAKE:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
                 </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Planted In:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+              <div className="form-group col-md-4">
+                <label htmlFor="inputPassword4">Planted In:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
                 </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">DIST TO DUNE:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+              <div className="form-group col-md-5">
+                <label htmlFor="inputPassword4">DIST TO DUNE:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
               </div>
             </div>
-          </form>
 
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">OBVIOUS STAKE:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+
+
+            <div className="form-row">
+              <div className="form-group col-md-3">
+                <label htmlFor="inputEmail4">OBVIOUS STAKE:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
                 </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Planted In:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+              <div className="form-group col-md-4">
+                <label htmlFor="inputPassword4">Planted In:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
                 </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">DIST TO HIGH TIDE:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+              <div className="form-group col-md-5">
+                <label htmlFor="inputPassword4">DIST TO HIGH TIDE:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
               </div>
             </div>
-          </form>
 
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label for="inputEmail4">CAN BURIED:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+
+
+            <div className="form-row">
+              <div className="form-group col-md-3">
+                <label htmlFor="inputEmail4">CAN BURIED:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
                 </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">SIGN STAKE IN PLACE:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+              <div className="form-group col-md-4">
+                <label htmlFor="inputPassword4">SIGN STAKE IN PLACE:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
                 </div>
-              <div class="form-group col-md-4">
-                <label for="inputPassword4">Turtle found scarp >=46cm:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+              <div className="form-group col-md-5">
+                <label htmlFor="inputPassword4">Turtle found scarp >=46cm:</label>
+                <input type="password" className="form-control" id="inputPassword4" />
               </div>
             </div>
-          </form>
 
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md-5">
-                <label for="inputEmail4">Is the nest seaward of man-made structure?:</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+
+
+            <div className="form-row">
+              <div className="form-group col-md-6">
+                <label htmlFor="inputEmail4">Is the nest seaward of man-made structure?:</label>
+                <select className="form-control" id="exampleFormControlSelect1">
                 <option>Yes</option>
                 <option>No</option>
                 </select>
               </div>
-              <div class="form-group col-md-5">
-                <label for="inputPassword4">If Yes, is it within 1m of the structure?:</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+              <div className="form-group col-md-6">
+                <label htmlFor="inputPassword4">If Yes, is it within 1m of the structure?:</label>
+                <select className="form-control" id="exampleFormControlSelect1">
                 <option></option>
                 <option>Yes</option>
                 <option>No</option>
                 </select>
               </div>
             </div>
-          </form>
+
 
 
             <h4>Describe Structure:</h4>
-              <div class="col-sm-15">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+              <div className="col-sm-15">
+              <textarea className="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
               </div>
 
 
             <h4>Site Description:</h4>
-              <div class="col-sm-15">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              <div className="col-sm-15">
+              <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
               </div>
 
 
             <h4>Notes:</h4>
-              <div class="col-sm-15">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+              <div className="col-sm-15">
+              <textarea className="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
               </div>
 
 
@@ -572,7 +559,7 @@ class Beach extends Component {
 
       </div>
 
-      <button type="submit" class="btn btn-primary">SUBMIT</button>
+      <button type="submit" className="btn btn-primary">SUBMIT</button>
 
       </form>
 

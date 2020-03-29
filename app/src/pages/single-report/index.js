@@ -65,6 +65,7 @@ class SingleReport extends React.Component {
     //     "encounter_id": 866
     // }
     let myJson = "{ \"encounter_id\": " + this.props.location.state.encounterId + "}";
+    console.log(myJson);
     this.loadReport(myJson);
   }
 
@@ -107,499 +108,309 @@ class SingleReport extends React.Component {
           <h3>MTRG - View report #{ this.state.encounterNum }</h3>
           <p>Here we display the values of the report.</p>
 
-          <div class="container">
-
-            <br></br><h2><b>ENCOUNTER DATA:</b></h2><br></br>
-
-              <form>
-              <div class="form-row">
-                <div class="col-sm-6 text-left">
-
-                  <div class="form-group row">
-                    <label for="example-date-input" class="col-4 col-form-label">Date</label>
-                    <div class="col-6">
-                      <input class="form-control" type="date" value={ _encounter.encounter_date } id="example-date-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Species:</label>
-                    <div class="col-6">
-                      <input class="form-control" type="text" value={ _encounter.species } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Capture Time:</label>
-                    <div class="col-6">
-                      <input class="form-control" type="text" value={ _encounter.encounter_time } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Tag #'s:</label>
-                    <div class="col-6">
-                      <ul>
-                        { tagsList }
-                      </ul>
-                      <input class="form-control" type="text" placeholder="Add More" id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Pit Tag: Scanned:</label>
-                    <div class="col-6">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Yes</option>
-                        <option>No</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Living Tags:</label>
-                    <div class="col-6">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <h4>Morphometrics:</h4>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Curved Length (notch-tip) in cm:</label>
-                    <div class="col-6">
-                      <input class="form-control" type="text" value={ _encounter.morphometrics.curved_length } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Straight Length (notch-tip) in cm:</label>
-                    <div class="col-6">
-                      <input class="form-control" type="text" value={ _encounter.morphometrics.straight_length } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Minimum Length (notch-tip) in cm:</label>
-                    <div class="col-6">
-                      <input class="form-control" type="text" value={ _encounter.morphometrics.straight_length } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Plastron Length (tape) in cm:</label>
-                    <div class="col-6">
-                      <input class="form-control" type="text" value={ _encounter.morphometrics.plastron_length } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Weight in kg: *tare scale</label>
-                    <div class="col-6">
-                      <input class="form-control" type="text" value={ _encounter.morphometrics.weight } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <h5>Paps: { _encounter.paps_present }</h5>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Regression:</label>
-                    <div class="col-6">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Yes</option>
-                         <option>No</option>
-                         <option>Other</option>
-                         <option>partial</option>
-                         <option>complete</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Photos:</label>
-                    <div class="col-6">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Yes</option>
-                        <option>No</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Pap Photos:</label>
-                    <div class="col-6">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Yes</option>
-                        <option>No</option>
-                       </select>
-                    </div>
-                  </div>
-
-                  <h5>Leeches:</h5>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Leeches:</label>
-                    <div class="col-6">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Yes</option>
-                        <option>No</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Leech Eggs:</label>
-                    <div class="col-6">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Yes</option>
-                        <option>No</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <h5>Damage:</h5>
-                  <div class="form-group">
-                    <label for="comment">Flipper Damage:</label>
-                    <textarea class="form-control" rows="5" value={ _encounter.morphometrics.flipper_carapace } id="comment"></textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="comment">Shell Damage:</label>
-                    <textarea class="form-control" rows="5" value={ _encounter.morphometrics.carapace_damage } id="comment"></textarea>
-                  </div>
 
 
-                  <h4>Notes:</h4>
-                  <div class="form-group">
-                    <label for="comment">Describe scale and scute abnormalities, condition of turtle, etc.</label>
-                    <textarea class="form-control" rows="5" id="comment"></textarea>
-                  </div>
-                </div>
+      <div className="justify-content-center row pb-2 pt-2">
+          <div className="col-sm-10 mr-2 ml-2 border pr-5 pl-5 pb-3 pt-3">
 
+          <div className="form-row">
+            <div className="col-sm-6 text-left">
 
-                <div class="col-sm-5 text-left">
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-5 col-form-label">Data Entered By:</label>
-                    <div class="col-7">
-                    <input class="form-control" type="text" value={ _encounter.entered_by } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-5 col-form-label">Data Verified By:</label>
-                    <div class="col-7">
-                    <input class="form-control" type="text" value={ _encounter.verified_by } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-date-input" class="col-5 col-form-label">Data Verified Date:</label>
-                    <div class="col-5">
-                      <input class="form-control" type="date" value={ _encounter.verified_date } id="example-date-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Capture Type:</label>
-                    <div class="col-6">
-                    <select class="form-control" value={ _encounter.type } id="exampleFormControlSelect1">
-                       <option>New</option>
-                       <option>Old</option>
-                       <option>Strange Recap</option>
-                     </select>
-                    </div>
-                  </div>
-
-                  <p><br></br><b>Tag Scars:</b></p>
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">LF:</label>
-                    <div class="col-6">
-                    <select class="form-control" id="exampleFormControlSelect1">
-                       <option>Yes</option>
-                       <option>No</option>
-                     </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">RF:</label>
-                    <div class="col-6">
-                    <select class="form-control" id="exampleFormControlSelect1">
-                       <option>Yes</option>
-                       <option>No</option>
-                     </select>
-                    </div>
-                  </div>
-
-                  <br></br>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Curved Width (widest) in cm:</label>
-                    <div class="col-6">
-                    <input class="form-control" type="text" value={ _encounter.morphometrics.curved_width } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Straight Width (widest) in cm:</label>
-                    <div class="col-6">
-                    <input class="form-control" type="text" value={ _encounter.morphometrics.straight_length } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Tail Length:PL-vent in cm:</label>
-                    <div class="col-6">
-                    <input class="form-control" type="text" value={ _encounter.morphometrics.tail_length_pl_vent } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">PL-tip in cm:</label>
-                    <div class="col-6">
-                    <input class="form-control" type="text" value= { _encounter.morphometrics.tail_length_pl_tip } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Head Width (straight) in cm:</label>
-                    <div class="col-6">
-                    <input class="form-control" type="text" value={ _encounter.morphometrics.head_width } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Body Depth (straight) in cm:</label>
-                    <div class="col-6">
-                    <input class="form-control" type="text" value={ _encounter.morphometrics.body_depth } id="example-text-input"/>
-                    </div>
-                  </div>
-
-                  <h4><br></br>Samples:</h4>
-
-                  <p>Samples:</p>
-                  <ul>
-                    { sampleList }
-                  </ul>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Blood Samples:</label>
-                    <div class="col-6">
-                    <select class="form-control" id="exampleFormControlSelect1">
-                       <option>Yes</option>
-                       <option>No</option>
-                     </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Skin Samples:</label>
-                    <div class="col-6">
-                    <select class="form-control" id="exampleFormControlSelect1">
-                       <option>Yes</option>
-                       <option>No</option>
-                     </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-4 col-form-label">Scute Samples:</label>
-                    <div class="col-6">
-                    <select class="form-control" id="exampleFormControlSelect1">
-                       <option>Yes</option>
-                       <option>No</option>
-                     </select>
-                    </div>
-                  </div>
-
-                  <img src={turtleimg} width = "300"/>
-
-                  <br></br>
-                  <p>Investigated by:</p>
-                  <div class="col-sm-11">
-                    <input type="turtle" class="form-control" value={ _encounter.investigated_by } id="lagoonData" />
-                  </div>
-                  <p>Entered Date:</p>
-                  <div class="col-sm-11">
-                    <input type="turtle" class="form-control" value={ _encounter.entered_date } id="lagoonData" />
-                  </div>
-
-                </div>
-              </div>
-              </form>
-
+          <div className="form-row">
+          <label htmlFor="species" className="col-3 col-form-label">Species:</label>
+            <div className="col-5">
+              <input type="text" className="form-control" value={ _encounter.species } name="species" onChange={e => this.onChange(e)}/>
+            </div>
+          </div>
 
               <br></br>
 
-              <button type="submit" class="btn btn-primary">EDIT</button>
-
-              <div class="container text-left">
-                <h2><b>METADATA:</b></h2>
-
-                <p>Metadata ID: { _metadata.metadata_id }</p>
-
-                <div class="form-group row">
-                  <label for="example-date-input" class="col-4 col-form-label">Date</label>
-                  <div class="col-4">
-                    <input class="form-control" type="date" value={ _metadata.metadata_date } name="metadata_date" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Location</label>
-                  <div class="col-4">
-                    <input class="form-control" type="text" value={ _metadata.metadata_location } name= "metadata_location" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Investigators</label>
-                  <div class="col-4">
-                    <input class="form-control" type="text" value={ _metadata.metadata_investigators } name= "metadata_investigators" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
 
 
-                <h5><b>Turtle Capture Data: </b></h5>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Cc:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.number_of_cc_captured } name= "number_of_cc_captured" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Cm:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.number_of_cm_captured } name= "number_of_cm_captured" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Other:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.number_of_other_captured } name= "number_of_other_captured" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-                <br></br>
+          <div className="form-row">
+            <div className="form-group col-md-4">
+              <label htmlFor="date">Encounter Date:</label>
+                  <input className="form-control" type="date" value={ _encounter.encounter_date } name="encounter_date" onChange={e => this.onChange(e)}/>
+            </div>
+          <div className="form-group col-md-3">
+            <label htmlFor="capture-time">Capture Time:</label>
+                  <input className="form-control" type="time" value={ _encounter.encounter_time } name="encounter_time" onChange={e => this.onChange(e)} />
+              </div>
+          <div className="form-group col-md-3">
+            <label htmlFor="capture-type">Capture Type:</label>
+            <input className="form-control" type="ext" value={ _encounter.capture_type } name="capture_type" onChange={e => this.onChange(e)} />
+            </div>
+          </div>
 
 
-                <h5><b>Environmental Data: </b></h5>
-
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Wind Spd:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.wind_speed } name="wind_dir" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Wind Dir:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.wind_dir } name="wind_dir" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Time:</label>
-                  <div class="col-3">
-                    <input class="form-control" value={ _metadata.environment_time } name="environment_time" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Weather:</label>
-                  { _metadata.weather }
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Air Temp:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.air_temp } name="air_temp" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <h7><b>Water Temp: </b></h7>
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Surface:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.water_temp_surface } name="water_temp_surface" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">1m:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.water_temp_1_m } name="water_temp_1_m" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">2m:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.water_temp_2_m } name="water_temp_2_m" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Bottom:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.water_temp_bottom } name="water_temp_bottom" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <h7><b>Salinity: </b></h7>
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Surface:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.salinity_surface } name="salinity_surface" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">1m:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.salinity_1_m } name="salinity_1_m" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">2m:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.salinity_2_m } name="salinity_2_m" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-4 col-form-label">Bottom:</label>
-                  <div class="col-3">
-                    <input class="form-control" type="text" value={ _metadata.salinity_bottom } name="salinity_bottom" onChange={e => this.onChange(e)} />
-                  </div>
-                </div>
-
-                <h5>Nets:</h5>
-                <ul>
-                  { netsList }
-                </ul>
-                <br></br>
-
-
-                <h5><b>Incidental Capture Data: </b></h5>
-
-                <ul>
-                  { incidentalCapturesList }
-                </ul>
+          <div className="form-row">
+            <div className="form-group col-md-5">
+              <label htmlFor="data-entered-by">Data Entered By:</label>
+              <input className="form-control" type="text" value={ _encounter.entered_by }name="entered_by" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-5">
+              <label htmlFor="data-entered-date">Data Entered Date:</label>
+              <input className="form-control" type="date"  value={ _encounter.entered_date } name="entered_date" onChange={e => this.onChange(e)} />
               </div>
           </div>
+
+          <div className="form-row">
+            <div className="form-group col-md-5">
+              <label htmlFor="data-verified-by">Data Verified By:</label>
+              <input className="form-control" type="text" value={ _encounter.verified_by } name="verified_by" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-5">
+              <label htmlFor="data-verified-date">Data Verified Date:</label>
+              <input className="form-control" type="date" value={ _encounter.verified_date } name="verified_date" onChange={e => this.onChange(e)} />
+              </div>
+          </div>
+
+          <div className="form-group row">
+            <label htmlFor="tag-numbers" className="col-4 col-form-label">Tag #'s:</label>
+            <div className="col-6">
+            <input className="form-control" type="text" name="tag_number" value={ _encounter.tags[0].tag_number } onChange={e => this.onChange(e)}/>
+            </div>
+          </div>
+
+          <div className="form-group row">
+            <label htmlFor="pit-tag-scanned" className="col-4 col-form-label">Pit Tag: Scanned:</label>
+            <div className="col-6">
+            <input className="form-control" type="text" name="scanned" value={ _encounter.tags[0].scanned } onChange={e => this.onChange(e)}/>
+            </div>
+          </div>
+
+          <div className="form-group row">
+            <label htmlFor="living-tags" className="col-4 col-form-label">Living Tags:</label>
+            <div className="col-6">
+              <input className="form-control" type="text" name="living_tags" value={ _encounter.living_tags } onChange={e => this.onChange(e)}/>
+
+            </div>
+          </div>
+
+
+            <h4>Morphometrics:</h4>
+
+            <div class="container border pt-3 mb-3">
+
+              <div className="form-row">
+                <div className="form-group col-md-6">
+                  <label htmlFor="curved-length">Curved Length (notch-tip):</label>
+                  <input className="form-control" type="text" value={ _encounter.morphometrics[0].curved_length } name="curved_length" onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-5">
+                  <label htmlFor="curved-width">Curved Width (widest):</label>
+                  <input className="form-control" type="text" value={ _encounter.morphometrics[0].curved_width } name="curved_width" onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-6">
+                  <label htmlFor="straight-length">Straight Length (notch-tip):</label>
+                  <input className="form-control" type="text" name="straight_length" value={ _encounter.morphometrics[0].straight_length } placeholder="in cm" onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-5">
+                  <label htmlFor="straight-width">Straight Width (widest):</label>
+                  <input type="form-control" name="straight_width" value={ _encounter.morphometrics[0].straight_width } className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-6">
+                  <label htmlFor="min-length">Minimum Length (notch-notch):</label>
+                  <input type="form-control" name="minimum_length" value={ _encounter.morphometrics[0].minimum_length } className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-5">
+                  <label htmlFor="tail-length">Tail Length: PL-vent</label>
+                  <input type="form-control" name="tail_length_pl_vent" className="form-control" value={ _encounter.morphometrics[0].tail_length_pl_vent } placeholder="in cm" onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-6">
+                  <label htmlFor="plastron-length">Plastron Length (tape):</label>
+                  <input type="form-control" name="plastron_length" className="form-control" placeholder="in cm" value={ _encounter.morphometrics[0].plastron_length } onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-5">
+                  <label htmlFor="pl-tip">PL-Tip:</label>
+                  <input type="form-control" name="tail_length_pl_tip" className="form-control" placeholder="in cm" value={ _encounter.morphometrics[0].tail_length_pl_tip } onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-6">
+                  <label htmlFor="weight">Weight in kg: *tare scale</label>
+                  <input type="form-control" name="weight" className="form-control" placeholder="in kg" value={ _encounter.morphometrics[0].weight }onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-5">
+                  <label htmlFor="head-width">Head Width (straight):</label>
+                  <input type="form-control" name="head_width" value={ _encounter.morphometrics[0].head_width } className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                </div>
+                <div className="form-group col-md-6">
+
+                </div>
+                <div className="form-group col-md-5">
+                  <label htmlFor="body-depth">Body Depth (straight):</label>
+                  <input type="form-control" name="body_depth" value={ _encounter.morphometrics[0].body_depth } className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                </div>
+              </div>
+              </div>
+
+
+            </div>
+
+            <div className="col-sm-6 pl-3 text-left">
+
+
+              <h4>Samples:</h4>
+
+              <div class="container border pt-3 mb-3 pb-3">
+
+                <div className="form-row">
+                <label htmlFor="blood" className="col-3 col-form-label">Blood:</label>
+                    <div className="col-3">
+                    <select className="form-control">
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                     </select>
+                    </div>
+                  <div className="col-4">
+                    <input type="text" name="blood_sample" className="form-control" placeholder="For" onChange={e => this.onChange(e)}/>
+                  </div>
+                </div>
+
+
+                <div className="form-row">
+                <label htmlFor="skin" className="col-3 col-form-label">Skin:</label>
+                    <div className="col-3">
+                    <select className="form-control" >
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                     </select>
+                    </div>
+                  <div className="col-4">
+                    <input type="text" name="skin_sample" className="form-control" placeholder="For" onChange={e => this.onChange(e)}/>
+                  </div>
+                </div>
+
+
+                <div className="form-row">
+                <label htmlFor="scute" className="col-3 col-form-label">Scute:</label>
+                    <div className="col-3 mb-3">
+                    <select className="form-control" >
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                     </select>
+                    </div>
+                  <div className="col-4">
+                    <input type="text" name="scute_sample" className="form-control" placeholder="For" onChange={e => this.onChange(e)}/>
+                  </div>
+                </div>
+
+
+                <h5>Other Samples:</h5>
+                <div className="col-sm-10">
+                <textarea className="form-control" name="other" rows="2" onChange={e => this.onChange(e)}></textarea>
+                </div>
+
+                </div>
+
+
+                  <div className="form-group row">
+                    <label htmlFor="paps" className="col-4 col-form-label">Paps:</label>
+                        <div className="col-6">
+                        <select className="form-control" name="pap_category" value={this.value} onChange={e => this.onChange(e)}>
+                        <option>-</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                        </div>
+                  </div>
+
+                    <div className="form-group row">
+                      <label htmlFor="regression" className="col-4 col-form-label">Regression:</label>
+                      <div className="col-6">
+                      <select className="form-control" name="paps_regression" value={this.value} onChange={e => this.onChange(e)}>
+                      <option>-</option>
+                         <option value="Yes">Yes</option>
+                         <option value="No">No</option>
+                         <option value="Other">Other</option>
+                         <option value="Partial">partial</option>
+                         <option value="Complete">complete</option>
+                       </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label htmlFor="photos" className="col-4 col-form-label">Photos:</label>
+                      <div className="col-6">
+                      <select className="form-control" name="photos" value={this.value} onChange={e => this.onChange(e)}>
+                      <option>Yes/No</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                       </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label htmlFor="pap-photos" className="col-4 col-form-label">Pap Photos:</label>
+                      <div className="col-6">
+                      <select className="form-control" name="pap_photos" value={this.value} onChange={e => this.onChange(e)}>
+                      <option>Yes/No</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                       </select>
+                      </div>
+                    </div>
+
+
+                      <div className="form-row">
+                      <label htmlFor="example-text-input" className="col-3 col-form-label">Leeches:</label>
+                          <div className="col-3">
+                          <select className="form-control" name="leeches" value={this.value} onChange={e => this.onChange(e)}>
+                          <option>Yes/No</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                           </select>
+                          </div>
+                        <div className="col-4">
+                          <input type="text" className="form-control" name="leeches_where" placeholder="Where" onChange={e => this.onChange(e)}/>
+                        </div>
+                      </div>
+
+
+                    <br></br>
+
+
+                      <div className="form-row">
+                      <label htmlFor="leech-eggs" className="col-3 col-form-label">Leech Eggs:</label>
+                          <div className="col-3">
+                          <select className="form-control" name="leech_eggs" value={this.value} onChange={e => this.onChange(e)}>
+                          <option>Yes/No</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                           </select>
+                          </div>
+                        <div className="col-4">
+                          <input type="text" className="form-control" placeholder="Where" name="leech_eggs_where" onChange={e => this.onChange(e)}/>
+                        </div>
+                      </div>
+
+
+                    <br></br>
+
+                    <h5>Flipper Damage:</h5>
+                      <div className="col-sm-12 mb-3">
+                      <textarea className="form-control" name="flipper_damage" id="exampleFormControlTextarea1" rows="3" onChange={e => this.onChange(e)}></textarea>
+                      </div>
+
+                    <h5>Shell Damage:</h5>
+                      <div className="col-sm-12 mb-3">
+                      <textarea className="form-control" name="carapace_damage" id="exampleFormControlTextarea1" rows="3" onChange={e => this.onChange(e)}></textarea>
+                      </div>
+                    <h4>Notes:</h4>
+                      <div className="col-sm-12">
+                      <p><i>Describe scale and scute abnormalities, condition of turtle, etc.</i></p>
+                      <textarea className="form-control" name="notes" id="exampleFormControlTextarea1" rows="3" onChange={e => this.onChange(e)}></textarea>
+                      </div>
+
+
+                      </div>
+                  </div>
+                </div>
+            </div>
+
         </div>
+
       )
     }
 

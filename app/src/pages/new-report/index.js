@@ -70,36 +70,12 @@ class NewReport extends React.Component {
               <div className="pl-3">
                 <div className="row">
                   <a role="button"
-                     href='new-report/lagoon'
+                     href='new-report/lagoon-metadata'
                      className={ this.getBoxHighlightedClassName(0)}
                      onMouseOver={(e) => {this.mousedOverFormOption(e, 0)}}
                      onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
-                      <h5><b>Lagoon</b></h5>
-                      <p>This is a description.</p>
-                    </div>
-                  </a>
-                </div>
-                <div className="row">
-                  <a role="button"
-                     href='new-report/lagoon-metadata'
-                     className={ this.getBoxHighlightedClassName(1)}
-                     onMouseOver={(e) => {this.mousedOverFormOption(e, 1)}}
-                     onMouseLeave={this.mouseLeftFormOption} >
-                    <div className="choose-form-button-contents pl-2" align="left">
-                      <h5><b>Lagoon Metadata</b></h5>
-                      <p>This is a description.</p>
-                    </div>
-                  </a>
-                </div>
-                <div className="row">
-                  <a role="button"
-                     href='new-report/trident'
-                     className={ this.getBoxHighlightedClassName(2)}
-                     onMouseOver={(e) => {this.mousedOverFormOption(e, 2)}}
-                     onMouseLeave={this.mouseLeftFormOption} >
-                    <div className="choose-form-button-contents pl-2" align="left">
-                      <h5><b>Trident</b></h5>
+                      <h5><b>LAGOON</b></h5>
                       <p>This is a description.</p>
                     </div>
                   </a>
@@ -107,11 +83,35 @@ class NewReport extends React.Component {
                 <div className="row">
                   <a role="button"
                      href='new-report/trident-metadata'
+                     className={ this.getBoxHighlightedClassName(1)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 1)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
+                    <div className="choose-form-button-contents pl-2" align="left">
+                      <h5><b>TRIDENT</b></h5>
+                      <p>This is a description.</p>
+                    </div>
+                  </a>
+                </div>
+                <div className="row">
+                  <a role="button"
+                     href='new-report/beach'
+                     className={ this.getBoxHighlightedClassName(2)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 2)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
+                    <div className="choose-form-button-contents pl-2" align="left">
+                      <h5><b>BEACH</b></h5>
+                      <p>This is a description.</p>
+                    </div>
+                  </a>
+                </div>
+                <div className="row">
+                  <a role="button"
+                     href='new-report/offshore'
                      className={ this.getBoxHighlightedClassName(3)}
                      onMouseOver={(e) => {this.mousedOverFormOption(e, 3)}}
                      onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
-                      <h5><b>Trident Metadata</b></h5>
+                      <h5><b>OFFSHORE</b></h5>
                       <p>This is a description.</p>
                     </div>
                   </a>

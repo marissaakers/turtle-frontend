@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap'
+import { Redirect } from 'react-router-dom'
 import { Link }from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import InternalNavbar from '../../components/internal-navbar';
@@ -17,78 +18,110 @@ class Offshore extends Component {
 
     this.state = {
       data : [],
-      redirect: false,
-    }
+      error: false,
+      redirect:false
+    };
 
     this.handleSubmit = this.handleSubmit.bind(this);
 
   }
 
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value })
+  }
 
-    onChange(e) {
-      this.setState({ [e.target.name]: e.target.value })
-    }
+  renderRedirect = () => {
+   if (this.state.redirect) {
+     return <Redirect to='/new-report/lagoon' />
+   }
+ }
 
-    componentDidMount() {
-       axios.get('https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/lagoon')
+
+  handleSubmit = async(e) => {
+     e.preventDefault();
+
+
+     const data = {
+      capture_date: this.state.capture_date,
+     	capture_time: this.state.capture_time,
+     	capture_latitude: parseFloat(this.state.capture_latitude),
+     	capture_longitude: parseFloat(this.state.capture_longitude),
+     	cloud_cover: this.state.cloud_cover,
+     	seas: this.state.seas,
+     	wind: this.state.wind,
+     	capture_sargassum_water_temp: parseFloat(this.state.capture_sargassum_water_temp),
+     	capture_open_water_temp: parseFloat(this.state.capture_open_water_temp),
+     	capture_air_temp: parseFloat(this.state.capture_air_temp),
+     	release_latitude: parseFloat(this.state.release_latitude),
+     	release_longitude: parseFloat(this.state.release_longitude),
+     	release_time: this.state.release_time,
+     	release_sargassum_water_temp: parseFloat(this.state.release_sargassum_water_temp),
+     	sargassum_salinity: parseFloat(this.state.sargassum_salinity),
+     	release_air_temp: parseFloat(this.state.release_air_temp),
+     	release_open_water_temp: parseFloat(this.state.release_open_water_temp),
+     	open_water_salinity: parseFloat(this.state.open_water_salinity),
+     	drifter_released: JSON.parse(this.state.drifter_released),
+     	drifter1_id: this.state.drifter1_id,
+     	drifter2_id: this.state.drifter2_id,
+     	drifter1_type: this.state.drifter1_type,
+     	drifter2_type: this.state.drifter2_type,
+     	encounters: {
+     		species: this.state.species,
+     		trip_number: this.state.trip_number,
+     		capture_habitat: this.state.capture_habitat,
+     		notes: this.state.notes,
+     		samples: [{
+     			sample_type: this.state.sample_type,
+     			received_by: this.state.received_by,
+     			purpose_of_sample: this.state.purpose_of_sample,
+     			notes: this.state.notes,
+     			entered_date: this.state.entered_date,
+     			entered_by: this.state.entered_by
+     			}
+     		],
+     		morphometrics: {
+          plastron_length: parseFloat(this.state.plastron_length),
+          flipper_damage: this.state.flipper_damage,
+          weight: parseFloat(this.state.weight),
+          curved_length: parseFloat(this.state.curved_length),
+          minimum_length: parseFloat(this.state.minimum_length),
+          straight_length: parseFloat(this.state.straight_length),
+          curved_width: parseFloat(this.state.curved_width),
+          straight_width: parseFloat(this.state.straight_width),
+          tail_length_pl_tip: parseFloat(this.state.tail_length_pl_tip),
+          head_width: parseFloat(this.state.head_width),
+          body_depth: parseFloat(this.state.body_depth),
+          tail_length_pl_vent: parseFloat(this.state.tail_length_pl_tip),
+          carapace_damage: this.state.carapace_damage
+     		},
+     		tags: [{
+          tag_number: this.state.tag_number,
+          tag_type: "LF",
+          active: true,
+          tag_scars: JSON.parse(this.state.tag_scars),
+          pit: true,
+          scanned: JSON.parse(this.state.scanned),
+          scanner_number: "123456"
+     			}
+     		]
+     	}
+
+     };
+
+
+
+     axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/lagoon/metadata/insert',
+       data, { headers: {'Content-Type': 'application/json'} })
          .then(res => {
-           const data = res.data.data; // get the data array instead of object
-           this.setState({ data});
+           console.log(data)
+           console.log("Successfully posted!")
+           this.setState({redirect:true})
          })
-         .catch(err => { // log request error and prevent access to undefined state
-           this.setState({ isLoading: false});
-           console.error(err);
-         })
-     }
-     handleSubmit(e) {
-       e.preventDefault();
-
-       const data = {
-
-/*
-         encounter_date:
-          //species:
-         capture_time:
-         tag_number:
-         NEED PIT TAG
-         living_tags:
-         curved_length:
-         straight_length:
-         minimum_length:
-         plastron_length:
-         curved_width:
-         straight_width:
-         tail_length_pl_vent:
-         tail_length_pl_tip:
-         head_width:
-         body_depth:
-         paps:
-         paps_regression:
-         photos:
-         pap_photos:
-         leeches:
-         leech_eggs:
-         FLIPPER DAMAGE
-         SHELL DAMAGE
-         entered_date:
-         entered_by:
-         TAG SCARS
-         blood:
-         skin_1:
-         scute:
-         other_for:
-         */
-
-       };
-
-
-      axios.post('http://localhost:5555/data', { data })
-        .then(res => {
-          console.log(data);
-          console.log(this.state.data[0]);
-        })
-    }
-
+         .catch(error => {
+           console.log(error.response)
+           console.log("Error.")
+         });
+  }
   render() {
     return(
       <>
@@ -104,342 +137,411 @@ class Offshore extends Component {
 
             <form>
             <div className="justify-content-center row pb-2 pt-2">
-            <div className="col-sm-10 mr-2 ml-2 border pr-0 pl-5 pb-3 pt-3">
+            <div className="col-sm-10 mr-2 ml-2 border pr-3 pl-3 pb-3 pt-3">
 
-            <div class="form-row text-left">
 
-              <div class="form-group col-sm-3 mr-5">
-                    <label for="trip" class="col-10 col-form-label">Trip #:</label>
-                    <input class="form-control" type="text" id="example-text-input"/>
+            <div className="form-row">
+              <div className="col-sm-6 text-left">
+
+              <div className="form-group row">
+                <label htmlFor="trip-num" className="col-4 col-form-label">Trip #:</label>
+                <div className="col-6">
+                <input className="form-control" type="text" name="trip_number" onChange={e => this.onChange(e)}/>
+                </div>
+              </div>
+
+              <div className="form-row mb-3">
+              <label htmlFor="species" className="col-4 col-form-label">Species:</label>
+                  <div className="col-2">
+                  <select className="form-control" name="species" value={this.value} onChange={e => this.onChange(e)}>
+                     <option value="Cc">Cc</option>
+                     <option value="Cm">Cm</option>
+                     <option value="other">Other</option>
+                   </select>
+                  </div>
+                <div className="col-4">
+                  <input type="text" className="form-control" placeholder="other" name="species" onChange={e => this.onChange(e)}/>
+                </div>
+              </div>
+
+              <div className="form-group row">
+                <label htmlFor="capture-habitat" className="col-4 col-form-label">Capture habitat:</label>
+                <div className="col-6">
+                <input className="form-control" type="text" name="capture_habitat" onChange={e => this.onChange(e)}/>
+                </div>
               </div>
 
 
+              <h4>Capture Metadata:</h4>
 
-              <div class="form-group col-sm-3 mr-5 ml-5">
-              <label for="species" class="col-10 col-form-label">Species:</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                       <option>Cc</option>
-                       <option>Cm</option>
-                     </select>
+              <div class="container border pt-3 mb-3">
+
+              <div className="form-row">
+                <div className="col-sm-6 text-left">
+
+                <div className="form-group row">
+                  <label htmlFor="capture-date" className="col-5 col-form-label">Capture Date:</label>
+                  <div className="col-7">
+                    <input className="form-control" type="date" name="capture_date" onChange={e => this.onChange(e)}/>
+                  </div>
+                </div>
+
+
+                <div className="form-group row">
+                  <label htmlFor="capture-time" className="col-5 col-form-label">Capture Time:</label>
+                  <div className="col-7">
+                  <input className="form-control" type="time" name="capture_time" onChange={e => this.onChange(e)}/>
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group col-md-6">
+                    <label htmlFor="capture-location">Capture Location N:</label>
+                    <input className="form-control" type="text" name="capture_latitude" onChange={e => this.onChange(e)}/>
+                  </div>
+                  <div className="form-group col-md-6">
+                    <label htmlFor="capture-location">Capture Location W:</label>
+                    <input className="form-control" type="text" name="capture_longitude" onChange={e => this.onChange(e)}/>
+                  </div>
+                  </div>
+
+                </div>
+
+                <div className="col-sm-6 text-left">
+
+                <div className="form-group row">
+                  <label htmlFor="cloud-cover" className="col-5 col-form-label">Cloud cover:</label>
+                  <div className="col-7">
+                  <input className="form-control" type="text" name="cloud_cover" onChange={e => this.onChange(e)}/>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label htmlFor="seas" className="col-5 col-form-label">Seas:</label>
+                  <div className="col-7">
+                  <input className="form-control" type="text" name="seas" onChange={e => this.onChange(e)}/>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label htmlFor="wind" className="col-5 col-form-label">Wind:</label>
+                  <div className="col-7">
+                  <input className="form-control" type="text" name="wind" onChange={e => this.onChange(e)}/>
+                  </div>
+                </div>
+
+
+                </div>
               </div>
 
-
-              <div class="form-group col-sm-3 ml-5">
-                <label for="species" class="col-10 col-form-label">Capture Habitat:</label>
-                    <input class="form-control" type="text" id="example-text-input"/>
-                    </div>
-            </div>
-
-            <div class="form-row">
-              <div class="col-sm-6 text-left">
-
-                <form>
-                  <div class="form-row">
-                  <label for="species" class="col-3 col-form-label">Species:</label>
-                      <div class="col-2">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Cc</option>
-                         <option>Cm</option>
-                       </select>
-                      </div>
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="other"/>
-                    </div>
-                  </div>
-                </form>
-
-                <br></br>
-
-
-                <form>
-                    <div class="form-row">
-                      <div class="form-group col-md-4">
-                        <label for="date">Date:</label>
-                            <input class="form-control" type="date"  id="example-date-input"/>
-                      </div>
-                    <div class="form-group col-md-3">
-                      <label for="capture-time">Capture Time:</label>
-                            <input class="form-control" type="time"   id="example-time-input"/>
-                        </div>
-                    <div class="form-group col-md-3">
-                      <label for="capture-type">Capture Type:</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>New</option>
-                            <option>Old</option>
-                            <option>Strange Recap</option>
-                        </select>
-                      </div>
-                    </div>
-                </form>
-
-                <form>
-                  <div class="form-row">
-                    <div class="form-group col-md-5">
-                      <label for="data-entered-by">Data Entered By:</label>
-                      <input class="form-control" type="text" id="example-text-input"/>
-                    </div>
-                    <div class="form-group col-md-5">
-                      <label for="data-verified-by">Data Verified By:</label>
-                      <input class="form-control" type="text" id="example-text-input"/>
-
-                      </div>
-                  </div>
-                </form>
-
-                <div class="form-group row">
-                  <label for="tag-numbers" class="col-4 col-form-label">Tag #'s:</label>
-                  <div class="col-6">
-                  <input class="form-control" type="text" id="example-text-input"/>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="pit-tag-scanned" class="col-4 col-form-label">Pit Tag: Scanned:</label>
-                  <div class="col-6">
-                  <select class="form-control" id="exampleFormControlSelect1">
-                     <option>Yes</option>
-                     <option>No</option>
-                   </select>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="living-tags" class="col-4 col-form-label">Living Tags:</label>
-                  <div class="col-6">
-                  <select class="form-control" id="exampleFormControlSelect1">
-                     <option>Yes</option>
-                     <option>No</option>
-                     <option>Other</option>
-                   </select>
-                  </div>
-                </div>
-
-                <h4>Tag Scars:</h4>
-
-                <form>
-                  <div class="form-row">
-                    <div class="form-group col-md-5">
-                      <label for="tag-scars-lf">LF:</label>
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>                    </div>
-                    <div class="form-group col-md-5">
-                      <label for="tag-scars-rf">RF:</label>
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                  </div>
-                </form>
-
-              <h4>Morphometrics:</h4>
               <form>
-                <div class="form-row">
-                  <div class="form-group col-md-5">
-                    <label for="curved-length">Curved Length (notch-tip):</label>
-                    <input class="form-control" type="text" id="example-text-input"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="curved-width">Curved Width (widest):</label>
-                    <input class="form-control" type="text" id="example-text-input"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="straight-length">Straight Length (notch-tip):</label>
-                    <input class="form-control" type="text" id="example-text-input"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="straight-width">Straight Width (widest):</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="min-length">Minimum Length (notch-notch):</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="tail-length">Tail Length: PL-vent</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="plastron-length">Plastron Length (tape):</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="pl-tip">PL-Tip:</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="weight">Weight in kg: *tare scale</label>
-                    <input type="form-control" class="form-control" placeholder="in kg"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="head-width">Head Width (straight):</label>
-                    <input type="form-control" class="form-control"/>
-                  </div>
-                  <div class="form-group col-md-5">
-
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="body-depth">Body Depth (straight):</label>
-                    <input type="form-control" class="form-control"/>
+                <div className="form-row">
+                  <div className="form-group col-md-5">
+                    <label htmlFor="water-temp">Sargassum Water Temp:</label>
+                    <input className="form-control" type="text" name="capture_sargassum_water_temp" onChange={e => this.onChange(e)} />
+                    </div>
+                  <div className="form-group col-md-4">
+                    <label htmlFor="water-temp">Open Water Temp:</label>
+                    <input className="form-control" type="text" name="capture_open_water_temp" onChange={e => this.onChange(e)} />
+                    </div>
+                  <div className="form-group col-md-3">
+                    <label htmlFor="water-temp">Air Temp:</label>
+                    <input className="form-control" type="text" name="capture_air_temp" onChange={e => this.onChange(e)} />
                   </div>
                 </div>
               </form>
 
-
               </div>
 
-              <div class="col-sm-6 text-left">
+
+              <h4>Tags:</h4>
+
+    <div class="container border pt-3 mb-3">
+              <form>
+                <div className="form-row">
+                  <div className="form-group col-md-4">
+                    <label htmlFor="tags">Satellite Tag Applied:</label>
+                    <select className="form-control" name="scanned" value={this.value} >
+                      <option>Yes/No</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                     </select>
+                    </div>
+                  <div className="form-group col-md-4">
+                    <label htmlFor="tags">Satellite Tag ID:</label>
+                    <input className="form-control" type="text" name="wind_dir" />
+                    </div>
+                  <div className="form-group col-md-4">
+                    <label htmlFor="tags">Magnet Off:</label>
+                    <input className="form-control" type="text" name="wind_dir" />
+                  </div>
+                    </div>
+
+                <div className="form-row">
+                  <div className="form-group col-md-3">
+                    <label htmlFor="tags">PIT Tag: Scanned:</label>
+                    <select className="form-control" name="scanned" value={this.value} onChange={e => this.onChange(e)}>
+                      <option>Yes/No</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                     </select>
+                    </div>
+                  <div className="form-group col-md-5">
+                    <label htmlFor="tags">PIT Tag:</label>
+                    <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                    </div>
+                    </div>
+              </form>
+              </div>
+
+
+
+
+
+
+              <h4>Morphometrics:</h4>
+
+          <div class="container border pt-3 mb-3">
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label htmlFor="curved-length">Curved Length (notch-tip):</label>
+              <input className="form-control" type="text" name="curved_length" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-5">
+              <label htmlFor="curved-width">Curved Width (widest):</label>
+              <input className="form-control" type="text" name="curved_width" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="straight-length">Straight Length (notch-tip):</label>
+              <input className="form-control" type="text" name="straight_length" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-5">
+              <label htmlFor="straight-width">Straight Width (widest):</label>
+              <input type="form-control" name="straight_width" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="min-length">Minimum Length (notch-notch):</label>
+              <input type="form-control" name="minimum_length" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-5">
+              <label htmlFor="tail-length">Tail Length: PL-vent</label>
+              <input type="form-control" name="tail_length_pl_vent" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="plastron-length">Plastron Length (tape):</label>
+              <input type="form-control" name="plastron_length" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-5">
+              <label htmlFor="pl-tip">PL-Tip:</label>
+              <input type="form-control" name="tail_length_pl_tip" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="weight">Weight in kg: *tare scale</label>
+              <input type="form-control" name="weight" className="form-control" placeholder="in kg" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-5">
+              <label htmlFor="head-width">Head Width (straight):</label>
+              <input type="form-control" name="head_width" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+            <div className="form-group col-md-6">
+
+            </div>
+            <div className="form-group col-md-5">
+              <label htmlFor="body-depth">Body Depth (straight):</label>
+              <input type="form-control" name="body_depth" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+            </div>
+          </div>
+
+</div>
+              </div>
+
+              <div className="col-sm-6 pl-4 text-left">
 
 
                 <h4>Samples:</h4>
+
+                    <div class="container border pt-3 mb-3">
                 <form>
-                  <div class="form-row">
-                  <label for="blood" class="col-3 col-form-label">Blood:</label>
-                      <div class="col-3">
-                      <select class="form-control" id="exampleFormControlSelect1">
+                  <div className="form-row">
+                  <label htmlFor="blood" className="col-3 col-form-label">Blood:</label>
+                      <div className="col-3 mb-2">
+                      <select className="form-control" onChange={e => this.onChange(e)}>
                          <option>Yes</option>
                          <option>No</option>
                        </select>
                       </div>
-                    <div class="col-4">
-                      <input type="text" class="form-control" placeholder="For"/>
+                    <div className="col-4">
+                      <input type="text" className="form-control" placeholder="For"/>
                     </div>
                   </div>
-                </form> <br></br>
 
-                <form>
-                  <div class="form-row">
-                  <label for="skin" class="col-3 col-form-label">Skin:</label>
-                      <div class="col-3">
-                      <select class="form-control" id="exampleFormControlSelect1">
+                  <div className="form-row">
+                  <label htmlFor="skin" className="col-3 col-form-label">Skin #1:</label>
+                      <div className="col-3 mb-2">
+                      <select className="form-control" onChange={e => this.onChange(e)}>
                          <option>Yes</option>
                          <option>No</option>
                        </select>
                       </div>
-                    <div class="col-4">
-                      <input type="text" class="form-control" placeholder="For"/>
+                    <div className="col-4">
+                      <input type="text" className="form-control" placeholder="For"/>
                     </div>
                   </div>
-                </form> <br></br>
 
-                <form>
-                  <div class="form-row">
-                  <label for="scute" class="col-3 col-form-label">Scute:</label>
-                      <div class="col-3">
-                      <select class="form-control" id="exampleFormControlSelect1">
+                  <div className="form-row">
+                  <label htmlFor="scute" className="col-3 col-form-label">Skin #2:</label>
+                      <div className="col-3 mb-2">
+                      <select className="form-control" onChange={e => this.onChange(e)}>
                          <option>Yes</option>
                          <option>No</option>
                        </select>
                       </div>
-                    <div class="col-4">
-                      <input type="text" class="form-control" placeholder="For"/>
+                    <div className="col-4">
+                      <input type="text" className="form-control" placeholder="For"/>
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                  <label htmlFor="scute" className="col-3 col-form-label">Scute:</label>
+                      <div className="col-3 mb-2">
+                      <select className="form-control" onChange={e => this.onChange(e)}>
+                         <option>Yes</option>
+                         <option>No</option>
+                       </select>
+                      </div>
+                    <div className="col-4">
+                      <input type="text" className="form-control" placeholder="For"/>
+                    </div>
+                  </div>
+
+
+                  <div className="form-row">
+                  <label htmlFor="scute" className="col-3 col-form-label">Sargassum:</label>
+                      <div className="col-3 mb-2">
+                      <select className="form-control" onChange={e => this.onChange(e)}>
+                         <option>Yes</option>
+                         <option>No</option>
+                       </select>
+                      </div>
+                    <div className="col-4">
+                      <input type="text" className="form-control" placeholder="For"/>
+                    </div>
+                  </div>
+
+
+                  <div className="form-row">
+                  <label htmlFor="scute" className="col-3 col-form-label">Other:</label>
+                      <div className="col-3 mb-2">
+                      <select className="form-control" onChange={e => this.onChange(e)}>
+                         <option>Yes</option>
+                         <option>No</option>
+                       </select>
+                      </div>
+                    <div className="col-4">
+                      <input type="text" className="form-control" placeholder="What"/>
                     </div>
                   </div>
                 </form>
 
+                <h5>Flipper Damage:</h5>
+                  <div className="col-sm-12">
+                  <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div>
                 <br></br>
-                  <p><h5>Other Samples:</h5></p>
-                  <div class="col-sm-10">
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
-                  </div> <br></br>
+                <h5>Shell Damage:</h5>
+                  <div className="col-sm-12 mb-3">
+                  <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div>
+
+                </div>
+
+                <h4>Release Metadata:</h4>
 
 
-                    <div class="form-group row">
-                      <label for="paps" class="col-4 col-form-label">Paps:</label>
-                          <div class="col-6">
-                          <select class="form-control" id="exampleFormControlSelect1">
-                              <option>0</option>
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                          </select>
-                          </div>
+    <div class="container border pt-3 mb-3">
+                <form>
+
+                <div className="form-row">
+                    <div className="form-group col-md-5">
+                      <label htmlFor="curved-length">Release Location N:</label>
+                      <input className="form-control" type="text" onChange={e => this.onChange(e)}/>
                     </div>
+                    <div className="form-group col-md-5">
+                      <label htmlFor="curved-width">Release Location W:</label>
+                      <input className="form-control" type="text" onChange={e => this.onChange(e)}/>
+                    </div>
+                  </div>
 
-                      <div class="form-group row">
-                        <label for="regression" class="col-4 col-form-label">Regression:</label>
-                        <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                           <option>Yes</option>
-                           <option>No</option>
-                           <option>Other</option>
-                           <option>partial</option>
-                           <option>complete</option>
-                         </select>
-                        </div>
+                  <div className="form-row">
+                    <div className="form-group col-md-3">
+                      <label htmlFor="release-time">Release Time:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
                       </div>
-
-                      <div class="form-group row">
-                        <label for="photos" class="col-4 col-form-label">Photos:</label>
-                        <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                           <option>Yes</option>
-                           <option>No</option>
-                         </select>
-                        </div>
+                    <div className="form-group col-md-5">
+                      <label htmlFor="sargassum-water">Sargassum Water Temp:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
                       </div>
+                    <div className="form-group col-md-4">
+                      <label htmlFor="sargassum-salinity">Sargassum Salinity:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                    </div>
+                  </div>
 
-                      <div class="form-group row">
-                        <label for="pap-photos" class="col-4 col-form-label">Pap Photos:</label>
-                        <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                           <option>Yes</option>
-                           <option>No</option>
-                         </select>
-                        </div>
+
+                  <div className="form-row">
+                    <div className="form-group col-md-3">
+                      <label htmlFor="air-temp">Air Temp:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
                       </div>
+                    <div className="form-group col-md-5">
+                      <label htmlFor="openwater-temp">Open Water Temp:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      </div>
+                    <div className="form-group col-md-4">
+                      <label htmlFor="openwater-salinity">Open Water Salinity:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                    </div>
+                  </div>
 
+                  <div className="form-row">
+                    <div className="form-group col-md-3">
+                      <label htmlFor="drifter1">Drifter Released:</label>
+                      <select className="form-control" name="scanned" value={this.value} onChange={e => this.onChange(e)}>
+                        <option>Yes/No</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                       </select>
+                      </div>
+                    <div className="form-group col-md-5">
+                      <label htmlFor="drifter1">Drifter #1 ID:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      </div>
+                    <div className="form-group col-md-4">
+                      <label htmlFor="drifter1">Drifter #1 Type:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                    </div>
+                  </div>
 
-                      <form>
-                        <div class="form-row">
-                        <label for="example-text-input" class="col-3 col-form-label">Leeches:</label>
-                            <div class="col-3">
-                            <select class="form-control" id="exampleFormControlSelect1">
-                               <option>Yes</option>
-                               <option>No</option>
-                             </select>
-                            </div>
-                          <div class="col-4">
-                            <input type="text" class="form-control" placeholder="Where"/>
-                          </div>
-                        </div>
-                      </form>
+                  <div className="form-row">
+                    <div className="form-group col-md-3"></div>
+                    <div className="form-group col-md-5">
+                      <label htmlFor="drifter2">Drifter #2 ID:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      </div>
+                    <div className="form-group col-md-4">
+                      <label htmlFor="drifter2">Drifter #2 Type:</label>
+                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                    </div>
+                  </div>
 
-                      <br></br>
+                </form>
 
-                      <form>
-                        <div class="form-row">
-                        <label for="leech-eggs" class="col-3 col-form-label">Leech Eggs:</label>
-                            <div class="col-3">
-                            <select class="form-control" id="exampleFormControlSelect1">
-                               <option>Yes</option>
-                               <option>No</option>
-                             </select>
-                            </div>
-                          <div class="col-4">
-                            <input type="text" class="form-control" placeholder="Where"/>
-                          </div>
-                        </div>
-                      </form>
-
-                      <br></br>
-
-                      <h5>Flipper Damage:</h5>
-                        <div class="col-sm-10">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                      <br></br>
-                      <h5>Shell Damage:</h5>
-                        <div class="col-sm-10 mb-3">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                      <h4>Notes:</h4>
-                        <div class="col-sm-10">
-                        <p><i>Describe scale and scute abnormalities, condition of turtle, etc.</i></p>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
+</div>
+                <h4>Notes:</h4>
+                  <div className="col-sm-12">
+                  <p><i>Describe scale and scute abnormalities, condition of turtle, etc.</i></p>
+                  <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div>
 
 
                         </div>
@@ -451,7 +553,7 @@ class Offshore extends Component {
             </form>
 
 
-            <button type="submit" class="btn btn-primary">SUBMIT</button>
+            <button type="submit" className="btn btn-primary">SUBMIT</button>
           </div>
 
         <InternalFooter />

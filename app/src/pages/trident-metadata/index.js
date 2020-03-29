@@ -94,9 +94,10 @@ class TridentMetadata extends Component {
         <InternalNavbar />
 
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
+        <p align="right" className="pr-5"><a href="/new-report/trident">see trident data sheet →</a></p>
 
 
-      <h2><b>TRIDENT BASIN METADATA SHEET</b></h2><br></br>
+      <h2><b>TRIDENT BASIN METADATA SHEET</b></h2>
 
       <form action="" onSubmit={this.handleSubmit}>
 
