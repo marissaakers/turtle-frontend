@@ -5,7 +5,6 @@ import turtleimg from '../images/lagoonturtle.png';
 import { Helmet } from 'react-helmet';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
-import '../shared/internal.css';
 import axios from "axios";
 
 
@@ -100,79 +99,74 @@ class Lagoon extends Component {
         <InternalNavbar />
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
 
-        <div className="container-fluid">
+        <div class="container-fluid">
 
-            <h1><b>LAGOON DATA SHEET</b></h1>
+            <h1><b>LAGOON DATA SHEET</b></h1><br></br>
 
             <form>
-            <div className="justify-content-center row pb-2 pt-2">
-            <div className="col-sm-10 mr-2 ml-2 border pr-0 pl-5 pb-3 pt-3">
-
             <div class="form-row">
-              <div class="col-sm-6 text-left">
-
-                <form>
-                  <div class="form-row">
-                  <label for="species" class="col-3 col-form-label">Species:</label>
-                      <div class="col-2">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Cc</option>
-                         <option>Cm</option>
-                       </select>
-                      </div>
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="other"/>
-                    </div>
-                  </div>
-                </form>
-
-                <br></br>
-
-
-                <form>
-                    <div class="form-row">
-                      <div class="form-group col-md-4">
-                        <label for="date">Date:</label>
-                            <input class="form-control" type="date"  id="example-date-input"/>
-                      </div>
-                    <div class="form-group col-md-3">
-                      <label for="capture-time">Capture Time:</label>
-                            <input class="form-control" type="time"   id="example-time-input"/>
-                        </div>
-                    <div class="form-group col-md-3">
-                      <label for="capture-type">Capture Type:</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>New</option>
-                            <option>Old</option>
-                            <option>Strange Recap</option>
-                        </select>
-                      </div>
-                    </div>
-                </form>
-
-                <form>
-                  <div class="form-row">
-                    <div class="form-group col-md-5">
-                      <label for="data-entered-by">Data Entered By:</label>
-                      <input class="form-control" type="text" id="example-text-input"/>
-                    </div>
-                    <div class="form-group col-md-5">
-                      <label for="data-verified-by">Data Verified By:</label>
-                      <input class="form-control" type="text" id="example-text-input"/>
-
-                      </div>
-                  </div>
-                </form>
+              <div class="col-sm-4 text-left">
 
                 <div class="form-group row">
-                  <label for="tag-numbers" class="col-4 col-form-label">Tag #'s:</label>
+                  <label for="example-date-input" class="col-4 col-form-label">Date</label>
+                  <div class="col-6">
+                    <input class="form-control" type="date"  id="example-date-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Species:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Cc</option>
+                     <option>Cm</option>
+                     <option>Other</option>
+                   </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Capture Time:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="time"   id="example-time-input"/>
+                  </div>
+                </div>
+
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Data Entered By:</label>
                   <div class="col-6">
                   <input class="form-control" type="text" id="example-text-input"/>
                   </div>
                 </div>
 
                 <div class="form-group row">
-                  <label for="pit-tag-scanned" class="col-4 col-form-label">Pit Tag: Scanned:</label>
+                  <label for="example-text-input" class="col-4 col-form-label">Data Verified By:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Capture Type:</label>
+                  <div class="col-6">
+                      <select class="form-control" id="exampleFormControlSelect1">
+                          <option>New</option>
+                          <option>Old</option>
+                          <option>Strange Recap</option>
+                      </select>
+                    </div>
+                  </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Tag #'s':</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Pit Tag: Scanned:</label>
                   <div class="col-6">
                   <select class="form-control" id="exampleFormControlSelect1">
                      <option>Yes</option>
@@ -182,7 +176,7 @@ class Lagoon extends Component {
                 </div>
 
                 <div class="form-group row">
-                  <label for="living-tags" class="col-4 col-form-label">Living Tags:</label>
+                  <label for="example-text-input" class="col-4 col-form-label">Living Tags:</label>
                   <div class="col-6">
                   <select class="form-control" id="exampleFormControlSelect1">
                      <option>Yes</option>
@@ -193,241 +187,244 @@ class Lagoon extends Component {
                 </div>
 
                 <h4>Tag Scars:</h4>
-
-                <form>
-                  <div class="form-row">
-                    <div class="form-group col-md-5">
-                      <label for="tag-scars-lf">LF:</label>
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>                    </div>
-                    <div class="form-group col-md-5">
-                      <label for="tag-scars-rf">RF:</label>
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                  </div>
-                </form>
-
-              <h4>Morphometrics:</h4>
-              <form>
-                <div class="form-row">
-                  <div class="form-group col-md-5">
-                    <label for="curved-length">Curved Length (notch-tip):</label>
-                    <input class="form-control" type="text" id="example-text-input"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="curved-width">Curved Width (widest):</label>
-                    <input class="form-control" type="text" id="example-text-input"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="straight-length">Straight Length (notch-tip):</label>
-                    <input class="form-control" type="text" id="example-text-input"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="straight-width">Straight Width (widest):</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="min-length">Minimum Length (notch-notch):</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="tail-length">Tail Length: PL-vent</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="plastron-length">Plastron Length (tape):</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="pl-tip">PL-Tip:</label>
-                    <input type="form-control" class="form-control" placeholder="in cm"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="weight">Weight in kg: *tare scale</label>
-                    <input type="form-control" class="form-control" placeholder="in kg"/>
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="head-width">Head Width (straight):</label>
-                    <input type="form-control" class="form-control"/>
-                  </div>
-                  <div class="form-group col-md-5">
-
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="body-depth">Body Depth (straight):</label>
-                    <input type="form-control" class="form-control"/>
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">LF:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
                   </div>
                 </div>
-              </form>
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">RF:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
+                  </div>
+                </div>
+
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Paps:</label>
+                      <div class="col-6">
+                      <select class="form-control" id="exampleFormControlSelect1">
+                          <option>0</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                      </select>
+                      </div>
+                </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-4 col-form-label">Regression:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Yes</option>
+                       <option>No</option>
+                       <option>Other</option>
+                       <option>partial</option>
+                       <option>complete</option>
+                     </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-4 col-form-label">Photos:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Yes</option>
+                       <option>No</option>
+                     </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-4 col-form-label">Pap Photos:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                       <option>Yes</option>
+                       <option>No</option>
+                     </select>
+                    </div>
+                  </div>
+
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Leeches:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Leech Eggs:</label>
+                    <div class="col-6">
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    </div>
+              </div>
 
 
               </div>
 
-              <div class="col-sm-6 text-left">
 
 
-                <h4>Samples:</h4>
-                <form>
-                  <div class="form-row">
-                  <label for="blood" class="col-3 col-form-label">Blood:</label>
-                      <div class="col-3">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                    <div class="col-4">
-                      <input type="text" class="form-control" placeholder="For"/>
-                    </div>
-                  </div>
-                </form> <br></br>
 
-                <form>
-                  <div class="form-row">
-                  <label for="skin" class="col-3 col-form-label">Skin:</label>
-                      <div class="col-3">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                    <div class="col-4">
-                      <input type="text" class="form-control" placeholder="For"/>
-                    </div>
-                  </div>
-                </form> <br></br>
+              <div class="col-sm-4 text-left">
 
-                <form>
-                  <div class="form-row">
-                  <label for="scute" class="col-3 col-form-label">Scute:</label>
-                      <div class="col-3">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                    <div class="col-4">
-                      <input type="text" class="form-control" placeholder="For"/>
-                    </div>
-                  </div>
-                </form>
+              <h4>Morphometrics:</h4>
 
-                <br></br>
-                  <p><h5>Other Samples:</h5></p>
-                  <div class="col-sm-10">
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
-                  </div> <br></br>
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Curved Length (notch-tip) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Curved Width (widest) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Straight Length (notch-tip) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
 
 
-                    <div class="form-group row">
-                      <label for="paps" class="col-4 col-form-label">Paps:</label>
-                          <div class="col-6">
-                          <select class="form-control" id="exampleFormControlSelect1">
-                              <option>0</option>
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                          </select>
-                          </div>
-                    </div>
 
-                      <div class="form-group row">
-                        <label for="regression" class="col-4 col-form-label">Regression:</label>
-                        <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                           <option>Yes</option>
-                           <option>No</option>
-                           <option>Other</option>
-                           <option>partial</option>
-                           <option>complete</option>
-                         </select>
-                        </div>
-                      </div>
-
-                      <div class="form-group row">
-                        <label for="photos" class="col-4 col-form-label">Photos:</label>
-                        <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                           <option>Yes</option>
-                           <option>No</option>
-                         </select>
-                        </div>
-                      </div>
-
-                      <div class="form-group row">
-                        <label for="pap-photos" class="col-4 col-form-label">Pap Photos:</label>
-                        <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                           <option>Yes</option>
-                           <option>No</option>
-                         </select>
-                        </div>
-                      </div>
-
-
-                      <form>
-                        <div class="form-row">
-                        <label for="example-text-input" class="col-3 col-form-label">Leeches:</label>
-                            <div class="col-3">
-                            <select class="form-control" id="exampleFormControlSelect1">
-                               <option>Yes</option>
-                               <option>No</option>
-                             </select>
-                            </div>
-                          <div class="col-4">
-                            <input type="text" class="form-control" placeholder="Where"/>
-                          </div>
-                        </div>
-                      </form>
-
-                      <br></br>
-
-                      <form>
-                        <div class="form-row">
-                        <label for="leech-eggs" class="col-3 col-form-label">Leech Eggs:</label>
-                            <div class="col-3">
-                            <select class="form-control" id="exampleFormControlSelect1">
-                               <option>Yes</option>
-                               <option>No</option>
-                             </select>
-                            </div>
-                          <div class="col-4">
-                            <input type="text" class="form-control" placeholder="Where"/>
-                          </div>
-                        </div>
-                      </form>
-
-                      <br></br>
-
-                      <h5>Flipper Damage:</h5>
-                        <div class="col-sm-10">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                      <br></br>
-                      <h5>Shell Damage:</h5>
-                        <div class="col-sm-10 mb-3">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                      <h4>Notes:</h4>
-                        <div class="col-sm-10">
-                        <p><i>Describe scale and scute abnormalities, condition of turtle, etc.</i></p>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-
-
-                        </div>
-                    </div>
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Straight Width (widest) in cm:</label>
+                  <div class="col-6">
+                  <input class="form-control" type="text" id="example-text-input"/>
                   </div>
               </div>
 
 
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Minimum Length (notch-tip) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Plastron Length (tape) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Weight in kg: *tare scale</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Tail Length: PL-vent in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Tail Length: PL-tip in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Head Width (straight) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="example-text-input" class="col-4 col-form-label">Body Depth (straight) in cm:</label>
+                <div class="col-6">
+                <input class="form-control" type="text" id="example-text-input"/>
+                </div>
+              </div>
+
+
+              </div>
+
+              <div class="col-sm-3 text-left">
+
+              <h5>Flipper Damage:</h5>
+                <div class="col-sm-11">
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                </div>
+              <br></br>
+              <h5>Shell Damage:</h5>
+                <div class="col-sm-11">
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                </div>
+              <br></br>
+              <h4>Notes:</h4>
+                <div class="col-sm-11">
+                <p><i>Describe scale and scute abnormalities, condition of turtle, etc.</i></p>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+
+
+                <br></br><h4>Samples:</h4>
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Blood:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Skin:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-4 col-form-label">Scute:</label>
+                  <div class="col-6">
+                  <select class="form-control" id="exampleFormControlSelect1">
+                     <option>Yes</option>
+                     <option>No</option>
+                   </select>
+                  </div>
+                </div>
+
+                <h5>Other Samples:</h5>
+                <div class="col-sm-11">
+                <input type="turtle" class="form-control" id="lagoonData" />
+                </div>
+
+              </div>
+              </div>
             </form>
-
 
             <button type="submit" class="btn btn-primary">SUBMIT</button>
           </div>

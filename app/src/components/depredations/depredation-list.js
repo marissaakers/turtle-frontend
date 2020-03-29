@@ -3,7 +3,7 @@ import axios from "axios";
 import AddDepredation from "./add-depredation";
 import DepredationItem from "./depredation-item";
 
-const BASE_URL = 'http://localhost:5000/api/survey/depredation';
+const BASE_URL = 'https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/survey/depredation';
 
 export class DepredationList extends React.Component {
     constructor(props) {
@@ -67,7 +67,7 @@ export class DepredationList extends React.Component {
                 <AddDepredation
                     onAdd={this.onAdd}
                 />
-                
+
                 <div>
                     <span>Date</span>
                     <span>Species</span>
@@ -82,7 +82,7 @@ export class DepredationList extends React.Component {
                 {
                     this.state.depredations.map(entry => {
                         return (
-                            <DepredationItem 
+                            <DepredationItem
                                 key={entry.depredation_id}
                                 {...entry}
                                 onDelete={this.onDelete}

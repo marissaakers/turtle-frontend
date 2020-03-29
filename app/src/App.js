@@ -66,8 +66,6 @@ function App() {
           <Route exact path='/new-report/survey-midreach' component={SurveyMidreach} />
           <Route exact path='/new-report/beach-inventory' component={BeachInventory} />
 
-
-
           <Route component={Error} />  {/* When no other route matches */}
         </Switch>
       </Router>

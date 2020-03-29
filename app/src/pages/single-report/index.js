@@ -19,8 +19,10 @@ class SingleReport extends React.Component {
   }
 
   async loadEncounter(json) {
+    console.log("loadEncounter sent JSON = " + json);
+
     const turtleData = await axios.post(
-      'https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/lagoon/query',
+      'https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/lagoon/query',
       json,
       { headers: {'Content-Type': 'application/json'} }
     );
@@ -31,8 +33,10 @@ class SingleReport extends React.Component {
   }
 
   async loadMetadata(json) {
+    console.log("loadMetadata sent JSON = " + json);
+
     const metadata = await axios.post(
-      'https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/metadata/query',
+      'https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/lagoon/metadata/query',
       json,
       { headers: {'Content-Type': 'application/json'} }
     );
@@ -44,10 +48,9 @@ class SingleReport extends React.Component {
 
   async loadReport(json) {
     this.setState({isLoading: true});
-    console.log("Sent JSON = " + json);
 
     await this.loadEncounter(json);
-    let encounterSendJson = "{ \"metadata_id\": " + this.state.turtleData.metadata_id + "}";
+    let encounterSendJson = '{ "metadata_id": ' + this.state.turtleData.metadata_id + '}';
     await this.loadMetadata(encounterSendJson);
 
     this.setState({isLoading: false});
