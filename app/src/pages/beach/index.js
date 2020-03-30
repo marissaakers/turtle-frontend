@@ -91,20 +91,6 @@ class Beach extends Component {
           <div className="col-sm-6">
 
           <div className="form-group row">
-            <label htmlFor="example-text-input" className="col-5 col-form-label">45 days:</label>
-            <div className="col-7">
-            <input className="form-control" type="text" id="example-text-input"/>
-            </div>
-          </div>
-
-          <div className="form-group row">
-            <label htmlFor="example-text-input" className="col-5 col-form-label">70 days:</label>
-            <div className="col-7">
-            <input className="form-control" type="text" id="example-text-input"/>
-            </div>
-          </div>
-
-          <div className="form-group row">
             <label htmlFor="example-text-input" className="col-5 col-form-label">Stake #:</label>
             <div className="col-7">
             <input className="form-control" type="text" id="example-text-input"/>

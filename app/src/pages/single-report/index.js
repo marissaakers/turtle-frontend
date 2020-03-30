@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
+import { Redirect } from 'react-router-dom'
 import axios from "axios";
 import turtleimg from '../images/lagoonturtle.png';
 import InternalNavbar from '../../components/internal-navbar';
@@ -14,7 +15,8 @@ class SingleReport extends React.Component {
     var theData;
     this.state = {
       turtleData: undefined,
-      metadata: undefined
+      metadata: undefined,
+      id: undefined
     };
   }
 
@@ -44,6 +46,9 @@ class SingleReport extends React.Component {
     this.setState({metadata: metadata.data});
     console.log("this.state.metadata = ");
     console.log(this.state.metadata);
+    this.setState({id: this.state.metadata.encounter_id});
+    console.log(this.state.metadata.encounter_id)
+
   }
 
   async loadReport(json) {
@@ -53,6 +58,7 @@ class SingleReport extends React.Component {
     let encounterSendJson = '{ "metadata_id": ' + this.state.turtleData.metadata_id + '}';
     await this.loadMetadata(encounterSendJson);
 
+    console.log(encounterSendJson);
     this.setState({isLoading: false});
   }
 
@@ -64,10 +70,28 @@ class SingleReport extends React.Component {
     //     "tags" : [ "ABCDEF", "LMNOP"]
     //     "encounter_id": 866
     // }
+
+    console.log(this.state.id);
+
     let myJson = "{ \"encounter_id\": " + this.props.location.state.encounterId + "}";
     console.log(myJson);
     this.loadReport(myJson);
   }
+
+
+
+  renderRedirect = () => {
+   if (this.state.redirect) {
+     return <Redirect to='/edit/lagoon/' />
+   }
+ }
+
+   handleSubmit = async(e) => {
+        e.preventDefault();
+        this.setState({redirect:true})
+
+
+      }
 
   render() {
     let displayBlock;
@@ -84,23 +108,38 @@ class SingleReport extends React.Component {
     else {
       let _encounter = this.state.turtleData;
       let _metadata = this.state.metadata;
-      let key = 0;
 
       const tagsList = [];
+      const tagTypeList= [];
+      const tagScarsList = [];
+      const pitTagsList = [];
       for (var i = 0; i < _encounter.tags.length; i++) {
-        tagsList.push( <li td key={key++}>{ _encounter.tags[i].tag_number }</li> )
+        tagsList.push( <li class="list-group-item">{ _encounter.tags[i].tag_number }</li> )
+        tagTypeList.push( <li class="list-group-item">{ _encounter.tags[i].tag_type }</li> )
+        tagScarsList.push( <li class="list-group-item"> {_encounter.tags[i].tag_scars} </li> )
+        pitTagsList.push( <li class="list-group-item">{ _encounter.tags[i].scanner_number }</li> )
       }
-      const netsList = [];
-      for (i = 0; i < _metadata.nets.length; i++) {
-        netsList.push( <li>Net ID { _metadata.nets[i].net_id }</li> )
+
+      const tagScars = [];
+      for (var i = 0; i < tagScarsList.length; i++) {
+        tagScarsList[i] = tagScarsList[i]==false ? 'No' : 'Yes';
+        tagScars.push(<li class="list-group-item">{tagScarsList[i]}</li>)
+
       }
       const incidentalCapturesList = [];
       for (i = 0; i < _metadata.incidental_captures.length; i++) {
         incidentalCapturesList.push( <li>Incidental capture ID { _metadata.incidental_captures[i].incidental_capture_id }</li> )
       }
-      const sampleList = [];
+      const sampleTypeList = [];
+      const samplePurposeList = [];
+      const sampleReceivedList = [];
+      const sampleNotesList = [];
       for (i = 0; i < _encounter.samples.length; i++) {
-        sampleList.push( <li>Sample ID { _encounter.samples[i].samples_id }</li> )
+        sampleTypeList.push( <li class="list-group-item">{ _encounter.samples[i].sample_type }</li> )
+        samplePurposeList.push( <li class="list-group-item">{ _encounter.samples[i].purpose_of_sample }</li>)
+        sampleReceivedList.push( <li class="list-group-item">{ _encounter.samples[i].received_by }</li>)
+        sampleNotesList.push( <li class="list-group-item">{ _encounter.samples[i].notes }</li> )
+
       }
 
       displayBlock = (
@@ -165,27 +204,54 @@ class SingleReport extends React.Component {
               </div>
           </div>
 
+          <h4>Tags:</h4>
+          <div class="container border mb-3">
+
           <div className="form-group row">
-            <label htmlFor="tag-numbers" className="col-4 col-form-label">Tag #'s:</label>
-            <div className="col-6">
-            <input className="form-control" type="text" name="tag_number" value={ _encounter.tags[0].tag_number } onChange={e => this.onChange(e)}/>
+            <label htmlFor="tag-numbers" className="col-3 col-form-label">Tag #:</label>
+            <label htmlFor="tag-type" className="col-2 col-form-label">Tag Type:</label>
+            <label htmlFor="tag-type" className="col-2 col-form-label">Tag Scars:</label>
+            <label htmlFor="tag-type" className="col-2 col-form-label">Scanned:</label>
+            <label htmlFor="tag-type" className="col-3 col-form-label">Pit Tag #:</label>
+
+            <div className="col-3">
+            <ul class="list-group">
+            {tagsList}
+            </ul>
+            </div>
+            <div className="col-2">
+            <ul class="list-group">
+            { tagTypeList }
+            </ul>
+            </div>
+            <div className="col-2">
+            <ul class="list-group">
+            { tagScars }
+            </ul>
+            </div>
+            <div className="col-2">
+            <ul class="list-group">
+            { tagScars }
+            </ul>
+            </div>
+            <div className="col-3">
+            <ul class="list-group">
+            { pitTagsList }
+            </ul>
             </div>
           </div>
 
-          <div className="form-group row">
-            <label htmlFor="pit-tag-scanned" className="col-4 col-form-label">Pit Tag: Scanned:</label>
-            <div className="col-6">
-            <input className="form-control" type="text" name="scanned" value={ _encounter.tags[0].scanned } onChange={e => this.onChange(e)}/>
-            </div>
           </div>
 
           <div className="form-group row">
-            <label htmlFor="living-tags" className="col-4 col-form-label">Living Tags:</label>
-            <div className="col-6">
+            <label htmlFor="living-tags" className="col-3 col-form-label">Living Tags:</label>
+            <div className="col-3">
               <input className="form-control" type="text" name="living_tags" value={ _encounter.living_tags } onChange={e => this.onChange(e)}/>
 
             </div>
           </div>
+
+
 
 
             <h4>Morphometrics:</h4>
@@ -253,44 +319,38 @@ class SingleReport extends React.Component {
 
               <div class="container border pt-3 mb-3 pb-3">
 
-                <div className="form-row">
-                <label htmlFor="blood" className="col-3 col-form-label">Blood:</label>
-                    <div className="col-3">
-                    <select className="form-control">
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                     </select>
-                    </div>
-                  <div className="col-4">
-                    <input type="text" name="blood_sample"  value={ _encounter.samples[0].purpose_of_sample } className="form-control" placeholder="For"  onChange={e => this.onChange(e)}/>
-                  </div>
+              <div className="form-row">
+              <label htmlFor="samples" className="col-2 col-form-label">Type:</label>
+              <label htmlFor="samples" className="col-2 col-form-label">Recieved by:</label>
+              <label htmlFor="samples" className="col-4 col-form-label">Purpose:</label>
+              <label htmlFor="samples" className="col-4 col-form-label">Notes:</label>
+
+        </div>
+
+
+                <div className="form-row mb-3">
+                <div className="col-2">
+                <ul class="list-group">
+                { sampleTypeList }
+                </ul>
                 </div>
 
-
-                <div className="form-row">
-                <label htmlFor="skin" className="col-3 col-form-label">Skin:</label>
-                    <div className="col-3">
-                    <select className="form-control" >
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                     </select>
-                    </div>
-                  <div className="col-4">
-                    <input type="text" name="skin_sample" className="form-control" value={ _encounter.samples[1].purpose_of_sample }  placeholder="For" onChange={e => this.onChange(e)}/>
-                  </div>
+                <div className="col-2">
+                <ul class="list-group">
+                  { sampleReceivedList }
+                </ul>
                 </div>
 
+                <div className="col-4">
+                <ul class="list-group">
+                  { samplePurposeList }
+                </ul>
+                </div>
 
-                <div className="form-row">
-                <label htmlFor="scute" className="col-3 col-form-label">Scute:</label>
-                    <div className="col-3 mb-3">
-                    <select className="form-control" >
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                     </select>
-                    </div>
                   <div className="col-4">
-                    <input type="text" name="scute_sample" className="form-control" placeholder="For" value={ _encounter.samples[2].purpose_of_sample } onChange={e => this.onChange(e)}/>
+                  <ul class="list-group">
+                    { sampleNotesList }
+                  </ul>
                   </div>
                 </div>
 
@@ -299,6 +359,7 @@ class SingleReport extends React.Component {
                 <div className="col-sm-10">
                 <textarea className="form-control" name="other" rows="2" onChange={e => this.onChange(e)}>{ _encounter.other }</textarea>
                 </div>
+
 
                 </div>
 
@@ -406,6 +467,9 @@ class SingleReport extends React.Component {
 
                       </div>
                   </div>
+
+                  {this.renderRedirect()}
+                  <button type="SUBMIT"  className="btn btn-primary mt-3 mb-3">EDIT FORM</button>
                 </div>
             </div>
 
@@ -419,8 +483,9 @@ class SingleReport extends React.Component {
         <Helmet>
           <title>{ TITLE }</title>
         </Helmet>
-
         <InternalNavbar />
+        <p align="left" className="pl-4"><a href="/reports-list/">← back</a></p>
+
         { displayBlock }
         <InternalFooter />
       </>

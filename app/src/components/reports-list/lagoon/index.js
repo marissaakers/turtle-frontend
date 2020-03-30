@@ -169,7 +169,7 @@ class ReportsListLagoon extends React.Component {
 
   deleteFunc = async(id) => {
 
-    console.log(this.state.data[id].encounter_id);
+    console.log(id);
     const data = {
       encounter_id: id
     }
@@ -212,7 +212,7 @@ class ReportsListLagoon extends React.Component {
 
   renderRedirect = () => {
    if (this.state.redirect) {
-     return <Redirect to='/reports-list' />
+     window.location.reload(false);
    }
  }
 
@@ -598,6 +598,7 @@ class ReportsListLagoon extends React.Component {
 
         { pageNumberPicker }
         { displayBlock }
+        {this.renderRedirect()}
       </>
     );
 

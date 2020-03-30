@@ -23,6 +23,7 @@ import Error from 'pages/error';
 // New report pages
 import NewReport from 'pages/new-report';
 import Lagoon from 'pages/lagoon';
+import EditLagoon from 'pages/edit-lagoon';
 import Beach from 'pages/beach';
 import BeachInventory from 'pages/beach-inventory';
 import Trident from 'pages/trident';
@@ -52,9 +53,10 @@ function App() {
           <Route exact path='/reports/example-turtle' component={SingleReport} />
           <Route exact path='/reports/:id' component={SingleReport} />
           <Route exact path='/data-analytics' component={DataAnalytics} />
-          
+
           <Route exact path='/new-report' component={NewReport} />
           <Route exact path='/new-report/lagoon' component={Lagoon} />
+          <Route exact path='/edit/lagoon' component={EditLagoon} />
           <Route exact path='/new-report/beach' component={Beach} />
           <Route exact path='/new-report/trident' component={Trident} />
           <Route exact path='/new-report/offshore' component={Offshore} />
