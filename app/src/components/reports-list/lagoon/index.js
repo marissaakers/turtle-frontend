@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import axios from "axios";
+import { Redirect } from 'react-router-dom'
 import {Link} from 'react-router-dom';
 import '../../../pages/shared/internal.css';
 import { confirmAlert } from 'react-confirm-alert';
@@ -44,7 +45,8 @@ class ReportsListLagoon extends React.Component {
         verified_by: this.formDefaults.verified_by,
         investigated_by: this.formDefaults.investigated_by,
         entered_by: this.formDefaults.entered_by
-      }
+      },
+      redirect:false
     }
   }
 
@@ -164,6 +166,30 @@ class ReportsListLagoon extends React.Component {
     this.state.form.tags.pop();
   }
 
+
+  deleteFunc = async(id) => {
+
+    console.log(this.state.data[id].encounter_id);
+    const data = {
+      encounter_id: id
+    }
+
+    console.log(data);
+
+    axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/lagoon/delete',
+    data, { headers: {'Content-Type': 'application/json'} })
+    .then(res => {
+      console.log(data)
+      console.log("Successfully deleted!")
+      alert('Encounter successfully deleted.')
+      this.setState({redirect:true});
+    })
+    .catch(error => {
+      console.log(error.response)
+      console.log("Error.")
+    });
+  }
+
   deleteConfirm = (id) => {
     confirmAlert({
       title: 'Confirm to delete',
@@ -171,14 +197,24 @@ class ReportsListLagoon extends React.Component {
       buttons: [
         {
           label: 'Yes',
-          onClick: () => alert('Click Yes')
+          onClick: (e) => this.deleteFunc(id),
         },
         {
-          label: 'No'
+          label: 'No',
+          onClick: () => alert('Click No')
         }
-      ]
+      ],
+      closeOnEscape: true,
+      closeOnClickOutside: true,
+
     });
   }
+
+  renderRedirect = () => {
+   if (this.state.redirect) {
+     return <Redirect to='/reports-list' />
+   }
+ }
 
   // RENDER HELPERS
 
@@ -248,7 +284,7 @@ class ReportsListLagoon extends React.Component {
       turtleRow.push(
         <td key={key++}>
           {/* TRASH ICON */}
-          <a href="#" onClick={ (e) => this.deleteConfirm(_data[i].encounter_id, e) }>
+          <a href="#" onClick={ (e) => this.deleteConfirm(_data[i].encounter_id, e)}>
             <i class="fa fa-trash-o"></i>
           </a>
         </td>

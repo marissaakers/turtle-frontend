@@ -40,6 +40,9 @@ class LagoonMetadata extends Component {
   handleSubmit = async(e) => {
      e.preventDefault();
 
+     if(this.state.weather == ""){
+       this.state.weather = this.state.weather_other;
+     }
 
      const data = {
 
@@ -57,7 +60,7 @@ class LagoonMetadata extends Component {
          net_retrieval_end_time: this.state.net_deploy_end_time,
          loggerhead_captures:  null,
          green_captures: null,
-         entered_by: null,
+         entered_by: this.state.entered_by,
          green_cpue: null,
          loggerhead_cpue: null,
          net_kilometers: null,
@@ -107,6 +110,8 @@ class LagoonMetadata extends Component {
   }
   render() {
 
+
+
     return(
       <>
         <Helmet>
@@ -148,6 +153,13 @@ class LagoonMetadata extends Component {
               <label htmlFor="investigators" className="col-4 col-form-label">Investigators</label>
               <div className="col-6">
                 <input className="form-control" type="text" name= "metadata_investigators" onChange={e => this.onChange(e)} />
+              </div>
+            </div>
+
+            <div className="form-group row">
+              <label htmlFor="investigators" className="col-4 col-form-label">Entered by</label>
+              <div className="col-6">
+                <input className="form-control" type="text" name= "entered_by" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
@@ -249,6 +261,7 @@ class LagoonMetadata extends Component {
                     <div className="form-group col-md-4">
                       <label htmlFor="weather">Weather:</label>
                       <select className="form-control" name="weather" onChange={e => this.onChange(e)}>
+                        <option value="">-</option>
                         <option value="Sunny">Sunny</option>
                         <option value="Partly Cloudy">Partly Cloudy</option>
                         <option value="Overcast">Overcast</option>
@@ -257,7 +270,7 @@ class LagoonMetadata extends Component {
                       </div>
                     <div className="form-group col-md-4">
                       <label htmlFor="other-weather">Other:</label>
-                      <input className="form-control" type="text" name="weather" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="weather_other" onChange={e => this.onChange(e)} />
                       </div>
                   </div>
 
@@ -342,8 +355,6 @@ class LagoonMetadata extends Component {
                 </div>
 
               </div>
-
-              <h5><b>Incidental Capture Data: </b></h5>
 
               <div class="container border pt-3 mb-3">
 

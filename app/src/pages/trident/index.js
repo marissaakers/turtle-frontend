@@ -1,53 +1,100 @@
 import React, { Component } from 'react';
 import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap'
 import { Link }from 'react-router-dom'
+import ReactDOM from "react-dom";
 import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
+import TagInputs from '../lagoon/TagInputs'
 import axios from "axios";
-
-const apiEndpoint = 'https://8lm507guic.execute-api.us-east-2.amazonaws.com/dev/api/capture/Trident';
-
 
 const TITLE = 'New Trident report'
 
-class Trident extends Component {
+
+class Trident extends React.Component {
 
   constructor(props){
     super(props)
 
     this.state = {
+      tags: [{tag_number: "", tag_type: "", active: null, tag_scars: "", pit: "", scanned: null, scanner_number: "" }],
+
+      samples: [],
       data : [],
-      redirect: false,
+      metadata: undefined,
+      redirect: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
 
   }
 
+  async loadMetadata(json) {
+    console.log("loadMetadata sent JSON = " + json);
 
-    onChange(e) {
+    const metadata = await axios.post(
+      'https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/Trident/metadata/query',
+      json,
+      { headers: {'Content-Type': 'application/json'} }
+    );
+
+    this.setState({metadata: metadata.data});
+
+    console.log("this.state.metadata = ");
+    console.log(this.state.metadata);
+    return (this.state.metadata.metadata_id)
+  }
+
+
+
+  onChange = (e) => {
+    if (["tag_number", "tag_type","active","tag_scars","pit","scanned","scanner_number"].includes(e.target.className) ) {
+      let tags = [...this.state.tags]
+      tags[e.target.dataset.id][e.target.className] = e.target.value
+      this.setState({ tags }, () => console.log(this.state.tags))
+    } else {
       this.setState({ [e.target.name]: e.target.value })
     }
+  }
 
-    handleSubmit = async(e) => {
+  handleAddTags = (e) => {
+    this.setState((prevState) => ({
+      tags: [...prevState.tags, {tag_number: "", tag_type: "", active: null, tag_scars: "", pit: "", scanned: null, scanner_number: "" }],
+    }));
+  };
+
+  handleRemoveTags = idx => () => {
+    this.setState({
+      tags: this.state.tags.filter((s, sidx) => idx !== sidx)
+    });
+
+  }
+
+
+
+  handleSubmit = async(e) => {
        e.preventDefault();
+
+       const getMetadataID = await this.loadMetadata({metadata_date: this.state.encounter_date})
+
+
 
        const data = {
         species: this.state.species,
+        metadata_id: getMetadataID,
        	entered_date: this.state.entered_date,
        	entered_by: this.state.entered_by,
-       	verified_date: null,
+       	verified_date: this.state.verified_date,
        	verified_by: this.state.verified_by,
        	encounter_date: this.state.encounter_date,
        	encounter_time: this.state.encounter_time,
-       	investigated_by: this.state.investigated_by,
+       	investigated_by: "me",
        	capture_type: this.state.capture_type,
        	living_tags: JSON.parse(this.state.living_tags),
        	pap_category: parseFloat(this.state.pap_category),
-       	paps_present: JSON.parse(this.state.paps_present),
+       	paps_present: JSON.parse("true"),
        	paps_regression: this.state.paps_regression,
        	leech_eggs: JSON.parse(this.state.leech_eggs),
        	leech_eggs_where: this.state.leech_eggs_where,
@@ -60,24 +107,24 @@ class Trident extends Component {
        			received_by: null,
        			purpose_of_sample: this.state.blood_sample,
        			notes: null,
-       			entered_date: null,
-       			entered_by: null,
+       			entered_date: this.state.entered_date,
+       			entered_by: this.state.entered_by,
        		},
           {
          			sample_type: "Skin",
          			received_by: null,
          			purpose_of_sample: this.state.skin_sample,
          			notes: null,
-         			entered_date: null,
-         			entered_by: null,
+         			entered_date: this.state.entered_date,
+         			entered_by: this.state.entered_by,
          	},
           {
          			sample_type: "Scute",
          			received_by: null,
          			purpose_of_sample: this.state.scute_sample,
          			notes: null,
-         			entered_date: null,
-         			entered_by: null,
+         			entered_date: this.state.entered_date,
+         			entered_by: this.state.entered_by,
          	}
        	],
        	notes: this.state.notes,
@@ -99,17 +146,21 @@ class Trident extends Component {
        	},
        	tags: [{
        			tag_number: this.state.tag_number,
-       			tag_type: this.state.tag_type,
+       			tag_type: "LF",
        			active: true,
        			tag_scars: JSON.parse(this.state.tag_scars),
        			pit: true,
        			scanned: JSON.parse(this.state.scanned),
-       			scanner_number: null
+       			scanner_number: "123456"
        		}]
        };
 
+       console.log(data)
 
-      axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/Trident/insert', { data })
+
+
+      axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/Trident/insert',
+      data, { headers: {'Content-Type': 'application/json'} })
       .then(res => {
         console.log(data)
         console.log("Successfully posted!")
@@ -121,6 +172,10 @@ class Trident extends Component {
     }
 
   render() {
+
+    let _metadata = this.state.metadata;
+    let {tags} = this.state
+
     return(
       <>
         <Helmet>
@@ -131,229 +186,262 @@ class Trident extends Component {
 
         <div className="container-fluid">
 
-            <h1><b>TRIDENT DATA SHEET</b></h1>
+            <h1><b>TRIDENT BASIN DATA SHEET</b></h1>
 
-            <form>
+            <form action="" onSubmit={this.handleSubmit} onChange={this.handleChange} >
             <div className="justify-content-center row pb-2 pt-2">
-            <div className="col-sm-10 mr-2 ml-2 border pr-0 pl-5 pb-3 pt-3">
+            <div className="col-sm-10 mr-2 ml-2 border pr-5 pl-5 pb-3 pt-3">
 
-            <div class="form-row">
-              <div class="col-sm-6 text-left">
+            <div className="form-row">
+              <div className="col-sm-6 text-left">
 
-                <form>
-                  <div class="form-row">
-                  <label for="species" class="col-3 col-form-label">Species:</label>
-                      <div class="col-2">
-                      <select class="form-control" name="species" onChange={e => this.onChange(e)}>
-                         <option value="Cc">Cc</option>
-                         <option value="Cm">Cm</option>
-                       </select>
-                      </div>
-                    <div class="col-5">
-                      <input type="text" class="form-control" placeholder="other" name="species" onChange={e => this.onChange(e)}/>
-                    </div>
-                  </div>
-                </form>
+            <div className="form-row">
+            <label htmlFor="species" className="col-3 col-form-label">Species:</label>
+                <div className="col-2">
+                <select className="form-control" name="species" value={this.value} onChange={e => this.onChange(e)}>
+                   <option value="Cc">Cc</option>
+                   <option value="Cm">Cm</option>
+                   <option value="other">Other</option>
+                 </select>
+                </div>
+              <div className="col-5">
+                <input type="text" className="form-control" placeholder="other" name="species" onChange={e => this.onChange(e)}/>
+              </div>
+            </div>
 
                 <br></br>
 
 
-                <form>
-                    <div class="form-row">
-                      <div class="form-group col-md-4">
-                        <label for="date">Date:</label>
-                            <input class="form-control" type="date" name="entered_date" onChange={e => this.onChange(e)}/>
-                      </div>
-                    <div class="form-group col-md-3">
-                      <label for="capture-time">Capture Time:</label>
-                            <input class="form-control" type="time" name="encounter_time" onChange={e => this.onChange(e)} />
-                        </div>
-                    <div class="form-group col-md-3">
-                      <label for="capture-type">Capture Type:</label>
-                        <select class="form-control" name="capture_type" onChange={e => this.onChange(e)} >
-                            <option value="New">New</option>
-                            <option value="Old">Old</option>
-                            <option value="Strange Recap">Strange Recap</option>
-                        </select>
-                      </div>
-                    </div>
-                </form>
 
-                <form>
-                  <div class="form-row">
-                    <div class="form-group col-md-5">
-                      <label for="data-entered-by">Data Entered By:</label>
-                      <input class="form-control" type="text" name="entered_by" onChange={e => this.onChange(e)}/>
-                    </div>
-                    <div class="form-group col-md-5">
-                      <label for="data-verified-by">Data Verified By:</label>
-                      <input class="form-control" type="text"  name="verified_by" onChange={e => this.onChange(e)} />
-                      </div>
-                  </div>
-                </form>
-
-                <div class="form-group row">
-                  <label for="tag-numbers" class="col-4 col-form-label">Tag #'s:</label>
-                  <div class="col-6">
-                  <input class="form-control" type="text" name="tag_number" onChange={e => this.onChange(e)}/>
-                  </div>
+            <div className="form-row">
+              <div className="form-group col-md-4">
+                <label htmlFor="date">Encounter Date:</label>
+                    <input className="form-control" type="date" name="encounter_date" onChange={e => this.onChange(e)}/>
+              </div>
+            <div className="form-group col-md-3">
+              <label htmlFor="capture-time">Capture Time:</label>
+                    <input className="form-control" type="time" name="encounter_time" onChange={e => this.onChange(e)} />
                 </div>
+            <div className="form-group col-md-3">
+              <label htmlFor="capture-type">Capture Type:</label>
+                <select className="form-control" name="capture_type" value={this.state.value} onChange={e => this.onChange(e)} >
+                    <option>New/Old/Strange</option>
+                    <option value="New">New</option>
+                    <option value="Old">Old</option>
+                    <option value="Strange Recap">Strange Recap</option>
+                </select>
+              </div>
+            </div>
 
-                <div class="form-group row">
-                  <label for="pit-tag-scanned" class="col-4 col-form-label">Pit Tag: Scanned:</label>
-                  <div class="col-6">
-                  <select class="form-control" name="scanned" onChange={e => this.onChange(e)}>
-                     <option value="true">Yes</option>
-                     <option value="false">No</option>
-                   </select>
-                  </div>
+
+            <div className="form-row">
+              <div className="form-group col-md-5">
+                <label htmlFor="data-entered-by">Data Entered By:</label>
+                <input className="form-control" type="text" name="entered_by" onChange={e => this.onChange(e)}/>
+              </div>
+              <div className="form-group col-md-5">
+                <label htmlFor="data-entered-date">Data Entered Date:</label>
+                <input className="form-control" type="date"  name="entered_date" onChange={e => this.onChange(e)} />
                 </div>
+            </div>
 
-                <div class="form-group row">
-                  <label for="living-tags" class="col-4 col-form-label">Living Tags:</label>
-                  <div class="col-6">
-                  <select class="form-control" name="living_tags" onChange={e => this.onChange(e)}>
-                     <option value="true">Yes</option>
-                     <option value="false">No</option>
-                   </select>
-                  </div>
+            <div className="form-row">
+              <div className="form-group col-md-5">
+                <label htmlFor="data-verified-by">Data Verified By:</label>
+                <input className="form-control" type="text" name="verified_by" onChange={e => this.onChange(e)}/>
+              </div>
+              <div className="form-group col-md-5">
+                <label htmlFor="data-verified-date">Data Verified Date:</label>
+                <input className="form-control" type="date"  name="verified_date" onChange={e => this.onChange(e)} />
                 </div>
+            </div>
 
-                <h4>Tag Scars:</h4>
 
-                <form>
-                  <div class="form-row">
-                    <div class="form-group col-md-5">
-                      <label for="tag-scars-lf">LF:</label>
-                      <select class="form-control" name="tag_scars" onChange={e => this.onChange(e)}>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                       </select>                    </div>
-                    <div class="form-group col-md-5">
-                      <label for="tag-scars-rf">RF:</label>
-                      <select class="form-control" >
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                       </select>
-                      </div>
-                  </div>
-                </form>
+            <h4>Tags:</h4>
+
+            <div class="container border pt-3 mb-3">
+
+
+            <div className="form-row">
+            <label htmlFor="species" className="col-2 col-form-label mb-3 mr-0 pr-0 no-gutters">Tag #:</label>
+                <div className="col-2 pl-0">
+                <input type="text" className="form-control" name="species" onChange={e => this.onChange(e)}/>
+                </div>
+            <label htmlFor="species" className="col-2 col-form-label mb-3">Tag Type:</label>
+              <div className="col-2">
+              <select className="form-control" name="tag_scars" value={this.value} onChange={e => this.onChange(e)}>
+              <option>LF/RF</option>
+                <option value="LF">LF</option>
+                <option value="RF">RF</option>
+               </select>
+                             </div>
+            <label htmlFor="species" className="col-2 col-form-label mb-3">Tag Scar:</label>
+              <div className="col-2">
+              <select className="form-control" name="tag_scars" value={this.value} onChange={e => this.onChange(e)}>
+              <option>Y/N</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+               </select>
+              </div>
+            </div>
+
+            <div className="form-row">
+            <label htmlFor="species" className="col-2 col-form-label mb-3">Pit Tag:</label>
+            <label htmlFor="species" className="col-2 col-form-label mb-3">Scanned:</label>
+              <div className="col-2">
+              <select className="form-control" name="scanned" value={this.value} onChange={e => this.onChange(e)}>
+                <option>Y/N</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+               </select>   </div>
+            <label htmlFor="species" className="col-2 col-form-label mb-3">Pit Tag #:</label>
+              <div className="col-4">
+              <input className="form-control" type="text" name="scanner_number" placeholder="PIT tag #" onChange={e => this.onChange(e)}/>
+              </div>
+            </div>
+
+</div>
+
+          <TagInputs tags={tags}/>
+
+<button onClick={this.handleAddTags} type="button" className="btn btn-primary text-center"> ADD NEW TAGS</button>
+
+
+
+
+
+            <div className="form-group row">
+              <label htmlFor="living-tags" className="col-4 col-form-label">Living Tags:</label>
+              <div className="col-4">
+              <select className="form-control" name="living_tags" value={this.value} onChange={e => this.onChange(e)}>
+                  <option>Yes/No</option>
+                 <option value="true">Yes</option>
+                 <option value="false">No</option>
+               </select>
+              </div>
+            </div>
+
 
               <h4>Morphometrics:</h4>
-              <form>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="curved-length">Curved Length (notch-tip):</label>
-                    <input class="form-control" type="text" name="curved_length" placeholder="in cm" onChange={e => this.onChange(e)}/>
+
+              <div class="container border pt-3 mb-3">
+
+                <div className="form-row">
+                  <div className="form-group col-md-6">
+                    <label htmlFor="curved-length">Curved Length (notch-tip):</label>
+                    <input className="form-control" type="text" name="curved_length" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-5">
-                    <label for="curved-width">Curved Width (widest):</label>
-                    <input class="form-control" type="text" name="curved_width" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-5">
+                    <label htmlFor="curved-width">Curved Width (widest):</label>
+                    <input className="form-control" type="text" name="curved_width" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-6">
-                    <label for="straight-length">Straight Length (notch-tip):</label>
-                    <input class="form-control" type="text" name="straight_length" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-6">
+                    <label htmlFor="straight-length">Straight Length (notch-tip):</label>
+                    <input className="form-control" type="text" name="straight_length" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-5">
-                    <label for="straight-width">Straight Width (widest):</label>
-                    <input type="form-control" name="straight_width" class="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-5">
+                    <label htmlFor="straight-width">Straight Width (widest):</label>
+                    <input type="form-control" name="straight_width" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-6">
-                    <label for="min-length">Minimum Length (notch-notch):</label>
-                    <input type="form-control" name="minimum_length" class="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-6">
+                    <label htmlFor="min-length">Minimum Length (notch-notch):</label>
+                    <input type="form-control" name="minimum_length" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-5">
-                    <label for="tail-length">Tail Length: PL-vent</label>
-                    <input type="form-control" name="tail_length_pl_vent" class="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-5">
+                    <label htmlFor="tail-length">Tail Length: PL-vent</label>
+                    <input type="form-control" name="tail_length_pl_vent" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-6">
-                    <label for="plastron-length">Plastron Length (tape):</label>
-                    <input type="form-control" name="plastron_length" class="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-6">
+                    <label htmlFor="plastron-length">Plastron Length (tape):</label>
+                    <input type="form-control" name="plastron_length" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-5">
-                    <label for="pl-tip">PL-Tip:</label>
-                    <input type="form-control" name="tail_length_pl_tip" class="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-5">
+                    <label htmlFor="pl-tip">PL-Tip:</label>
+                    <input type="form-control" name="tail_length_pl_tip" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-6">
-                    <label for="weight">Weight in kg: *tare scale</label>
-                    <input type="form-control" name="weight" class="form-control" placeholder="in kg" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-6">
+                    <label htmlFor="weight">Weight in kg: *tare scale</label>
+                    <input type="form-control" name="weight" className="form-control" placeholder="in kg" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-5">
-                    <label for="head-width">Head Width (straight):</label>
-                    <input type="form-control" name="head_width" class="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-5">
+                    <label htmlFor="head-width">Head Width (straight):</label>
+                    <input type="form-control" name="head_width" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
-                  <div class="form-group col-md-6">
+                  <div className="form-group col-md-6">
 
                   </div>
-                  <div class="form-group col-md-5">
-                    <label for="body-depth">Body Depth (straight):</label>
-                    <input type="form-control" name="body_depth" class="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+                  <div className="form-group col-md-5">
+                    <label htmlFor="body-depth">Body Depth (straight):</label>
+                    <input type="form-control" name="body_depth" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
                   </div>
                 </div>
-              </form>
+                </div>
 
 
               </div>
 
-              <div class="col-sm-6 text-left">
+              <div className="col-sm-6 pl-3 text-left">
 
 
                 <h4>Samples:</h4>
-                <form>
-                  <div class="form-row">
-                  <label for="blood" class="col-3 col-form-label">Blood:</label>
-                      <div class="col-3">
-                      <select class="form-control">
+
+                <div class="container border pt-3 mb-3 pb-3">
+
+                  <div className="form-row">
+                  <label htmlFor="blood" className="col-3 col-form-label mb-3">Blood:</label>
+                      <div className="col-3">
+                      <select className="form-control">
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                        </select>
                       </div>
-                    <div class="col-4">
-                      <input type="text" name="blood_sample" class="form-control" placeholder="For" onChange={e => this.onChange(e)}/>
+                    <div className="col-4">
+                      <input type="text" name="blood_sample" className="form-control" placeholder="For" onChange={e => this.onChange(e)}/>
                     </div>
                   </div>
-                </form> <br></br>
 
-                <form>
-                  <div class="form-row">
-                  <label for="skin" class="col-3 col-form-label">Skin:</label>
-                      <div class="col-3">
-                      <select class="form-control" >
+
+                  <div className="form-row">
+                  <label htmlFor="skin" className="col-3 col-form-label mb-3">Skin:</label>
+                      <div className="col-3">
+                      <select className="form-control" >
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                        </select>
                       </div>
-                    <div class="col-4">
-                      <input type="text" name="skin_sample" class="form-control" placeholder="For" onChange={e => this.onChange(e)}/>
+                    <div className="col-4">
+                      <input type="text" name="skin_sample" className="form-control" placeholder="For" onChange={e => this.onChange(e)}/>
                     </div>
                   </div>
-                </form> <br></br>
 
-                <form>
-                  <div class="form-row">
-                  <label for="scute" class="col-3 col-form-label">Scute:</label>
-                      <div class="col-3 mb-3">
-                      <select class="form-control" >
+
+                  <div className="form-row">
+                  <label htmlFor="scute" className="col-3 col-form-label mb-3">Scute:</label>
+                      <div className="col-3 mb-3">
+                      <select className="form-control" >
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                        </select>
                       </div>
-                    <div class="col-4">
-                      <input type="text" name="scute_sample" class="form-control" placeholder="For" onChange={e => this.onChange(e)}/>
+                    <div className="col-4">
+                      <input type="text" name="scute_sample" className="form-control" placeholder="For" onChange={e => this.onChange(e)}/>
                     </div>
                   </div>
-                </form>
-
-                  <p><h5>Other Samples:</h5></p>
-                  <div class="col-sm-10">
-                  <textarea class="form-control" name="other" rows="2" onChange={e => this.onChange(e)}></textarea>
-                  </div> <br></br>
 
 
-                    <div class="form-group row">
-                      <label for="paps" class="col-4 col-form-label">Paps:</label>
-                          <div class="col-6">
-                          <select class="form-control" name="paps_category" onChange={e => this.onChange(e)}>
+                  <h5>Other Samples:</h5>
+                  <div className="col-sm-10">
+                  <textarea className="form-control" name="other" rows="2" onChange={e => this.onChange(e)}></textarea>
+                  </div>
+
+                  </div>
+
+
+                    <div className="form-group row">
+                      <label htmlFor="paps" className="col-4 col-form-label">Paps:</label>
+                          <div className="col-6">
+                          <select className="form-control" name="pap_category" value={this.value} onChange={e => this.onChange(e)}>
+                          <option>-</option>
                               <option value="0">0</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
@@ -362,10 +450,11 @@ class Trident extends Component {
                           </div>
                     </div>
 
-                      <div class="form-group row">
-                        <label for="regression" class="col-4 col-form-label">Regression:</label>
-                        <div class="col-6">
-                        <select class="form-control" name="paps_regression" onChange={e => this.onChange(e)}>
+                      <div className="form-group row">
+                        <label htmlFor="regression" className="col-4 col-form-label">Regression:</label>
+                        <div className="col-6">
+                        <select className="form-control" name="paps_regression" value={this.value} onChange={e => this.onChange(e)}>
+                        <option>-</option>
                            <option value="Yes">Yes</option>
                            <option value="No">No</option>
                            <option value="Other">Other</option>
@@ -375,20 +464,22 @@ class Trident extends Component {
                         </div>
                       </div>
 
-                      <div class="form-group row">
-                        <label for="photos" class="col-4 col-form-label">Photos:</label>
-                        <div class="col-6">
-                        <select class="form-control" name="photos" onChange={e => this.onChange(e)}>
+                      <div className="form-group row">
+                        <label htmlFor="photos" className="col-4 col-form-label">Photos:</label>
+                        <div className="col-6">
+                        <select className="form-control" name="photos" value={this.value} onChange={e => this.onChange(e)}>
+                        <option>Yes/No</option>
                           <option value="true">Yes</option>
                           <option value="false">No</option>
                          </select>
                         </div>
                       </div>
 
-                      <div class="form-group row">
-                        <label for="pap-photos" class="col-4 col-form-label">Pap Photos:</label>
-                        <div class="col-6">
-                        <select class="form-control" name="pap_photos" onChange={e => this.onChange(e)}>
+                      <div className="form-group row">
+                        <label htmlFor="pap-photos" className="col-4 col-form-label">Pap Photos:</label>
+                        <div className="col-6">
+                        <select className="form-control" name="pap_photos" value={this.value} onChange={e => this.onChange(e)}>
+                        <option>Yes/No</option>
                           <option value="true">Yes</option>
                           <option value="false">No</option>
                          </select>
@@ -396,53 +487,54 @@ class Trident extends Component {
                       </div>
 
 
-                      <form>
-                        <div class="form-row">
-                        <label for="example-text-input" class="col-3 col-form-label">Leeches:</label>
-                            <div class="col-3">
-                            <select class="form-control" name="leeches" onChange={e => this.onChange(e)}>
+                        <div className="form-row">
+                        <label htmlFor="example-text-input" className="col-3 col-form-label">Leeches:</label>
+                            <div className="col-3">
+                            <select className="form-control" name="leeches" value={this.value} onChange={e => this.onChange(e)}>
+                            <option>Yes/No</option>
                               <option value="true">Yes</option>
                               <option value="false">No</option>
                              </select>
                             </div>
-                          <div class="col-4">
-                            <input type="text" class="form-control" name="leeches_where" placeholder="Where" onChange={e => this.onChange(e)}/>
+                          <div className="col-4">
+                            <input type="text" className="form-control" name="leeches_where" placeholder="Where" onChange={e => this.onChange(e)}/>
                           </div>
                         </div>
-                      </form>
+
 
                       <br></br>
 
-                      <form>
-                        <div class="form-row">
-                        <label for="leech-eggs" class="col-3 col-form-label">Leech Eggs:</label>
-                            <div class="col-3">
-                            <select class="form-control" name="leech_eggs" onChange={e => this.onChange(e)}>
+
+                        <div className="form-row">
+                        <label htmlFor="leech-eggs" className="col-3 col-form-label">Leech Eggs:</label>
+                            <div className="col-3">
+                            <select className="form-control" name="leech_eggs" value={this.value} onChange={e => this.onChange(e)}>
+                            <option>Yes/No</option>
                               <option value="true">Yes</option>
                               <option value="false">No</option>
                              </select>
                             </div>
-                          <div class="col-4">
-                            <input type="text" class="form-control" placeholder="Where" name="leech_eggs_where" onChange={e => this.onChange(e)}/>
+                          <div className="col-4">
+                            <input type="text" className="form-control" placeholder="Where" name="leech_eggs_where" onChange={e => this.onChange(e)}/>
                           </div>
                         </div>
-                      </form>
+
 
                       <br></br>
 
                       <h5>Flipper Damage:</h5>
-                        <div class="col-sm-12 mb-3">
-                        <textarea class="form-control" name="flipper_damage" id="exampleFormControlTextarea1" rows="3" onChange={e => this.onChange(e)}></textarea>
+                        <div className="col-sm-12 mb-3">
+                        <textarea className="form-control" name="flipper_damage" id="exampleFormControlTextarea1" rows="3" onChange={e => this.onChange(e)}></textarea>
                         </div>
 
                       <h5>Shell Damage:</h5>
-                        <div class="col-sm-12 mb-3">
-                        <textarea class="form-control" name="carapace_damage" id="exampleFormControlTextarea1" rows="3" onChange={e => this.onChange(e)}></textarea>
+                        <div className="col-sm-12 mb-3">
+                        <textarea className="form-control" name="carapace_damage" id="exampleFormControlTextarea1" rows="3" onChange={e => this.onChange(e)}></textarea>
                         </div>
                       <h4>Notes:</h4>
-                        <div class="col-sm-12">
+                        <div className="col-sm-12">
                         <p><i>Describe scale and scute abnormalities, condition of turtle, etc.</i></p>
-                        <textarea class="form-control" name="notes" id="exampleFormControlTextarea1" rows="3" onChange={e => this.onChange(e)}></textarea>
+                        <textarea className="form-control" name="notes" id="exampleFormControlTextarea1" rows="3" onChange={e => this.onChange(e)}></textarea>
                         </div>
 
 
@@ -452,10 +544,10 @@ class Trident extends Component {
               </div>
 
 
+              <button type="submit" className="btn btn-primary">SUBMIT</button>
+
             </form>
 
-
-            <button type="submit" class="btn btn-primary">SUBMIT</button>
           </div>
 
         <InternalFooter />
@@ -466,4 +558,9 @@ class Trident extends Component {
 
 
 
+
+
 export default Trident;
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<Trident/>, rootElement);
