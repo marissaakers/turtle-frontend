@@ -14,13 +14,13 @@ class NewReport extends React.Component {
       previewImage: require('./lagoon-preview.png'),
       previewImages: [
         require('./lagoon-preview.png'),
-        require('./lagoon-metadata-preview.png'),
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
+        require('./trident-preview.png'),
+        require('./beach-preview.png'),
+        require('./offshore-preview.png'),
+        require('./midreach-survey-preview.png'),
+        require('./depredations-preview.png'),
+        require('./false-crawl-preview.png'),
+        require('./scarp-preview.png'),
       ],
       highlightedBoxNum: 0
     }
@@ -175,9 +175,8 @@ class NewReport extends React.Component {
               <img src={require('./tall-arrow.png')} width='30px' height='70px'/>
             </div>
             <div className="col-sm-3">
-              <div className="border shadow bg-white">
-                <img src={ this.state.previewImage } height='367px'/>
-              </div>
+              <div style={{height:'190px'}}></div>
+              <img src={ this.state.previewImage } height='367px' className="border shadow bg-white"/>
             </div>
           </div>
 

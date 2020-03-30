@@ -61,7 +61,7 @@ class SingleReport extends React.Component {
     // JSON post query requires one of the following fields:
     // {
     //     "turtle_ids": [ 431, 432, 433 ],
-    //     "tags" : [ "ABCDEF", "LMNOP"] 
+    //     "tags" : [ "ABCDEF", "LMNOP"]
     //     "encounter_id": 866
     // }
     let myJson = "{ \"encounter_id\": " + this.props.location.state.encounterId + "}";
