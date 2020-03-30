@@ -6,9 +6,6 @@ import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import axios from "axios";
 import '../shared/internal.css';
-import { DepredationList } from '../../components/depredations/depredation-list';
-import { FalseCrawlList } from '../../components/false-crawls/false-crawl-list';
-
 
 const TITLE = 'Midreach Survey Sheet'
 
@@ -366,13 +363,6 @@ class SurveyMidreach extends Component {
           <div className="pb-4"></div>
 
           <form>
-
-            <FalseCrawlList />
-
-            <hr />
-
-            <DepredationList />
-
             <div className="form-row">
               {/* Date */}
               <div className="col-md-2 mr-4">

@@ -17,7 +17,10 @@ class NewReport extends React.Component {
         require('./lagoon-metadata-preview.png'),
         2,
         3,
-        4
+        4,
+        5,
+        6,
+        7
       ],
       highlightedBoxNum: 0
     }
@@ -116,6 +119,7 @@ class NewReport extends React.Component {
                     </div>
                   </a>
                 </div>
+
                 <div className="row">
                   <a role="button"
                      href='new-report/survey-midreach'
@@ -123,7 +127,44 @@ class NewReport extends React.Component {
                      onMouseOver={(e) => {this.mousedOverFormOption(e, 4)}}
                      onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
-                      <h5><b>Midreach Survey</b></h5>
+                      <h5><b>MIDREACH SURVEY</b></h5>
+                      <p>This is a description.</p>
+                    </div>
+                  </a>
+                </div>
+
+                <div className="row">
+                  <a role="button"
+                     href='new-report/survey-depredations'
+                     className={ this.getBoxHighlightedClassName(5)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 5)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
+                    <div className="choose-form-button-contents pl-2" align="left">
+                      <h5><b>DEPREDATIONS</b></h5>
+                      <p>This is a description.</p>
+                    </div>
+                  </a>
+                </div>
+                <div className="row">
+                  <a role="button"
+                     href='new-report/survey-false-crawl'
+                     className={ this.getBoxHighlightedClassName(6)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 6)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
+                    <div className="choose-form-button-contents pl-2" align="left">
+                      <h5><b>FALSE CRAWL</b></h5>
+                      <p>This is a description.</p>
+                    </div>
+                  </a>
+                </div>
+                <div className="row">
+                  <a role="button"
+                     href='new-report/survey-scarp'
+                     className={ this.getBoxHighlightedClassName(7)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 7)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
+                    <div className="choose-form-button-contents pl-2" align="left">
+                      <h5><b>SCARP</b></h5>
                       <p>This is a description.</p>
                     </div>
                   </a>
