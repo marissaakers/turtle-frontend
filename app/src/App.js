@@ -16,10 +16,6 @@ import Login from 'pages/login';
 // Logged in pages
 import Home from 'pages/home';
 import ReportsListHub from 'pages/reports-list-hub';
-import ReportsListBeach from 'pages/reports-list-beach';
-import ReportsListLagoon from 'pages/reports-list-lagoon';
-import ReportsListOffshore from 'pages/reports-list-offshore';
-import ReportsListTrident from 'pages/reports-list-trident';
 
 import SingleReport from 'pages/single-report';
 import DataAnalytics from 'pages/data-analytics'
@@ -34,6 +30,9 @@ import Offshore from 'pages/offshore';
 import TridentMetadata from 'pages/trident-metadata';
 import LagoonMetadata from 'pages/lagoon-metadata';
 import SurveyMidreach from 'pages/survey-midreach';
+import SurveyDepredations from 'pages/survey-depredations';
+import SurveyScarp from 'pages/survey-scarp';
+import SurveyFalseCrawl from 'pages/survey-false-crawls';
 
 
 function App() {
@@ -50,14 +49,10 @@ function App() {
           {/* Logged in pages */}
           <Route exact path='/home' component={Home} />
           <Route exact path='/reports-list' component={ReportsListHub} />
-          <Route exact path='/reports-list/beach' component={ReportsListBeach} />
-          <Route exact path='/reports-list/lagoon' component={ReportsListLagoon} />
-          <Route exact path='/reports-list/offshore' component={ReportsListOffshore} />
-          <Route exact path='/reports-list/trident' component={ReportsListTrident} />
-
           <Route exact path='/reports/example-turtle' component={SingleReport} />
           <Route exact path='/reports/:id' component={SingleReport} />
           <Route exact path='/data-analytics' component={DataAnalytics} />
+          
           <Route exact path='/new-report' component={NewReport} />
           <Route exact path='/new-report/lagoon' component={Lagoon} />
           <Route exact path='/new-report/beach' component={Beach} />
@@ -66,6 +61,10 @@ function App() {
           <Route exact path='/new-report/lagoon-metadata' component={LagoonMetadata} />
           <Route exact path='/new-report/trident-metadata' component={TridentMetadata} />
           <Route exact path='/new-report/survey-midreach' component={SurveyMidreach} />
+          <Route exact path='/new-report/survey-depredations' component={SurveyDepredations} />
+          <Route exact path='/new-report/survey-scarp' component={SurveyScarp} />
+          <Route exact path='/new-report/survey-false-crawl' component={SurveyFalseCrawl} />
+
           <Route exact path='/new-report/beach-inventory' component={BeachInventory} />
 
           <Route component={Error} />  {/* When no other route matches */}
