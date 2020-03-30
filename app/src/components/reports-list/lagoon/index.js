@@ -273,7 +273,8 @@ class ReportsListLagoon extends React.Component {
             <Link to={{
               pathname: '/reports/' + _data[i].encounter_id,
               state: {
-                encounterId: _data[i].encounter_id
+                encounterId: _data[i].encounter_id,
+                metadataId: _data[i].metadata_id
               }}}>
               { turtleRowFields[k] }
             </Link>
