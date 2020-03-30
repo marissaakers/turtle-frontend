@@ -8,7 +8,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
-import TagInputs from './tagInputs'
+import TagInputs from './TagInputs'
 import SampleInputs from './sampleInputs'
 import axios from "axios";
 
