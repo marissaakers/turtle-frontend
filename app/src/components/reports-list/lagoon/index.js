@@ -1,11 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import axios from "axios";
-import { Redirect } from 'react-router-dom'
 import {Link} from 'react-router-dom';
 import '../../../pages/shared/internal.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Redirect } from 'react-router-dom';
+import LoadingSpinner from '../../loading-spinner';
 
 class ReportsListLagoon extends React.Component {
   constructor(props) {
@@ -137,12 +138,11 @@ class ReportsListLagoon extends React.Component {
   }
 
   setPageNum = (newNum) => {
-    console.log("Old currentPage # = " + this.state.currentPage + ", new # = " + newNum);
     if (newNum < 1) {
       this.setState({currentPage: 1});
     }
-    else if (newNum > Math.floor(this.state.data.length / this.state.resultsPerPage) + 1) {
-      this.setState({currentPage: Math.floor(this.state.data.length / this.state.resultsPerPage) + 1});
+    else if (newNum > Math.floor((this.state.data.length - 1) / this.state.resultsPerPage) + 1) {
+      this.setState({currentPage: Math.floor((this.state.data.length - 1) / this.state.resultsPerPage) + 1});
     }
     else {
       this.setState({currentPage: newNum});
@@ -165,7 +165,6 @@ class ReportsListLagoon extends React.Component {
     }
     this.state.form.tags.pop();
   }
-
 
   deleteFunc = async(id) => {
 
@@ -309,11 +308,31 @@ class ReportsListLagoon extends React.Component {
     let _data = this.state.data;
     let temp = [];
     let pageNumberPicker = [];
+    let numPageNumbers = Math.floor((_data.length - 1) / this.state.resultsPerPage) + 1;
+    let startingPageNum = 1;
+    let endingPageNum = numPageNumbers;
 
-    console.log("_data.length = " + _data.length);
+    console.log("Beach _data.length = " + _data.length);
     temp.push( <a href=" #" key={key++} onClick={() => this.setPageNum(1)}>&lt;&lt;</a> );
     temp.push( <a href=" #" key={key++} onClick={() => this.setPageNum(this.state.currentPage-1)}> &lt;</a> );
-    for (let i = 1; i <= Math.floor(_data.length / this.state.resultsPerPage) + 1; i++) {
+
+    // Limit visible page numbers to 15 on screen
+    if (numPageNumbers > 15) {
+      startingPageNum = this.state.currentPage - 7;
+      endingPageNum = this.state.currentPage + 7;
+
+      var adj = 0;
+      if (startingPageNum < 1) {
+        adj = 1 - startingPageNum;
+      }
+      else if (numPageNumbers < endingPageNum) {
+        adj = numPageNumbers - endingPageNum;
+      }
+      startingPageNum += adj;
+      endingPageNum += adj;
+    }
+
+    for (let i = startingPageNum; i <= endingPageNum; i++) {
       if (this.state.currentPage === i) {
         temp.push(
           <b key={key++}> {i}</b>
@@ -326,7 +345,7 @@ class ReportsListLagoon extends React.Component {
       }
     }
     temp.push( <a href=" #" key={key++} onClick={() => this.setPageNum(this.state.currentPage+1)}> &gt;</a> );
-    temp.push( <a href=" #" key={key++} onClick={() => this.setPageNum(Math.floor(_data.length / this.state.resultsPerPage)+1)}> &gt;&gt;</a> );
+    temp.push( <a href=" #" key={key++} onClick={() => this.setPageNum(Math.floor((_data.length - 1) / this.state.resultsPerPage) + 1)}> &gt;&gt;</a> );
 
     // << < 1 2 3 4 5 > >>
     pageNumberPicker.push(
@@ -387,7 +406,7 @@ class ReportsListLagoon extends React.Component {
     if (this.state.isLoading) {
       displayBlock = (
         <div>
-          <h2>Loading...</h2>
+          <LoadingSpinner />
         </div>
       )
     }
@@ -400,10 +419,6 @@ class ReportsListLagoon extends React.Component {
 
     let pageBody = (
       <>
-        <helmet>
-          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
-        </helmet>
-
         <h3>MTRG - Reports List for Lagoon</h3>
         <p>View list of database entries. Use filters to narrow down your search.</p>
 

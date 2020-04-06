@@ -5,6 +5,7 @@ import axios from "axios";
 import turtleimg from '../images/lagoonturtle.png';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
+import LoadingSpinner from '../../components/loading-spinner';
 
 const TITLE = 'MTRG - View report'
 
@@ -100,7 +101,7 @@ class SingleReport extends React.Component {
         || this.state.turtleData === undefined) {
       displayBlock = (
         <div>
-          <h3>Loading...</h3>
+          <LoadingSpinner />
         </div>
       )
     }

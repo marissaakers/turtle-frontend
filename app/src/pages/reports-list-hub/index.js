@@ -38,7 +38,7 @@ class ReportsListHub extends React.Component {
                   <li className='nav-item'><a className='nav-link active' data-toggle='tab' href='#s1'>Lagoon</a></li>
                   <li className='nav-item'><a className='nav-link' data-toggle='tab' href='#s2'>Trident</a></li>
                   <li className='nav-item'><a className='nav-link' data-toggle='tab' href='#s3'>Beach</a></li>
-                  <li className='nav-item'><a className='nav-link' data-toggle='tab' href='#s3'>Offshore</a></li>
+                  <li className='nav-item'><a className='nav-link' data-toggle='tab' href='#s4'>Offshore</a></li>
                 </>
               </ul>
 
