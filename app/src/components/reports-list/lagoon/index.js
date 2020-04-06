@@ -33,6 +33,7 @@ class ReportsListLagoon extends React.Component {
       resultsPerPage: 20,
       currentPage: 1,
       data: {},
+      redirect: false,
       form: {
         tags: this.formDefaults.tags,
         species: this.formDefaults.species,
@@ -47,7 +48,6 @@ class ReportsListLagoon extends React.Component {
         investigated_by: this.formDefaults.investigated_by,
         entered_by: this.formDefaults.entered_by
       },
-      redirect:false
     }
   }
 
@@ -180,7 +180,7 @@ class ReportsListLagoon extends React.Component {
     .then(res => {
       console.log(data)
       console.log("Successfully deleted!")
-      alert('Encounter successfully deleted.')
+      // alert('Encounter successfully deleted.')
       this.setState({redirect:true});
     })
     .catch(error => {
@@ -199,8 +199,7 @@ class ReportsListLagoon extends React.Component {
           onClick: (e) => this.deleteFunc(id),
         },
         {
-          label: 'No',
-          onClick: () => alert('Click No')
+          label: 'No'
         }
       ],
       closeOnEscape: true,
@@ -614,7 +613,7 @@ class ReportsListLagoon extends React.Component {
 
         { pageNumberPicker }
         { displayBlock }
-        {this.renderRedirect()}
+        { this.renderRedirect() }
       </>
     );
 

@@ -33,6 +33,7 @@ class ReportsListTrident extends React.Component {
       resultsPerPage: 20,
       currentPage: 1,
       data: {},
+      redirect: false,
       form: {
         tags: this.formDefaults.tags,
         species: this.formDefaults.species,
@@ -165,6 +166,56 @@ class ReportsListTrident extends React.Component {
     this.state.form.tags.pop();
   }
 
+
+  deleteFunc = async(id) => {
+
+    console.log(id);
+    const data = {
+      encounter_id: id
+    }
+
+    console.log(data);
+
+    axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/trident/delete',
+    data, { headers: {'Content-Type': 'application/json'} })
+    .then(res => {
+      console.log(data)
+      console.log("Successfully deleted!")
+      // alert('Encounter successfully deleted.')
+      this.setState({redirect:true});
+    })
+    .catch(error => {
+      console.log(error.response)
+      console.log("Error.")
+    });
+  }
+
+  deleteConfirm = (id) => {
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure you want to delete this entry? (Encounter ID = ' + id + ')',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: (e) => this.deleteFunc(id),
+        },
+        {
+          label: 'No'
+        }
+      ],
+      closeOnEscape: true,
+      closeOnClickOutside: true,
+
+    });
+  }
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+     window.location.reload(false);
+    }
+  }
+
+
   // RENDER HELPERS
 
   // Returns a list of HTML turtle rows, for use in the data table.
@@ -222,13 +273,23 @@ class ReportsListTrident extends React.Component {
             <Link to={{
               pathname: '/reports/' + _data[i].encounter_id,
               state: {
-                encounterId: _data[i].encounter_id
+                encounterId: _data[i].encounter_id,
+                metadataId: _data[i].metadata_id
               }}}>
               { turtleRowFields[k] }
             </Link>
           </td>
         );
       }
+
+      turtleRow.push(
+        <td key={key++}>
+          {/* TRASH ICON */}
+          <a href="#" onClick={ (e) => this.deleteConfirm(_data[i].encounter_id, e)}>
+            <i class="fa fa-trash-o"></i>
+          </a>
+        </td>
+      );
 
       turtleRows.push(
         <tr key={key++}>
@@ -544,6 +605,7 @@ class ReportsListTrident extends React.Component {
               <th scope="col">Species</th>
               <th scope="col">Encounter type</th>
               <th scope="col">Location</th>
+              <th style={{width:  '80px'}} scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -553,6 +615,7 @@ class ReportsListTrident extends React.Component {
 
         { pageNumberPicker }
         { displayBlock }
+        { this.renderRedirect() }
       </>
     );
 

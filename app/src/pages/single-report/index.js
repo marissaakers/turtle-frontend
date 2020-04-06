@@ -31,8 +31,8 @@ class SingleReport extends React.Component {
     );
 
     this.setState({turtleData: turtleData.data});
-    console.log("this.state.turtleData = ");
-    console.log(this.state.turtleData);
+    // console.log("this.state.turtleData = ");
+    // console.log(this.state.turtleData);
   }
 
   async loadMetadata(json) {
@@ -45,21 +45,19 @@ class SingleReport extends React.Component {
     );
 
     this.setState({metadata: metadata.data});
-    console.log("this.state.metadata = ");
-    console.log(this.state.metadata);
-    this.setState({id: this.state.metadata.encounter_id});
-    console.log(this.state.metadata.encounter_id)
+    // console.log("this.state.metadata = ");
+    // console.log(this.state.metadata);
+    // this.setState({id: this.state.metadata.encounter_id});
+    // console.log(this.state.metadata.encounter_id)
 
   }
 
-  async loadReport(json) {
+  async loadReport(encounterJson, metadataJson) {
     this.setState({isLoading: true});
 
-    await this.loadEncounter(json);
-    let encounterSendJson = '{ "metadata_id": ' + this.state.turtleData.metadata_id + '}';
-    await this.loadMetadata(encounterSendJson);
-
-    console.log(encounterSendJson);
+    await Promise.all([ this.loadEncounter(encounterJson), this.loadMetadata(metadataJson) ]);
+    // await this.loadEncounter(encounterJson);
+    // await this.loadMetadata(metadataJson);
     this.setState({isLoading: false});
   }
 
@@ -74,9 +72,11 @@ class SingleReport extends React.Component {
 
     console.log(this.state.id);
 
-    let myJson = "{ \"encounter_id\": " + this.props.location.state.encounterId + "}";
-    console.log(myJson);
-    this.loadReport(myJson);
+    let encounterJson = "{ \"encounter_id\": " + this.props.location.state.encounterId + "}";
+    let metadataJson = '{ "metadata_id": ' + this.props.location.state.metadataId + '}';
+    console.log(encounterJson);
+    console.log(metadataJson);
+    this.loadReport(encounterJson, metadataJson);
   }
 
 
