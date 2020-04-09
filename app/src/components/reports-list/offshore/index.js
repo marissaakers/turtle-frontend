@@ -133,7 +133,9 @@ class ReportsListOffshore extends React.Component {
   clearForm = (event) => {
     event.preventDefault();
     // Reset values
+    document.getElementById("filter-form").reset();
     this.setState({form: this.formDefaults});
+    this.setState({numTagInputs: 1});
     this.loadReportsList('{}');
   }
 
@@ -424,7 +426,7 @@ class ReportsListOffshore extends React.Component {
 
         {/* FILTERS */}
         <div className="container-fluid">
-          <form onSubmit={this.mySubmitHandler}>
+          <form id="filter-form" onSubmit={this.mySubmitHandler}>
             {/* Row 1 */}
             <div className="row pb-2 pt-2">
 

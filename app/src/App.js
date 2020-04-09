@@ -9,31 +9,31 @@ import axios from 'axios';
 
 // Import pages
 // Unlogged in pages
-import LandingPage from 'pages/landing-page';
-import About from 'pages/about';
-import Contact from 'pages/contact';
-import Login from 'pages/login';
+import LandingPage from './pages/landing-page';
+import About from './pages/about';
+import Contact from './pages/contact';
+import Login from './pages/login';
 // Logged in pages
-import Home from 'pages/home';
-import ReportsListHub from 'pages/reports-list-hub';
+import Home from './pages/home';
+import ReportsListHub from './pages/reports-list-hub';
 
-import SingleReport from 'pages/single-report';
-import DataAnalytics from 'pages/data-analytics'
-import Error from 'pages/error';
+import SingleReport from './pages/single-report';
+import DataAnalytics from './pages/data-analytics'
+import Error from './pages/error';
 // New report pages
-import NewReport from 'pages/new-report';
-import Lagoon from 'pages/lagoon';
-import EditLagoon from 'pages/edit-lagoon';
-import Beach from 'pages/beach';
-import BeachInventory from 'pages/beach-inventory';
-import Trident from 'pages/trident';
-import Offshore from 'pages/offshore';
-import TridentMetadata from 'pages/trident-metadata';
-import LagoonMetadata from 'pages/lagoon-metadata';
-import SurveyMidreach from 'pages/survey-midreach';
-import SurveyDepredations from 'pages/survey-depredations';
-import SurveyScarp from 'pages/survey-scarp';
-import SurveyFalseCrawl from 'pages/survey-false-crawls';
+import NewReport from './pages/new-report';
+import Lagoon from './pages/lagoon';
+import EditLagoon from './pages/edit-lagoon';
+import Beach from './pages/beach';
+import BeachInventory from './pages/beach-inventory';
+import Trident from './pages/trident';
+import Offshore from './pages/offshore';
+import TridentMetadata from './pages/trident-metadata';
+import LagoonMetadata from './pages/lagoon-metadata';
+import SurveyMidreach from './pages/survey-midreach';
+import SurveyDepredations from './pages/survey-depredations';
+import SurveyScarp from './pages/survey-scarp';
+import SurveyFalseCrawl from './pages/survey-false-crawls';
 
 
 function App() {
