@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import logo from 'logo.svg';
-import 'App.css';
-import { Button } from 'reactstrap';
-import axios from 'axios';
+import { PrivateRoute } from './util/auth-util';
+import './App.css';
+import { Amplify, Auth } from 'aws-amplify';
+import config from "./aws-exports";
 
 // Import pages
 // Unlogged in pages
@@ -35,45 +35,73 @@ import SurveyDepredations from './pages/survey-depredations';
 import SurveyScarp from './pages/survey-scarp';
 import SurveyFalseCrawl from './pages/survey-false-crawls';
 
+Amplify.configure(config);
 
-function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          {/* Non-logged in pages */}
-          <Route exact path='/' component={LandingPage} />
-          <Route exact path='/about' component={About} />
-          <Route exact path='/contact' component={Contact} />
-          <Route exact path='/login' component={Login} />
+class App extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+          isAuthenticated: false
+      }
+  }
 
-          {/* Logged in pages */}
-          <Route exact path='/home' component={Home} />
-          <Route exact path='/reports-list' component={ReportsListHub} />
-          <Route exact path='/reports/example-turtle' component={SingleReport} />
-          <Route exact path='/reports/:id' component={SingleReport} />
-          <Route exact path='/data-analytics' component={DataAnalytics} />
+  userHasAuthenticated = (value) => {
+      this.setState({ isAuthenticated: value });
+  }
 
-          <Route exact path='/new-report' component={NewReport} />
-          <Route exact path='/new-report/lagoon' component={Lagoon} />
-          <Route exact path='/edit/lagoon' component={EditLagoon} />
-          <Route exact path='/new-report/beach' component={Beach} />
-          <Route exact path='/new-report/trident' component={Trident} />
-          <Route exact path='/new-report/offshore' component={Offshore} />
-          <Route exact path='/new-report/lagoon-metadata' component={LagoonMetadata} />
-          <Route exact path='/new-report/trident-metadata' component={TridentMetadata} />
-          <Route exact path='/new-report/survey-midreach' component={SurveyMidreach} />
-          <Route exact path='/new-report/survey-depredations' component={SurveyDepredations} />
-          <Route exact path='/new-report/survey-scarp' component={SurveyScarp} />
-          <Route exact path='/new-report/survey-false-crawl' component={SurveyFalseCrawl} />
+  async componentDidMount() {
+    try {
+      await Auth.currentSession();
+      this.userHasAuthenticated(true);
+      console.log(await Auth.currentSession);
+    }
+    catch(e) {
+      if (e !== 'No current user') {
+        alert(e);
+        this.props.history.push("/login");
+      }
+    }
+}
 
-          <Route exact path='/new-report/beach-inventory' component={BeachInventory} />
-
-          <Route component={Error} />  {/* When no other route matches */}
-        </Switch>
-      </Router>
-    </div>
-  );
+  render() {
+    return (
+      <div className="App">
+        <Router>
+          <Switch>
+            {/* Non-logged in pages */}
+            <Route exact path='/' component={LandingPage} />
+            <Route exact path='/about' component={About} />
+            <Route exact path='/contact' component={Contact} />
+            <Route exact path='/login' component={Login} />
+  
+            {/* Logged in pages */}
+            <PrivateRoute exact path='/home' component={Home} />
+            <PrivateRoute exact path='/reports-list' component={ReportsListHub} />
+            <PrivateRoute exact path='/reports/example-turtle' component={SingleReport} />
+            <PrivateRoute exact path='/reports/:id' component={SingleReport} />
+            <PrivateRoute exact path='/data-analytics' component={DataAnalytics} />
+  
+            <PrivateRoute exact path='/new-report' component={NewReport} />
+            <PrivateRoute exact path='/new-report/lagoon' component={Lagoon} />
+            <PrivateRoute exact path='/edit/lagoon' component={EditLagoon} />
+            <PrivateRoute exact path='/new-report/beach' component={Beach} />
+            <PrivateRoute exact path='/new-report/trident' component={Trident} />
+            <PrivateRoute exact path='/new-report/offshore' component={Offshore} />
+            <PrivateRoute exact path='/new-report/lagoon-metadata' component={LagoonMetadata} />
+            <PrivateRoute exact path='/new-report/trident-metadata' component={TridentMetadata} />
+            <PrivateRoute exact path='/new-report/survey-midreach' component={SurveyMidreach} />
+            <PrivateRoute exact path='/new-report/survey-depredations' component={SurveyDepredations} />
+            <PrivateRoute exact path='/new-report/survey-scarp' component={SurveyScarp} />
+            <PrivateRoute exact path='/new-report/survey-false-crawl' component={SurveyFalseCrawl} />
+  
+            <PrivateRoute exact path='/new-report/beach-inventory' component={BeachInventory} />
+  
+            <Route component={Error} />  {/* When no other route matches */}
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
 }
 
 export default App;

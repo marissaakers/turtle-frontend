@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import './index.css';
+import { Auth } from 'aws-amplify';
+import { getUsername } from '../../util/auth-util';
 
 class InternalNavbar extends React.Component {
+
+  handleLogout = async event => {
+    await Auth.signOut();
+    localStorage.removeItem('userToken');
+  }
+
   render() {
     return(
       <>
@@ -13,8 +21,8 @@ class InternalNavbar extends React.Component {
            <div className="collapse navbar-collapse" id="main-navigation">
               <ul className="navbar-nav">
               </ul>
-              <a href="/">
-                 <button className="btn btn-outline-secondary" id="login-button"><b>Logout</b></button>
+              <a href="/login">
+                 <button className="btn btn-outline-secondary" id="login-button" onClick={this.handleLogout}><b>Logout</b></button>
               </a>
            </div>
         </nav>
