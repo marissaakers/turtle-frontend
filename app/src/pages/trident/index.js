@@ -8,8 +8,8 @@ import { confirmAlert } from 'react-confirm-alert';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
-import TagInputs from '../../pages/lagoon/tagInputs'
-import SampleInputs from '../../pages/lagoon/sampleInputs'
+import TagInputs from '../../pages/lagoon/tagInputs.js'
+import SampleInputs from '../../pages/lagoon/sampleInputs.js'
 import axios from "axios";
 
 const TITLE = 'New Trident report'

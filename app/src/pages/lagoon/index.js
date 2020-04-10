@@ -8,8 +8,8 @@ import { confirmAlert } from 'react-confirm-alert';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
-import TagInputs from './tagInputs'
-import SampleInputs from './sampleInputs'
+import TagInputs from './tagInputs.js'
+import SampleInputs from './sampleInputs.js'
 import axios from "axios";
 
 const TITLE = 'New Lagoon report'

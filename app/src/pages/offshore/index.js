@@ -3,8 +3,8 @@ import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from 're
 import { Redirect } from 'react-router-dom'
 import { Link }from 'react-router-dom'
 import { Helmet } from 'react-helmet';
-import TagInputs from './tagInputs';
-import SampleInputs from './sampleInputs'
+import TagInputs from './tagInputs.js';
+import SampleInputs from './sampleInputs.js'
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
