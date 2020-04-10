@@ -3,6 +3,8 @@ import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from 're
 import { Redirect } from 'react-router-dom'
 import { Link }from 'react-router-dom'
 import { Helmet } from 'react-helmet';
+import TagInputs from './tagInputs';
+import SampleInputs from './sampleInputs'
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
@@ -17,6 +19,8 @@ class Offshore extends Component {
     super(props)
 
     this.state = {
+      tagsList: [{tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "", magnet_off: "" }],
+      samplesList: [{sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
       data : [],
       error: false,
       redirect:false
@@ -26,9 +30,37 @@ class Offshore extends Component {
 
   }
 
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value })
+  onChange= (e) => {
+    if(["tag_number", "tag_type", "active", "tag_scars", "pit", "scanned", "scanner_number"].includes(e.target.name)){
+      let tagsList = [...this.state.tagsList];
+      let updatedValue = e.target.value;
+      if (updatedValue === "true" || updatedValue == "false") {
+        updatedValue = JSON.parse(updatedValue);
+    }
+      tagsList[e.target.dataset.id][e.target.name] = updatedValue;
+      this.setState({ tagsList }, () => console.log(this.state.tagsList));
+    } else if(["sample_type", "received_by", "purpose_of_sample", "notes"].includes(e.target.name)){
+      let samplesList = [...this.state.samplesList];
+      samplesList[e.target.dataset.id][e.target.name] = e.target.value;
+      this.setState({ samplesList }, () => console.log(this.state.samplesList))
+    } else {
+
+
+      this.setState({ [e.target.name]: e.target.value })
   }
+}
+
+  addTagRow = (e) => {
+    this.setState((prevState) => ({
+      tagsList: [...prevState.tagsList, {tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "" }],
+    }));
+  };
+
+  addSampleRow = (e) => {
+    this.setState((prevState) => ({
+      samplesList: [...prevState.samplesList, {sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
+    }));
+  };
 
   renderRedirect = () => {
    if (this.state.redirect) {
@@ -39,6 +71,20 @@ class Offshore extends Component {
 
   handleSubmit = async(e) => {
      e.preventDefault();
+
+     if(this.state.species == "other"){
+       this.state.species = this.state.species_other
+     }
+
+     for(var i=0; i< this.state.tagsList.length; i++){
+       console.log(this.state.tagsList[i].tag_number)
+     }
+
+     for(var i=0; i< this.state.samplesList.length; i++){
+       this.state.samplesList[i].entered_date = this.state.entered_date_2;
+       this.state.samplesList[i].entered_by = this.state.entered_by_2;
+     }
+
 
 
      const data = {
@@ -70,15 +116,7 @@ class Offshore extends Component {
      		trip_number: this.state.trip_number,
      		capture_habitat: this.state.capture_habitat,
      		notes: this.state.notes,
-     		samples: [{
-     			sample_type: this.state.sample_type,
-     			received_by: this.state.received_by,
-     			purpose_of_sample: this.state.purpose_of_sample,
-     			notes: this.state.notes,
-     			entered_date: this.state.entered_date,
-     			entered_by: this.state.entered_by
-     			}
-     		],
+     		samples: this.state.samplesList,
      		morphometrics: {
           plastron_length: parseFloat(this.state.plastron_length),
           flipper_damage: this.state.flipper_damage,
@@ -94,16 +132,7 @@ class Offshore extends Component {
           tail_length_pl_vent: parseFloat(this.state.tail_length_pl_tip),
           carapace_damage: this.state.carapace_damage
      		},
-     		tags: [{
-          tag_number: this.state.tag_number,
-          tag_type: "LF",
-          active: true,
-          tag_scars: JSON.parse(this.state.tag_scars),
-          pit: true,
-          scanned: JSON.parse(this.state.scanned),
-          scanner_number: "123456"
-     			}
-     		]
+        tags: this.state.tagsList
      	}
 
      };
@@ -123,6 +152,8 @@ class Offshore extends Component {
          });
   }
   render() {
+    let { tagsList, samplesList, data } = this.state;
+
     return(
       <>
         <Helmet>
@@ -135,7 +166,7 @@ class Offshore extends Component {
 
             <h1><b>OFFSHORE DATA SHEET</b></h1>
 
-            <form>
+            <form action="" onSubmit={this.handleSubmit} onChange={this.onChange} >
             <div className="justify-content-center row pb-2 pt-2">
             <div className="col-sm-10 mr-2 ml-2 border pr-3 pl-3 pb-3 pt-3">
 
@@ -146,28 +177,28 @@ class Offshore extends Component {
               <div className="form-group row">
                 <label htmlFor="trip-num" className="col-4 col-form-label">Trip #:</label>
                 <div className="col-6">
-                <input className="form-control" type="text" name="trip_number" onChange={e => this.onChange(e)}/>
+                <input className="form-control" type="text" name="trip_number" />
                 </div>
               </div>
 
               <div className="form-row mb-3">
               <label htmlFor="species" className="col-4 col-form-label">Species:</label>
                   <div className="col-2">
-                  <select className="form-control" name="species" value={this.value} onChange={e => this.onChange(e)}>
+                  <select className="form-control" name="species" value={this.value} >
                      <option value="Cc">Cc</option>
                      <option value="Cm">Cm</option>
                      <option value="other">Other</option>
                    </select>
                   </div>
                 <div className="col-4">
-                  <input type="text" className="form-control" placeholder="other" name="species" onChange={e => this.onChange(e)}/>
+                  <input type="text" className="form-control" placeholder="other" name="species" />
                 </div>
               </div>
 
               <div className="form-group row">
                 <label htmlFor="capture-habitat" className="col-4 col-form-label">Capture habitat:</label>
                 <div className="col-6">
-                <input className="form-control" type="text" name="capture_habitat" onChange={e => this.onChange(e)}/>
+                <input className="form-control" type="text" name="capture_habitat" />
                 </div>
               </div>
 
@@ -182,7 +213,7 @@ class Offshore extends Component {
                 <div className="form-group row">
                   <label htmlFor="capture-date" className="col-5 col-form-label">Capture Date:</label>
                   <div className="col-7">
-                    <input className="form-control" type="date" name="capture_date" onChange={e => this.onChange(e)}/>
+                    <input className="form-control" type="date" name="capture_date" />
                   </div>
                 </div>
 
@@ -190,18 +221,18 @@ class Offshore extends Component {
                 <div className="form-group row">
                   <label htmlFor="capture-time" className="col-5 col-form-label">Capture Time:</label>
                   <div className="col-7">
-                  <input className="form-control" type="time" name="capture_time" onChange={e => this.onChange(e)}/>
+                  <input className="form-control" type="time" name="capture_time" />
                   </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-group col-md-6">
                     <label htmlFor="capture-location">Capture Location N:</label>
-                    <input className="form-control" type="text" name="capture_latitude" onChange={e => this.onChange(e)}/>
+                    <input className="form-control" type="text" name="capture_latitude" />
                   </div>
                   <div className="form-group col-md-6">
                     <label htmlFor="capture-location">Capture Location W:</label>
-                    <input className="form-control" type="text" name="capture_longitude" onChange={e => this.onChange(e)}/>
+                    <input className="form-control" type="text" name="capture_longitude" />
                   </div>
                   </div>
 
@@ -212,21 +243,21 @@ class Offshore extends Component {
                 <div className="form-group row">
                   <label htmlFor="cloud-cover" className="col-5 col-form-label">Cloud cover:</label>
                   <div className="col-7">
-                  <input className="form-control" type="text" name="cloud_cover" onChange={e => this.onChange(e)}/>
+                  <input className="form-control" type="text" name="cloud_cover" />
                   </div>
                 </div>
 
                 <div className="form-group row">
                   <label htmlFor="seas" className="col-5 col-form-label">Seas:</label>
                   <div className="col-7">
-                  <input className="form-control" type="text" name="seas" onChange={e => this.onChange(e)}/>
+                  <input className="form-control" type="text" name="seas" />
                   </div>
                 </div>
 
                 <div className="form-group row">
                   <label htmlFor="wind" className="col-5 col-form-label">Wind:</label>
                   <div className="col-7">
-                  <input className="form-control" type="text" name="wind" onChange={e => this.onChange(e)}/>
+                  <input className="form-control" type="text" name="wind" />
                   </div>
                 </div>
 
@@ -234,67 +265,29 @@ class Offshore extends Component {
                 </div>
               </div>
 
-              <form>
                 <div className="form-row">
                   <div className="form-group col-md-5">
                     <label htmlFor="water-temp">Sargassum Water Temp:</label>
-                    <input className="form-control" type="text" name="capture_sargassum_water_temp" onChange={e => this.onChange(e)} />
+                    <input className="form-control" type="text" name="capture_sargassum_water_temp"  />
                     </div>
                   <div className="form-group col-md-4">
                     <label htmlFor="water-temp">Open Water Temp:</label>
-                    <input className="form-control" type="text" name="capture_open_water_temp" onChange={e => this.onChange(e)} />
+                    <input className="form-control" type="text" name="capture_open_water_temp"  />
                     </div>
                   <div className="form-group col-md-3">
                     <label htmlFor="water-temp">Air Temp:</label>
-                    <input className="form-control" type="text" name="capture_air_temp" onChange={e => this.onChange(e)} />
+                    <input className="form-control" type="text" name="capture_air_temp"  />
                   </div>
                 </div>
-              </form>
 
               </div>
 
 
               <h4>Tags:</h4>
 
-    <div class="container border pt-3 mb-3">
-              <form>
-                <div className="form-row">
-                  <div className="form-group col-md-4">
-                    <label htmlFor="tags">Satellite Tag Applied:</label>
-                    <select className="form-control" name="scanned" value={this.value} >
-                      <option>Yes/No</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                     </select>
-                    </div>
-                  <div className="form-group col-md-4">
-                    <label htmlFor="tags">Satellite Tag ID:</label>
-                    <input className="form-control" type="text" name="wind_dir" />
-                    </div>
-                  <div className="form-group col-md-4">
-                    <label htmlFor="tags">Magnet Off:</label>
-                    <input className="form-control" type="text" name="wind_dir" />
-                  </div>
-                    </div>
 
-                <div className="form-row">
-                  <div className="form-group col-md-3">
-                    <label htmlFor="tags">PIT Tag: Scanned:</label>
-                    <select className="form-control" name="scanned" value={this.value} onChange={e => this.onChange(e)}>
-                      <option>Yes/No</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                     </select>
-                    </div>
-                  <div className="form-group col-md-5">
-                    <label htmlFor="tags">PIT Tag:</label>
-                    <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
-                    </div>
-                    </div>
-              </form>
-              </div>
-
-
+                <TagInputs add={this.addTagRow} tagsList={tagsList} />
+                <button onClick={this.addTagRow} type="button" className="btn btn-primary text-center mb-3" tagsList={tagsList}>ADD NEW TAGS</button>
 
 
 
@@ -305,50 +298,50 @@ class Offshore extends Component {
           <div className="form-row">
             <div className="form-group col-md-6">
               <label htmlFor="curved-length">Curved Length (notch-tip):</label>
-              <input className="form-control" type="text" name="curved_length" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input className="form-control" type="text" name="curved_length" placeholder="in cm" />
             </div>
             <div className="form-group col-md-5">
               <label htmlFor="curved-width">Curved Width (widest):</label>
-              <input className="form-control" type="text" name="curved_width" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input className="form-control" type="text" name="curved_width" placeholder="in cm" />
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="straight-length">Straight Length (notch-tip):</label>
-              <input className="form-control" type="text" name="straight_length" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input className="form-control" type="text" name="straight_length" placeholder="in cm" />
             </div>
             <div className="form-group col-md-5">
               <label htmlFor="straight-width">Straight Width (widest):</label>
-              <input type="form-control" name="straight_width" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input type="form-control" name="straight_width" className="form-control" placeholder="in cm" />
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="min-length">Minimum Length (notch-notch):</label>
-              <input type="form-control" name="minimum_length" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input type="form-control" name="minimum_length" className="form-control" placeholder="in cm" />
             </div>
             <div className="form-group col-md-5">
               <label htmlFor="tail-length">Tail Length: PL-vent</label>
-              <input type="form-control" name="tail_length_pl_vent" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input type="form-control" name="tail_length_pl_vent" className="form-control" placeholder="in cm" />
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="plastron-length">Plastron Length (tape):</label>
-              <input type="form-control" name="plastron_length" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input type="form-control" name="plastron_length" className="form-control" placeholder="in cm" />
             </div>
             <div className="form-group col-md-5">
               <label htmlFor="pl-tip">PL-Tip:</label>
-              <input type="form-control" name="tail_length_pl_tip" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input type="form-control" name="tail_length_pl_tip" className="form-control" placeholder="in cm" />
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="weight">Weight in kg: *tare scale</label>
-              <input type="form-control" name="weight" className="form-control" placeholder="in kg" onChange={e => this.onChange(e)}/>
+              <input type="form-control" name="weight" className="form-control" placeholder="in kg" />
             </div>
             <div className="form-group col-md-5">
               <label htmlFor="head-width">Head Width (straight):</label>
-              <input type="form-control" name="head_width" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input type="form-control" name="head_width" className="form-control" placeholder="in cm" />
             </div>
             <div className="form-group col-md-6">
 
             </div>
             <div className="form-group col-md-5">
               <label htmlFor="body-depth">Body Depth (straight):</label>
-              <input type="form-control" name="body_depth" className="form-control" placeholder="in cm" onChange={e => this.onChange(e)}/>
+              <input type="form-control" name="body_depth" className="form-control" placeholder="in cm" />
             </div>
           </div>
 
@@ -360,88 +353,24 @@ class Offshore extends Component {
 
                 <h4>Samples:</h4>
 
-                    <div class="container border pt-3 mb-3">
-                <form>
-                  <div className="form-row">
-                  <label htmlFor="blood" className="col-3 col-form-label">Blood:</label>
-                      <div className="col-3 mb-2">
-                      <select className="form-control" onChange={e => this.onChange(e)}>
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                    <div className="col-4">
-                      <input type="text" className="form-control" placeholder="For"/>
-                    </div>
+              <div class="container border pt-3 mb-3">
+
+              <div className="form-row">
+                  <div className="form-group col-md-5">
+                    <label htmlFor="entered_date">Entered Date:</label>
+                    <input className="form-control" name="entered_date_2" type="date" />
                   </div>
-
-                  <div className="form-row">
-                  <label htmlFor="skin" className="col-3 col-form-label">Skin #1:</label>
-                      <div className="col-3 mb-2">
-                      <select className="form-control" onChange={e => this.onChange(e)}>
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                    <div className="col-4">
-                      <input type="text" className="form-control" placeholder="For"/>
-                    </div>
+                  <div className="form-group col-md-5">
+                    <label htmlFor="entered-by">Entered By:</label>
+                    <input className="form-control" type="text" name="entered_by_2"/>
                   </div>
-
-                  <div className="form-row">
-                  <label htmlFor="scute" className="col-3 col-form-label">Skin #2:</label>
-                      <div className="col-3 mb-2">
-                      <select className="form-control" onChange={e => this.onChange(e)}>
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                    <div className="col-4">
-                      <input type="text" className="form-control" placeholder="For"/>
-                    </div>
-                  </div>
-
-                  <div className="form-row">
-                  <label htmlFor="scute" className="col-3 col-form-label">Scute:</label>
-                      <div className="col-3 mb-2">
-                      <select className="form-control" onChange={e => this.onChange(e)}>
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                    <div className="col-4">
-                      <input type="text" className="form-control" placeholder="For"/>
-                    </div>
-                  </div>
+                </div>
 
 
-                  <div className="form-row">
-                  <label htmlFor="scute" className="col-3 col-form-label">Sargassum:</label>
-                      <div className="col-3 mb-2">
-                      <select className="form-control" onChange={e => this.onChange(e)}>
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                    <div className="col-4">
-                      <input type="text" className="form-control" placeholder="For"/>
-                    </div>
-                  </div>
+                <SampleInputs add={this.addSampleRow} samplesList={samplesList} />
+                <button onClick={this.addSampleRow} type="button" className="btn btn-primary text-center mb-3" samplesList={samplesList}>ADD NEW SAMPLE</button>
 
 
-                  <div className="form-row">
-                  <label htmlFor="scute" className="col-3 col-form-label">Other:</label>
-                      <div className="col-3 mb-2">
-                      <select className="form-control" onChange={e => this.onChange(e)}>
-                         <option>Yes</option>
-                         <option>No</option>
-                       </select>
-                      </div>
-                    <div className="col-4">
-                      <input type="text" className="form-control" placeholder="What"/>
-                    </div>
-                  </div>
-                </form>
 
                 <h5>Flipper Damage:</h5>
                   <div className="col-sm-12">
@@ -459,31 +388,30 @@ class Offshore extends Component {
 
 
     <div class="container border pt-3 mb-3">
-                <form>
 
                 <div className="form-row">
                     <div className="form-group col-md-5">
                       <label htmlFor="curved-length">Release Location N:</label>
-                      <input className="form-control" type="text" onChange={e => this.onChange(e)}/>
+                      <input className="form-control" type="text" />
                     </div>
                     <div className="form-group col-md-5">
                       <label htmlFor="curved-width">Release Location W:</label>
-                      <input className="form-control" type="text" onChange={e => this.onChange(e)}/>
+                      <input className="form-control" type="text" />
                     </div>
                   </div>
 
                   <div className="form-row">
                     <div className="form-group col-md-3">
                       <label htmlFor="release-time">Release Time:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                       </div>
                     <div className="form-group col-md-5">
                       <label htmlFor="sargassum-water">Sargassum Water Temp:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                       </div>
                     <div className="form-group col-md-4">
                       <label htmlFor="sargassum-salinity">Sargassum Salinity:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                     </div>
                   </div>
 
@@ -491,22 +419,22 @@ class Offshore extends Component {
                   <div className="form-row">
                     <div className="form-group col-md-3">
                       <label htmlFor="air-temp">Air Temp:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                       </div>
                     <div className="form-group col-md-5">
                       <label htmlFor="openwater-temp">Open Water Temp:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                       </div>
                     <div className="form-group col-md-4">
                       <label htmlFor="openwater-salinity">Open Water Salinity:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                     </div>
                   </div>
 
                   <div className="form-row">
                     <div className="form-group col-md-3">
                       <label htmlFor="drifter1">Drifter Released:</label>
-                      <select className="form-control" name="scanned" value={this.value} onChange={e => this.onChange(e)}>
+                      <select className="form-control" name="scanned" value={this.value} >
                         <option>Yes/No</option>
                         <option value="true">Yes</option>
                         <option value="false">No</option>
@@ -514,11 +442,11 @@ class Offshore extends Component {
                       </div>
                     <div className="form-group col-md-5">
                       <label htmlFor="drifter1">Drifter #1 ID:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                       </div>
                     <div className="form-group col-md-4">
                       <label htmlFor="drifter1">Drifter #1 Type:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                     </div>
                   </div>
 
@@ -526,15 +454,14 @@ class Offshore extends Component {
                     <div className="form-group col-md-3"></div>
                     <div className="form-group col-md-5">
                       <label htmlFor="drifter2">Drifter #2 ID:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                       </div>
                     <div className="form-group col-md-4">
                       <label htmlFor="drifter2">Drifter #2 Type:</label>
-                      <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
+                      <input className="form-control" type="text" name="wind_dir"  />
                     </div>
                   </div>
 
-                </form>
 
 </div>
                 <h4>Notes:</h4>
@@ -549,11 +476,10 @@ class Offshore extends Component {
                   </div>
               </div>
 
+              <button type="submit" className="btn btn-primary">SUBMIT</button>
 
             </form>
 
-
-            <button type="submit" className="btn btn-primary">SUBMIT</button>
           </div>
 
         <InternalFooter />

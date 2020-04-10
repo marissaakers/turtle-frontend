@@ -8,7 +8,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
-import TagInputs from './TagInputs'
+import TagInputs from './tagInputs'
 import SampleInputs from './sampleInputs'
 import axios from "axios";
 
@@ -21,7 +21,7 @@ class Lagoon extends React.Component {
     super(props)
 
     this.state = {
-      tagsList: [{tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "" }],
+      tagsList: [{tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "", magnet_off: null}],
       samplesList: [{sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
       data : [],
       metadata: undefined,
@@ -73,7 +73,7 @@ class Lagoon extends React.Component {
 
   addTagRow = (e) => {
     this.setState((prevState) => ({
-      tagsList: [...prevState.tagsList, {tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "" }],
+      tagsList: [...prevState.tagsList, {tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "" , magnet_off: null}],
     }));
   };
 

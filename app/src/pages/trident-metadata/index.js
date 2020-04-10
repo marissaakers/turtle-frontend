@@ -160,7 +160,7 @@ class TridentMetadata extends Component {
 
 
 
-     axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/lagoon/metadata/insert',
+     axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/tident/metadata/insert',
        data, { headers: {'Content-Type': 'application/json'} })
          .then(res => {
            console.log(data)
