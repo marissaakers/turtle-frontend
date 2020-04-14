@@ -136,8 +136,13 @@ class Login extends React.Component {
     let loginResult;
     try {
       // Try to sign in
-      loginResult = await Auth.signIn(this.state.username, this.state.password);
+      const loginResult = await Auth.signIn(this.state.username, this.state.password);
       const userInfo = await Auth.currentUserInfo();
+      // This happens when they log in for the first time with their temp password
+      if ("challengeName" in loginResult && loginResult["challengeName"] === "NEW_PASSWORD_REQUIRED") {
+        this.setState({ userObject: loginResult, currentState: "showNewPassword" });
+        return;
+      }
       // This happens if they haven't yet verified their email
       if (!("email_verified" in userInfo["attributes"])) {
         await Auth.verifyCurrentUserAttribute("email");
@@ -149,15 +154,10 @@ class Login extends React.Component {
       localStorage.setItem('userToken', session.getAccessToken());
       this.props.history.push('/home');
     } catch(err) {
-      // This happens when they log in for the first time with their temp password
-      if ("challengeName" in loginResult && loginResult["challengeName"] === "NEW_PASSWORD_REQUIRED") {
-        this.setState({ userObject: loginResult, currentState: "showNewPassword" });
-        return;
-      }
       // No match for the username/password
-      // if ("code" in err && err["code"] === "NotAuthorizedException") {
-      //   console.log("400 ahahhhahahhahahah") // replace this with showing the user an error or something
-      // }
+      if ("code" in err && err["code"] === "NotAuthorizedException") {
+        document.getElementById("error").innerHTML = err.message;
+      }
     }
   }
 
@@ -229,10 +229,9 @@ class Login extends React.Component {
                     </div>
                   </div>
                 </form>
+                <span id="error"></span>
               </div>
           </div>
-
-          <p><a href="home">Link to user homepage (as if logged in).</a></p>
         </div>
 
         <ExternalFooter />
