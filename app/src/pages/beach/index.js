@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button'
 import { Link }from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
+import TagInputs from './tagInputs';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import axios from "axios";
@@ -17,6 +18,7 @@ class Beach extends Component {
     super(props)
 
     this.state = {
+      tagsList: [{tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "" }],
       data : [],
       error: false,
       redirect:false
@@ -27,8 +29,32 @@ class Beach extends Component {
   }
 
   onChange(e) {
-    this.setState({ [e.target.name]: e.target.value })
+    if(["tag_number", "tag_type", "active", "tag_scars", "pit", "scanned", "scanner_number"].includes(e.target.name)){
+      let tagsList = [...this.state.tagsList];
+      let updatedValue = e.target.value;
+      if (updatedValue === "true" || updatedValue == "false") {
+        updatedValue = JSON.parse(updatedValue);
+    }
+      tagsList[e.target.dataset.id][e.target.name] = updatedValue;
+      this.setState({ tagsList }, () => console.log(this.state.tagsList));
+    } else {
+
+      this.setState({ [e.target.name]: e.target.value })
   }
+}
+
+  addTagRow = (e) => {
+    this.setState((prevState) => ({
+      tagsList: [...prevState.tagsList, {tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "" }],
+    }));
+  };
+
+  addSampleRow = (e) => {
+    this.setState((prevState) => ({
+      samplesList: [...prevState.samplesList, {sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
+    }));
+  };
+
 
   renderRedirect = () => {
    if (this.state.redirect) {
@@ -39,6 +65,11 @@ class Beach extends Component {
 
   handleSubmit = async(e) => {
      e.preventDefault();
+
+     for(var i=0; i< this.state.tagsList.length; i++){
+       console.log(this.state.tagsList[i].tag_number)
+     }
+
 
 
      const data = {
@@ -61,6 +92,9 @@ class Beach extends Component {
          });
   }
   render() {
+
+    let { tagsList, data } = this.state;
+
 
     return(
       <>
@@ -135,6 +169,9 @@ class Beach extends Component {
             </div>
           </div>
 
+</div>
+<div className="col-sm-6">
+
 
           <div className="form-group row">
             <label htmlFor="example-text-input" className="col-5 col-form-label">Activity:</label>
@@ -168,87 +205,23 @@ class Beach extends Component {
 
           <div className="form-group row">
             <label htmlFor="example-text-input" className="col-5 col-form-label">Investigators:</label>
-            <div className="col-7">
+            <div className="col-12">
               <input className="form-control" type="text" onChange={e => this.onChange(e)} />
             </div>
           </div>
 
 
-          </div>
-          <div className="col-sm-6">
 
-          <h5><b>Tag Information: </b></h5>
-          <div className="form-group row">
-            <label htmlFor="example-text-input" className="col-5 col-form-label">Prime Tag:</label>
-            <div className="col-7">
-            <input className="form-control" type="text" id="example-text-input"/>
             </div>
-          </div>
 
-          <div className="form-group row">
-            <label htmlFor="example-text-input" className="col-5 col-form-label">Tag Scar:</label>
-            <div className="col-7">
-                <select className="form-control" id="exampleFormControlSelect1">
-                    <option>LF</option>
-                    <option>RF</option>
-                    <option>NONE</option>
-                </select>
+            <h5><b>Tag Information: </b></h5> <br></br>
+
+
+                <TagInputs add={this.addTagRow} tagsList={tagsList} />
+                <button onClick={this.addTagRow} type="button" className="btn btn-primary text-center mb-3" tagsList={tagsList}>ADD NEW TAGS</button>
+
+
               </div>
-            </div>
-
-        <div className="form-group row">
-              <label htmlFor="example-text-input" className="col-5 col-form-label">Tag #: LF/LR</label>
-              <div className="col-7">
-                    <input className="form-control" type="text" id="example-text-input"/>
-              </div>
-        </div>
-
-          <div className="form-group row">
-                <label htmlFor="example-text-input" className="col-5 col-form-label">Tag #: RF/RR</label>
-                <div className="col-7">
-                    <input className="form-control" type="text" id="example-text-input"/>
-                </div>
-          </div>
-
-
-          <div className="form-group row">
-            <label htmlFor="example-text-input" className="col-5 col-form-label">Pit Tag: Scanned:</label>
-            <div className="col-7">
-            <select className="form-control" id="exampleFormControlSelect1">
-               <option>Yes</option>
-               <option>No</option>
-             </select>
-            </div>
-          </div>
-
-          <div className="form-group row">
-            <label htmlFor="example-text-input" className="col-5 col-form-label">Pit Tag:</label>
-            <div className="col-7">
-                <select className="form-control" id="exampleFormControlSelect1">
-                    <option>New</option>
-                    <option>Old</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label htmlFor="example-date-input" className="col-5 col-form-label">Scanner #:</label>
-              <div className="col-7">
-                <input className="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label htmlFor="example-text-input" className="col-5 col-form-label">Pit Tag: Location:</label>
-              <div className="col-7">
-                  <select className="form-control" id="exampleFormControlSelect1">
-                      <option>RR</option>
-                      <option>RF</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            </div>
 
 
           <h5><b>Morphometrics: </b></h5>
@@ -278,27 +251,8 @@ class Beach extends Component {
                 <input type="form-control" className="form-control" placeholder="in cm"/>
               </div>
               <div className="form-group col-md-6">
-                <label htmlFor="tail-length">Tail Length: PL-vent</label>
-                <input type="form-control" className="form-control" placeholder="in cm"/>
-              </div>
-              <div className="form-group col-md-6">
-                <label htmlFor="plastron-length">Plastron Length (tape):</label>
-                <input type="form-control" className="form-control" placeholder="in cm"/>
-              </div>
-              <div className="form-group col-md-6">
-                <label htmlFor="pl-tip">PL-Tip:</label>
-                <input type="form-control" className="form-control" placeholder="in cm"/>
-              </div>
-              <div className="form-group col-md-6">
-                <label htmlFor="weight">Weight in kg: *tare scale</label>
-                <input type="form-control" className="form-control" placeholder="in kg"/>
-              </div>
-              <div className="form-group col-md-6">
                 <label htmlFor="head-width">Head Width (straight):</label>
                 <input type="form-control" className="form-control"/>
-              </div>
-              <div className="form-group col-md-6">
-
               </div>
             </div>
 
@@ -334,7 +288,7 @@ class Beach extends Component {
 
                 <div className="form-group col-md-3">
                   <label htmlFor="inputPassword4">Photo Taken By:</label>
-                  <input type="password" className="form-control" id="inputPassword4" />
+                  <input type="text" className="form-control" />
 
                 </div>
 
@@ -439,7 +393,7 @@ class Beach extends Component {
                 </div>
               <div className="form-group col-md-4">
                 <label htmlFor="inputPassword4">Placement:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
               </div>
             </div>
 
@@ -451,15 +405,15 @@ class Beach extends Component {
             <div className="form-row">
               <div className="form-group col-md-3">
                 <label htmlFor="inputEmail4">HIDDEN STAKE:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
                 </div>
               <div className="form-group col-md-4">
                 <label htmlFor="inputPassword4">Planted In:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
                 </div>
               <div className="form-group col-md-5">
                 <label htmlFor="inputPassword4">DIST TO DUNE:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
               </div>
             </div>
 
@@ -468,15 +422,15 @@ class Beach extends Component {
             <div className="form-row">
               <div className="form-group col-md-3">
                 <label htmlFor="inputEmail4">OBVIOUS STAKE:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
                 </div>
               <div className="form-group col-md-4">
                 <label htmlFor="inputPassword4">Planted In:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
                 </div>
               <div className="form-group col-md-5">
                 <label htmlFor="inputPassword4">DIST TO HIGH TIDE:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
               </div>
             </div>
 
@@ -485,15 +439,15 @@ class Beach extends Component {
             <div className="form-row">
               <div className="form-group col-md-3">
                 <label htmlFor="inputEmail4">CAN BURIED:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
                 </div>
               <div className="form-group col-md-4">
                 <label htmlFor="inputPassword4">SIGN STAKE IN PLACE:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
                 </div>
               <div className="form-group col-md-5">
                 <label htmlFor="inputPassword4">Turtle found scarp >=46cm:</label>
-                <input type="password" className="form-control" id="inputPassword4" />
+                <input type="text" className="form-control" id="inputPassword4" />
               </div>
             </div>
 

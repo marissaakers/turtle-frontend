@@ -74,6 +74,8 @@ class SingleReport extends React.Component {
 
     let encounterJson = "{ \"encounter_id\": " + this.props.location.state.encounterId + "}";
     let metadataJson = '{ "metadata_id": ' + this.props.location.state.metadataId + '}';
+
+
     console.log(encounterJson);
     console.log(metadataJson);
     this.loadReport(encounterJson, metadataJson);
@@ -115,16 +117,16 @@ class SingleReport extends React.Component {
       const tagScarsList = [];
       const pitTagsList = [];
       for (var i = 0; i < _encounter.tags.length; i++) {
-        tagsList.push( <li class="list-group-item">{ _encounter.tags[i].tag_number }</li> )
-        tagTypeList.push( <li class="list-group-item">{ _encounter.tags[i].tag_type }</li> )
-        tagScarsList.push( <li class="list-group-item"> {_encounter.tags[i].tag_scars} </li> )
-        pitTagsList.push( <li class="list-group-item">{ _encounter.tags[i].scanner_number }</li> )
+        tagsList.push( <li className="list-group-item">{ _encounter.tags[i].tag_number }</li> )
+        tagTypeList.push( <li className="list-group-item">{ _encounter.tags[i].tag_type }</li> )
+        tagScarsList.push( <li className="list-group-item"> {_encounter.tags[i].tag_scars} </li> )
+        pitTagsList.push( <li className="list-group-item">{ _encounter.tags[i].scanner_number }</li> )
       }
 
       const tagScars = [];
       for (var i = 0; i < tagScarsList.length; i++) {
         tagScarsList[i] = tagScarsList[i]==false ? 'No' : 'Yes';
-        tagScars.push(<li class="list-group-item">{tagScarsList[i]}</li>)
+        tagScars.push(<li className="list-group-item">{tagScarsList[i]}</li>)
 
       }
       const incidentalCapturesList = [];
@@ -136,10 +138,10 @@ class SingleReport extends React.Component {
       const sampleReceivedList = [];
       const sampleNotesList = [];
       for (i = 0; i < _encounter.samples.length; i++) {
-        sampleTypeList.push( <li class="list-group-item">{ _encounter.samples[i].sample_type }</li> )
-        samplePurposeList.push( <li class="list-group-item">{ _encounter.samples[i].purpose_of_sample }</li>)
-        sampleReceivedList.push( <li class="list-group-item">{ _encounter.samples[i].received_by }</li>)
-        sampleNotesList.push( <li class="list-group-item">{ _encounter.samples[i].notes }</li> )
+        sampleTypeList.push( <li className="list-group-item">{ _encounter.samples[i].sample_type }</li> )
+        samplePurposeList.push( <li className="list-group-item">{ _encounter.samples[i].purpose_of_sample }</li>)
+        sampleReceivedList.push( <li className="list-group-item">{ _encounter.samples[i].received_by }</li>)
+        sampleNotesList.push( <li className="list-group-item">{ _encounter.samples[i].notes }</li> )
 
       }
 
@@ -206,7 +208,7 @@ class SingleReport extends React.Component {
           </div>
 
           <h4>Tags:</h4>
-          <div class="container border mb-3">
+          <div className="container border mb-3">
 
           <div className="form-group row">
             <label htmlFor="tag-numbers" className="col-3 col-form-label">Tag #:</label>
@@ -215,28 +217,28 @@ class SingleReport extends React.Component {
             <label htmlFor="tag-type" className="col-2 col-form-label">Scanned:</label>
             <label htmlFor="tag-type" className="col-3 col-form-label">Pit Tag #:</label>
 
-            <div className="col-3">
-            <ul class="list-group">
+            <div className="col-3 pr-0 pl-1 ml-0 mr-0">
+            <ul className="list-group pl-0 ml-0">
             {tagsList}
             </ul>
             </div>
             <div className="col-2">
-            <ul class="list-group">
+            <ul className="list-group">
             { tagTypeList }
             </ul>
             </div>
             <div className="col-2">
-            <ul class="list-group">
+            <ul className="list-group">
             { tagScars }
             </ul>
             </div>
             <div className="col-2">
-            <ul class="list-group">
+            <ul className="list-group">
             { tagScars }
             </ul>
             </div>
             <div className="col-3">
-            <ul class="list-group">
+            <ul className="list-group">
             { pitTagsList }
             </ul>
             </div>
@@ -257,7 +259,7 @@ class SingleReport extends React.Component {
 
             <h4>Morphometrics:</h4>
 
-            <div class="container border pt-3 mb-3">
+            <div className="container border pt-3 mb-3">
 
               <div className="form-row">
                 <div className="form-group col-md-6">
@@ -318,7 +320,7 @@ class SingleReport extends React.Component {
 
               <h4>Samples:</h4>
 
-              <div class="container border pt-3 mb-3 pb-3">
+              <div className="container border pt-3 mb-3 pb-3">
 
               <div className="form-row">
               <label htmlFor="samples" className="col-2 col-form-label">Type:</label>
@@ -331,25 +333,25 @@ class SingleReport extends React.Component {
 
                 <div className="form-row mb-3">
                 <div className="col-2">
-                <ul class="list-group">
+                <ul className="list-group">
                 { sampleTypeList }
                 </ul>
                 </div>
 
                 <div className="col-2">
-                <ul class="list-group">
+                <ul className="list-group">
                   { sampleReceivedList }
                 </ul>
                 </div>
 
                 <div className="col-4">
-                <ul class="list-group">
+                <ul className="list-group">
                   { samplePurposeList }
                 </ul>
                 </div>
 
                   <div className="col-4">
-                  <ul class="list-group">
+                  <ul className="list-group">
                     { sampleNotesList }
                   </ul>
                   </div>
@@ -473,6 +475,275 @@ class SingleReport extends React.Component {
                   <button type="SUBMIT"  className="btn btn-primary mt-3 mb-3">EDIT FORM</button>
                 </div>
             </div>
+
+            <h5>METADATA</h5>
+
+            <div className="justify-content-center row pb-2 pt-2">
+            <div className="col-sm-10 mr-2 ml-2 border pr-3 pl-3 pb-3 pt-3">
+
+            <div className="row text-left">
+              <div className="col-sm-5">
+
+              <div className="form-group row">
+                <label htmlFor="date" className="col-4 col-form-label">Date</label>
+                <div className="col-6">
+                  <input className="form-control" type="date" name="metadata_date" value={ _metadata.metadata_date } onChange={e => this.onChange(e)} />
+                </div>
+              </div>
+
+              <div className="form-group row">
+                <label htmlFor="location" className="col-4 col-form-label">Location</label>
+                <div className="col-6">
+                  <input className="form-control" type="text" name= "metadata_location" value={ _metadata.metadata_location } onChange={e => this.onChange(e)} />
+                </div>
+              </div>
+
+              <div className="form-group row">
+                <label htmlFor="investigators" className="col-4 col-form-label">Investigators</label>
+                <div className="col-8">
+                  <input className="form-control" type="text" name= "metadata_investigators" value={ _encounter.investigated_by }  onChange={e => this.onChange(e)} />
+                </div>
+              </div>
+
+              <div className="form-group row">
+                <label htmlFor="investigators" className="col-4 col-form-label">Entered by</label>
+                <div className="col-6">
+                  <input className="form-control" type="text" name= "entered_by"  onChange={e => this.onChange(e)} />
+                </div>
+              </div>
+
+
+              <h5><b>Turtle Capture Data: </b></h5>
+
+              <div class="container border pt-3 mb-3">
+
+                <div className="form-group row">
+                  <label htmlFor="cc-number" className="col-4 col-form-label">Cc:</label>
+                  <div className="col-6">
+                    <input className="form-control" type="text" name="number_of_cc_captured" value={ _metadata.number_of_cc_captured } onChange={e => this.onChange(e)} />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label htmlFor="cm-number" className="col-4 col-form-label">Cm:</label>
+                  <div className="col-6">
+                    <input className="form-control" type="text" name= "number_of_cm_captured" value={ _metadata.number_of_cm_captured } onChange={e => this.onChange(e)} />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label htmlFor="other-number" className="col-4 col-form-label">Other:</label>
+                  <div className="col-6">
+                    <input className="form-control" type="text" name= "number_of_other_captured" onChange={e => this.onChange(e)} value={ _metadata.number_of_other_captured } />
+                  </div>
+                </div>
+
+              </div>
+
+              <h5><b>Net Set Data: </b></h5>
+
+              <div class="container border pt-3 mb-3">
+
+              <h5><b>Net Deploy: </b></h5>
+              <div className="form-group row">
+                <label htmlFor="net-start" className="col-4 col-form-label">Start:</label>
+                <div className="col-6">
+                <input className="form-control" type="time" name="net_deploy_start_time"   onChange={e => this.onChange(e)} />
+                </div>
+              </div>
+
+              <div className="form-group row">
+                <label htmlFor="net-end" className="col-4 col-form-label">End:</label>
+                <div className="col-6">
+                <input className="form-control" type="time" name="net_deploy_end_time"  id="example-time-input" onChange={e => this.onChange(e)} />
+                </div>
+              </div>
+
+              <h5><b>Net Retreival: </b></h5>
+
+              <div className="form-group row">
+                <label htmlFor="net-start" className="col-4 col-form-label">Start:</label>
+                <div className="col-6">
+                <input className="form-control" type="time" name="net_retrieval_start_time"  id="example-time-input" onChange={e => this.onChange(e)} />
+                </div>
+              </div>
+
+              <div className="form-group row">
+                <label htmlFor="net-end" className="col-4 col-form-label">End:</label>
+                <div className="col-6">
+                <input className="form-control" type="time" name="net_retrieval_end_time" id="example-time-input" onChange={e => this.onChange(e)} />
+                </div>
+              </div>
+          </div>
+              </div>
+              <div className="col-sm-7">
+
+              <h5><b>Environmental Data: </b></h5>
+
+              <div class="container border pt-3 mb-3">
+
+                    <div className="form-row">
+                      <div className="form-group col-md-4">
+                        <label htmlFor="water-sample">Water Sample:</label>
+                            <select className="form-control" name="water_sample" value={ _metadata.water_sample} onChange={e => this.onChange(e)}>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                            </select>
+                        </div>
+                      <div className="form-group col-md-2">
+                        <label htmlFor="wind-spd">Wind Spd:</label>
+                        <input className="form-control" type="text" name="wind_speed" value={ _metadata.wind_speed} onChange={e => this.onChange(e)} />
+                        </div>
+                      <div className="form-group col-md-2">
+                        <label htmlFor="wind-dir">Wind Dir:</label>
+                        <input className="form-control" type="text" name="wind_dir" value={ _metadata.wind_dir} onChange={e => this.onChange(e)} />
+                        </div>
+                      <div className="form-group col-md-4">
+                        <label htmlFor="environment_time">Time:</label>
+                        <input className="form-control" type="time" name="environment_time" value={ _metadata.environment_time} onChange={e => this.onChange(e)}/>
+                      </div>
+                    </div>
+
+
+
+                    <div className="form-row">
+                      <div className="form-group col-md-4">
+                        <label htmlFor="weather">Weather:</label>
+                        <select className="form-control" name="weather" value={ _metadata.weather} onChange={e => this.onChange(e)}>
+                          <option value="">-</option>
+                          <option value="Sunny">Sunny</option>
+                          <option value="Partly Cloudy">Partly Cloudy</option>
+                          <option value="Overcast">Overcast</option>
+                          <option value="Rain">Rain</option>
+                        </select>
+                        </div>
+                      <div className="form-group col-md-4">
+                        <label htmlFor="other-weather">Other:</label>
+                        <input className="form-control" type="text" name="weather_other" value={ _metadata.other} onChange={e => this.onChange(e)} />
+                        </div>
+                    </div>
+
+
+
+                <div className="form-group row">
+                      <label htmlFor="air-temp" className="col-2 col-form-label">Air Temp:</label>
+                      <div className="col-3">
+                          <input className="form-control" type="text" name="air_temp" value={ _metadata.air_temp} onChange={e => this.onChange(e)} />
+                      </div>
+                </div>
+
+
+
+
+                  <div className="row">
+                    <div className="col">
+
+                        <h5><b>Water Temp: </b></h5>
+
+                        <div className="form-group row">
+                          <label htmlFor="surface-temp" className="col-4 col-form-label">Surface:</label>
+                          <div className="col-6">
+                            <input className="form-control" type="text" name="water_temp_surface" value={ _metadata.water_temp_surface} onChange={e => this.onChange(e)} />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                          <label htmlFor="1m-temp" className="col-4 col-form-label">1m:</label>
+                          <div className="col-6">
+                            <input className="form-control" type="text" name="water_temp_1_m" value={ _metadata.water_temp_1_m} onChange={e => this.onChange(e)} />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                          <label htmlFor="2m-temp" className="col-4 col-form-label">2m:</label>
+                          <div className="col-6">
+                            <input className="form-control" type="text" name="water_temp_2_m" value={ _metadata.water_temp_2_m} onChange={e => this.onChange(e)} />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                          <label htmlFor="bottom-temp" className="col-4 col-form-label">Bottom:</label>
+                          <div className="col-6">
+                            <input className="form-control" type="text" name="water_temp_bottom" value={ _metadata.water_temp_bottom} onChange={e => this.onChange(e)} />
+                          </div>
+                        </div>
+
+
+                    </div>
+                    <div className="col">
+                      <h5><b>Salinity: </b></h5>
+                      <div className="form-group row">
+                        <label htmlFor="surface-salinity" className="col-4 col-form-label">Surface:</label>
+                        <div className="col-6">
+                          <input className="form-control" type="text" name="salinity_surface" value={ _metadata.salinity_surface} onChange={e => this.onChange(e)} />
+                        </div>
+                      </div>
+
+                      <div className="form-group row">
+                        <label htmlFor="1m-salinity" className="col-4 col-form-label">1m:</label>
+                        <div className="col-6">
+                          <input className="form-control" type="text" name="salinity_1_m" value={ _metadata.salinity_1_m} onChange={e => this.onChange(e)} />
+                        </div>
+                      </div>
+
+                      <div className="form-group row">
+                        <label htmlFor="2m-salinity" className="col-4 col-form-label">2m:</label>
+                        <div className="col-6">
+                          <input className="form-control" type="text" name="salinity_2_m" value={ _metadata.salinity_2_m} onChange={e => this.onChange(e)} />
+                        </div>
+                      </div>
+
+                      <div className="form-group row">
+                        <label htmlFor="bottom-salinity" className="col-4 col-form-label">Bottom:</label>
+                        <div className="col-6">
+                          <input className="form-control" type="text" name="salinity_bottom"  value={ _metadata.salinity_bottom} onChange={e => this.onChange(e)} />
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <h5><b>Incidental Capture Data: </b></h5>
+
+                <div class="container border pt-3 mb-3">
+
+                <div className="form-group row">
+                  <label htmlFor="incidental-species" className="col-4 col-form-label">Species:</label>
+                  <div className="col-6">
+                    <input className="form-control" type="text" name="species"  onChange={e => this.onChange(e)} />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label htmlFor="incidental-time" className="col-4 col-form-label">Time:</label>
+                  <div className="col-6">
+                  <input className="form-control" type="time" name="capture_time"   onChange={e => this.onChange(e)} />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label htmlFor="incidental-measurement" className="col-4 col-form-label">Measurement:</label>
+                  <div className="col-6">
+                    <input className="form-control" type="text" name="measurement"  onChange={e => this.onChange(e)} />
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label htmlFor="incidental-notes" className="col-4 col-form-label">Notes:</label>
+                  <div className="col-6">
+                    <input className="form-control" type="text" name="notes"   onChange={e => this.onChange(e)} />
+                  </div>
+                </div>
+                </div>
+
+                </div>
+            </div>
+          </div>
+          </div>
+
+
 
         </div>
 
