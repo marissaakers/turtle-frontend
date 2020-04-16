@@ -8,7 +8,7 @@ import InternalFooter from '../../components/internal-footer';
 import axios from "axios";
 import '../shared/internal.css';
 
-const TITLE = 'Midreach Survey Sheet'
+const TITLE = 'South Reach Survey Sheet'
 
 const inputNamesArr_nestsStart = 0;
 const inputNamesArr_falseCrawlsStart = 144;
@@ -591,7 +591,7 @@ const inputNamesArr = [
   "km_14_on_a_cm_fc" // 432 OR 576 total (i think)
 ];
 
-class SurveyMidreach extends Component {
+class SurveySouthReach extends Component {
 
   constructor(props){
     super(props)
@@ -599,8 +599,8 @@ class SurveyMidreach extends Component {
     this.state = {
       data : [],
       redirect: false,
-      startKm: 2.5,
-      endKm: 14.5
+      startKm: 5.0,
+      endKm: 2.5
     }
 
     this.nest_rowSumArr = [];
@@ -611,7 +611,7 @@ class SurveyMidreach extends Component {
     this.falseCrawls_CMcolSumArr = [];
 
     let n = 0;
-    for (let i = this.state.startKm; i < this.state.endKm; i += 0.5) {
+    for (let i = this.state.startKm * -1; i < this.state.endKm; i += 0.5) {
       // Cc
       this.nest_rowSumArr[n] = React.createRef();
       this.falseCrawls_rowSumArr[n] = React.createRef();
@@ -655,7 +655,7 @@ class SurveyMidreach extends Component {
     console.log("In handleSubmit.");
 
     const data = {
-      type : "mid",
+      type : "south",
       date : this.state.date,
       initials : this.state.initials,
       notes : this.state.notes,
@@ -1398,15 +1398,23 @@ class SurveyMidreach extends Component {
 
     // Fill out rows
     let rowNum = 0;
-    for (let i = startKm; i < endKm; i += 0.5) {
+    let rowNameStr;
+    for (let i = startKm * -1; i < endKm; i += 0.5) {
       if (n > inputNamesArr_falseCrawlsStart) {
         console.error("n = " + n + " is greater than inputNamesArr_falseCrawlsStart = " + inputNamesArr_falseCrawlsStart);
+      }
+
+      if (i < 0) {
+        rowNameStr = (-1*i - 0.5).toFixed(1) + "-" + (-1*i).toFixed(1) + " S";
+      }
+      else {
+        rowNameStr = (i).toFixed(1) + "-" + (i + 0.5).toFixed(1) + " N";
       }
 
       tableRows.push (
         <>
           <tr key={key++}>
-            <td rowSpan="2" className="center-td" key={key++}> { i.toFixed(1) }-{ (i+0.5).toFixed(1) }</td>
+            <td rowSpan="2" className="center-td" key={key++}>{ rowNameStr }</td>
             <td key={key++} className="center-td">Cc</td>
             <td key={key++}> <input data-rownum={rowNum} data-colnum="0" data-table="nests" className="form-control" type="number" name={ inputNamesArr[n++] } /> </td>
             <td key={key++}> <input data-rownum={rowNum} data-colnum="1" data-table="nests" className="form-control" type="number" name={ inputNamesArr[n++] } /> </td>
@@ -1476,15 +1484,23 @@ class SurveyMidreach extends Component {
 
     // Fill out rows
     let rowNum = 0;
-    for (let i = startKm; i < endKm; i += 0.5) {
+    let rowNameStr;
+    for (let i = startKm * -1; i < endKm; i += 0.5) {
       if (n >= inputNamesArr.length) {
         console.error("n = " + n + " is greater than or equal to inputNamesArr.length = " + inputNamesArr.length);
+      }
+
+      if (i < 0) {
+        rowNameStr = (-1*i - 0.5).toFixed(1) + "-" + (-1*i).toFixed(1) + " S";
+      }
+      else {
+        rowNameStr = (i).toFixed(1) + "-" + (i + 0.5).toFixed(1) + " N";
       }
 
       tableRows.push (
         <>
           <tr key={key++}>
-            <td rowSpan="2" className="center-td" key={key++}> { i.toFixed(1) }-{ (i+0.5).toFixed(1) }</td>
+            <td rowSpan="2" className="center-td" key={key++}>{ rowNameStr }</td>
             <td key={key++} className="bold-right-border center-td">Cc</td>
             <td key={key++}> <input data-rownum={rowNum} data-colnum="0" data-table="falseCrawls" className="form-control" type="number" name={ inputNamesArr[n++] } /> </td>
             <td key={key++}> <input data-rownum={rowNum} data-colnum="1" data-table="falseCrawls" className="form-control" type="number" name={ inputNamesArr[n++] } /> </td>
@@ -1673,7 +1689,7 @@ class SurveyMidreach extends Component {
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
 
         <div className="container-fluid survey-container">
-          <h1><b>MIDREACH SURVEY SHEET</b></h1><br></br>
+          <h1><b>SOUTH REACH SURVEY SHEET</b></h1><br></br>
           <hr />
           <div className="pb-4"></div>
 
@@ -1838,4 +1854,4 @@ class SurveyMidreach extends Component {
 
 
 
-export default SurveyMidreach;
+export default SurveySouthReach;

@@ -31,6 +31,9 @@ import Offshore from './pages/offshore';
 import TridentMetadata from './pages/trident-metadata';
 import LagoonMetadata from './pages/lagoon-metadata';
 import SurveyMidreach from './pages/survey-midreach';
+import SurveyPAFB from './pages/survey-pafb';
+import SurveySouthReach from './pages/survey-south-reach';
+
 import SurveyDepredations from './pages/survey-depredations';
 import SurveyScarp from './pages/survey-scarp';
 import SurveyFalseCrawl from './pages/survey-false-crawls';
@@ -73,14 +76,14 @@ class App extends React.Component {
             <Route exact path='/about' component={About} />
             <Route exact path='/contact' component={Contact} />
             <Route exact path='/login' component={Login} />
-  
+
             {/* Logged in pages */}
             <PrivateRoute exact path='/home' component={Home} />
             <PrivateRoute exact path='/reports-list' component={ReportsListHub} />
             <PrivateRoute exact path='/reports/example-turtle' component={SingleReport} />
             <PrivateRoute exact path='/reports/:id' component={SingleReport} />
             <PrivateRoute exact path='/data-analytics' component={DataAnalytics} />
-  
+
             <PrivateRoute exact path='/new-report' component={NewReport} />
             <PrivateRoute exact path='/new-report/lagoon' component={Lagoon} />
             <PrivateRoute exact path='/edit/lagoon' component={EditLagoon} />
@@ -90,12 +93,15 @@ class App extends React.Component {
             <PrivateRoute exact path='/new-report/lagoon-metadata' component={LagoonMetadata} />
             <PrivateRoute exact path='/new-report/trident-metadata' component={TridentMetadata} />
             <PrivateRoute exact path='/new-report/survey-midreach' component={SurveyMidreach} />
+            <PrivateRoute exact path='/new-report/survey-pafb' component={SurveyPAFB} />
+            <PrivateRoute exact path='/new-report/survey-south-reach' component={SurveySouthReach} />
+
             <PrivateRoute exact path='/new-report/survey-depredations' component={SurveyDepredations} />
             <PrivateRoute exact path='/new-report/survey-scarp' component={SurveyScarp} />
             <PrivateRoute exact path='/new-report/survey-false-crawl' component={SurveyFalseCrawl} />
-  
+
             <PrivateRoute exact path='/new-report/beach-inventory' component={BeachInventory} />
-  
+
             <Route component={Error} />  {/* When no other route matches */}
           </Switch>
         </Router>
