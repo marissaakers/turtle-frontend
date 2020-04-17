@@ -43,7 +43,7 @@ class ReportsListHub extends React.Component {
               </ul>
 
               <div className="tab-content">
-               <div className='tab-pane container fade in show active' id='s1'>{ <ReportsListLagoon /> }</div>
+               <div className='tab-pane container fade show active' id='s1'>{ <ReportsListLagoon /> }</div>
                <div className='tab-pane container fade' id='s2'>{ <ReportsListTrident /> }</div>
                <div className='tab-pane container fade' id='s3'>{ <ReportsListBeach /> }</div>
                <div className='tab-pane container fade' id='s4'>{ <ReportsListOffshore /> }</div>

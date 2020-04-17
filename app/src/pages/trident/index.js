@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap'
 import { Link }from 'react-router-dom'
 import ReactDOM from "react-dom";
-import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import { confirmAlert } from 'react-confirm-alert';
 import InternalNavbar from '../../components/internal-navbar';
@@ -11,6 +10,7 @@ import '../shared/internal.css';
 import TagInputs from '../../pages/lagoon/tagInputs.js'
 import SampleInputs from '../../pages/lagoon/sampleInputs.js'
 import axios from "axios";
+import SubmitConfirmModal from '../../components/submit-confirm-modal';
 
 const TITLE = 'New Trident report'
 
@@ -92,13 +92,6 @@ class Trident extends React.Component {
     }));
   };
 
-  renderRedirect = () => {
-   if (this.state.redirect) {
-     return <Redirect to='/new-report/' />
-   }
- }
-
-
   handleSubmit = async(e) => {
        e.preventDefault();
 
@@ -172,7 +165,7 @@ class Trident extends React.Component {
         console.log(data)
         console.log("Successfully posted!")
         alert('Lagoon Encounter Recorded.')
-        this.setState({redirect:true})
+        this.setState({modalIsShowing: true})
 
       })
       .catch(error => {
@@ -480,9 +473,12 @@ class Trident extends React.Component {
                 </div>
             </div>
 
-            {this.renderRedirect()}
             <button type="submit" className="btn btn-primary">SUBMIT</button>
 
+            <SubmitConfirmModal
+              show={this.state.modalIsShowing}
+              // redirectURL="/home"
+            />
           </form>
 
         </div>

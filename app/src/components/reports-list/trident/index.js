@@ -12,6 +12,7 @@ class ReportsListTrident extends React.Component {
   constructor(props) {
     super(props);
 
+    this.formRef = React.createRef();
     this.formDefaults = {
       'tags': [],
       'species': 'all',
@@ -133,7 +134,7 @@ class ReportsListTrident extends React.Component {
   clearForm = (event) => {
     event.preventDefault();
     // Reset values
-    document.getElementById("filter-form").reset();
+    this.formRef.current.reset();
     this.setState({form: this.formDefaults});
     this.setState({numTagInputs: 1});
     this.loadReportsList('{}');
@@ -167,7 +168,6 @@ class ReportsListTrident extends React.Component {
     }
     this.state.form.tags.pop();
   }
-
 
   deleteFunc = async(id) => {
 
@@ -216,7 +216,6 @@ class ReportsListTrident extends React.Component {
      window.location.reload(false);
     }
   }
-
 
   // RENDER HELPERS
 
@@ -294,7 +293,7 @@ class ReportsListTrident extends React.Component {
       );
 
       turtleRows.push(
-        <tr key={key++}>
+        <tr key={key++} id={_data[i].encounter_id}>
           { turtleRow }
         </tr>
       );
@@ -427,7 +426,7 @@ class ReportsListTrident extends React.Component {
 
         {/* FILTERS */}
         <div className="container-fluid">
-          <form id="filter-form" onSubmit={this.mySubmitHandler}>
+          <form ref={this.formRef} onSubmit={this.mySubmitHandler}>
             {/* Row 1 */}
             <div className="row pb-2 pt-2">
 

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap'
 import { Link }from 'react-router-dom'
-import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import axios from "axios";
 import '../shared/internal.css';
+import SubmitConfirmModal from '../../components/submit-confirm-modal';
 
 const TITLE = 'PAFB Survey Sheet'
 
@@ -633,12 +633,6 @@ class SurveyPAFB extends Component {
     // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to='/new-report' />
-    }
-  }
-
   valToInt (val) {
     let output = parseInt(val);
     if (isNaN(output)) {
@@ -1262,7 +1256,7 @@ class SurveyPAFB extends Component {
       console.log(data)
       console.log("Successfully posted!")
       // alert('Midreach Survey Recorded.')
-      this.setState({redirect:true})
+      this.setState({modalIsShowing: true})
 
     })
     .catch(error => {
@@ -1825,10 +1819,14 @@ class SurveyPAFB extends Component {
               </div>
             </div>
             <button type="submit" className="btn btn-primary mt-5">SUBMIT</button>
+
+            <SubmitConfirmModal
+              show={this.state.modalIsShowing}
+              onHide={() => this.setState({modalIsShowing: false})}
+              // redirectURL="/home"
+            />
           </form>
         </div>
-
-        {this.renderRedirect()}
 
         <InternalFooter />
       </>

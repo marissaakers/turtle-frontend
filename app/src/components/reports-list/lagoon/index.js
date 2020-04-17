@@ -12,6 +12,7 @@ class ReportsListLagoon extends React.Component {
   constructor(props) {
     super(props);
 
+    this.formRef = React.createRef();
     this.formDefaults = {
       'tags': [],
       'species': 'all',
@@ -47,7 +48,7 @@ class ReportsListLagoon extends React.Component {
         verified_by: this.formDefaults.verified_by,
         investigated_by: this.formDefaults.investigated_by,
         entered_by: this.formDefaults.entered_by
-      },
+      }
     }
   }
 
@@ -133,8 +134,14 @@ class ReportsListLagoon extends React.Component {
   clearForm = (event) => {
     event.preventDefault();
     // Reset values
-    document.getElementById("filter-form").reset();
+    this.formRef.current.reset();
     this.setState({form: this.formDefaults});
+    // Reset tags
+    let myForm = { ...this.state.form };
+    for (let i = 0; i < myForm['tags'].length; i++) {
+      myForm['tags'][i] = '';
+    }
+
     this.setState({numTagInputs: 1});
     this.loadReportsList('{}');
   }
@@ -211,10 +218,10 @@ class ReportsListLagoon extends React.Component {
   }
 
   renderRedirect = () => {
-   if (this.state.redirect) {
+  if (this.state.redirect) {
      window.location.reload(false);
-   }
- }
+    }
+  }
 
   // RENDER HELPERS
 
@@ -361,6 +368,7 @@ class ReportsListLagoon extends React.Component {
   getTagInputBlock (m_key) {
     let key = m_key.key;
     let tagInputBlock = [];
+    let myForm = { ...this.state.form };
 
     // Tag input fields
     for (let i = 0; i < this.state.numTagInputs; i++) {
@@ -370,7 +378,8 @@ class ReportsListLagoon extends React.Component {
             <input className="form-control"
               type="text"
               name={'tag-' +  i}
-              onChange={this.myChangeHandler} />
+              onChange={this.myChangeHandler}
+              value={ myForm['tags'][i] } />
           </div>
         </div>
       );
@@ -425,7 +434,7 @@ class ReportsListLagoon extends React.Component {
 
         {/* FILTERS */}
         <div className="container-fluid">
-          <form id="filter-form" onSubmit={this.mySubmitHandler}>
+          <form ref={this.formRef} onSubmit={this.mySubmitHandler}>
             {/* Row 1 */}
             <div className="row pb-2 pt-2">
 

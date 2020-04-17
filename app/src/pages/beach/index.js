@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
 import { Link }from 'react-router-dom'
-import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import TagInputs from './tagInputs';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import axios from "axios";
+import SubmitConfirmModal from '../../components/submit-confirm-modal';
 
 
 
@@ -56,14 +56,6 @@ class Beach extends Component {
     }));
   };
 
-
-  renderRedirect = () => {
-   if (this.state.redirect) {
-     return <Redirect to='/new-report/beach-inventory' />
-   }
- }
-
-
   handleSubmit = async(e) => {
      e.preventDefault();
 
@@ -85,7 +77,7 @@ class Beach extends Component {
          .then(res => {
            console.log(data)
            console.log("Successfully posted!")
-           this.setState({redirect:true})
+           this.setState({modalIsShowing: true})
          })
          .catch(error => {
            console.log(error.response)
@@ -511,6 +503,10 @@ class Beach extends Component {
 
       <button type="submit" className="btn btn-primary">SUBMIT</button>
 
+      <SubmitConfirmModal
+        show={this.state.modalIsShowing}
+        // redirectURL="/home"
+      />
       </form>
 
         </div>
