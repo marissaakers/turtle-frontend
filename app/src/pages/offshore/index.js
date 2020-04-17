@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from 'react-bootstrap'
-import { Redirect } from 'react-router-dom'
 import { Link }from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import TagInputs from './tagInputs.js';
@@ -9,6 +8,7 @@ import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
 import axios from "axios";
+import SubmitConfirmModal from '../../components/submit-confirm-modal';
 
 
 const TITLE = 'New Offshore Report'
@@ -61,13 +61,6 @@ class Offshore extends Component {
       samplesList: [...prevState.samplesList, {sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
     }));
   };
-
-  renderRedirect = () => {
-   if (this.state.redirect) {
-     return <Redirect to='/new-report/lagoon' />
-   }
- }
-
 
   handleSubmit = async(e) => {
      e.preventDefault();
@@ -144,7 +137,7 @@ class Offshore extends Component {
          .then(res => {
            console.log(data)
            console.log("Successfully posted!")
-           this.setState({redirect:true})
+           this.setState({modalIsShowing: true})
          })
          .catch(error => {
            console.log(error.response)
@@ -478,6 +471,10 @@ class Offshore extends Component {
 
               <button type="submit" className="btn btn-primary">SUBMIT</button>
 
+              <SubmitConfirmModal
+                show={this.state.modalIsShowing}
+                // redirectURL="/home"
+              />
             </form>
 
           </div>
