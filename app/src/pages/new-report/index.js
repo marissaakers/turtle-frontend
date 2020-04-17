@@ -50,8 +50,6 @@ class NewReport extends React.Component {
     );
 
     this.setState({metadata: metadata.data});
-
-    console.log("this.state.metadata.metadata_id = " + this.state.metadata.metadata_id);
     return (this.state.metadata.metadata_id);
   }
 
@@ -74,6 +72,8 @@ class NewReport extends React.Component {
       if(getMetadataID != undefined){
         this.setState({redirectLagoon: true})
       }
+
+      console.log(getMetadataID);
 
     }
 
@@ -146,7 +146,7 @@ class NewReport extends React.Component {
 						<Modal.Title>Lagoon Metadata Date</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>Enter a date from the input box below. <br></br>
-          <input className="form-control" type="date" name="metadata_date" onChange={e => this.handleSubmitLagoon(e)}/> <br></br>
+          <input className="form-control" type="date" name="metadata_date" onClick={e => this.handleSubmitLagoon(e)}/> <br></br>
           If metadata for that date exists, you will be forwarded to the encounter sheet.
           If not, you must enter metadata for that date in order to enter an encounter.
           </Modal.Body>

@@ -151,6 +151,8 @@ class SingleReport extends React.Component {
           <p>Here we display the values of the report.</p>
 
 
+          <div className="fullform">
+
 
       <div className="justify-content-center row pb-2 pt-2">
           <div className="col-sm-10 mr-2 ml-2 border pr-5 pl-5 pb-3 pt-3">
@@ -744,7 +746,7 @@ class SingleReport extends React.Component {
           </div>
 
 
-
+          </div>
         </div>
 
       )
@@ -757,6 +759,15 @@ class SingleReport extends React.Component {
         </Helmet>
         <InternalNavbar />
         <p align="left" className="pl-4"><a href="/reports-list/">← back</a></p>
+
+        <style type="text/css">
+            {`
+            .fullform {
+              zoom: 70%;
+            }
+            `}
+          </style>
+
 
         { displayBlock }
         <InternalFooter />
