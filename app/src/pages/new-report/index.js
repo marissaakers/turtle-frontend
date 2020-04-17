@@ -27,6 +27,8 @@ class NewReport extends React.Component {
         require('./beach-preview.png'),
         require('./offshore-preview.png'),
         require('./midreach-survey-preview.png'),
+        require('./south-reach-survey-preview.png'),
+        require('./pafb-survey-preview.png'),
         require('./depredations-preview.png'),
         require('./false-crawl-preview.png'),
         require('./scarp-preview.png'),
@@ -228,9 +230,35 @@ class NewReport extends React.Component {
 
                 <div className="row">
                   <a role="button"
-                     href='new-report/survey-depredations'
+                     href='new-report/survey-south-reach'
                      className={ this.getBoxHighlightedClassName(5)}
                      onMouseOver={(e) => {this.mousedOverFormOption(e, 5)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
+                    <div className="choose-form-button-contents pl-2" align="left">
+                      <h5><b>SOUTH REACH SURVEY</b></h5>
+                      <p>This is a description.</p>
+                    </div>
+                  </a>
+                </div>
+
+                <div className="row">
+                  <a role="button"
+                     href='new-report/survey-pafb'
+                     className={ this.getBoxHighlightedClassName(6)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 6)}}
+                     onMouseLeave={this.mouseLeftFormOption} >
+                    <div className="choose-form-button-contents pl-2" align="left">
+                      <h5><b>PAFB SURVEY</b></h5>
+                      <p>This is a description.</p>
+                    </div>
+                  </a>
+                </div>
+
+                <div className="row">
+                  <a role="button"
+                     href='new-report/survey-depredations'
+                     className={ this.getBoxHighlightedClassName(7)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 7)}}
                      onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
                       <h5><b>DEPREDATIONS</b></h5>
@@ -241,8 +269,8 @@ class NewReport extends React.Component {
                 <div className="row">
                   <a role="button"
                      href='new-report/survey-false-crawl'
-                     className={ this.getBoxHighlightedClassName(6)}
-                     onMouseOver={(e) => {this.mousedOverFormOption(e, 6)}}
+                     className={ this.getBoxHighlightedClassName(8)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 8)}}
                      onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
                       <h5><b>FALSE CRAWL</b></h5>
@@ -253,8 +281,8 @@ class NewReport extends React.Component {
                 <div className="row">
                   <a role="button"
                      href='new-report/survey-scarp'
-                     className={ this.getBoxHighlightedClassName(7)}
-                     onMouseOver={(e) => {this.mousedOverFormOption(e, 7)}}
+                     className={ this.getBoxHighlightedClassName(9)}
+                     onMouseOver={(e) => {this.mousedOverFormOption(e, 9)}}
                      onMouseLeave={this.mouseLeftFormOption} >
                     <div className="choose-form-button-contents pl-2" align="left">
                       <h5><b>SCARP</b></h5>
@@ -268,7 +296,7 @@ class NewReport extends React.Component {
               <img src={require('./tall-arrow.png')} width='30px' height='70px'/>
             </div>
             <div className="col-sm-3">
-              <div style={{height:'190px'}}></div>
+              <div style={{height:'280px'}}></div>
               <img src={ this.state.previewImage } height='367px' className="border shadow bg-white"/>
             </div>
           </div>

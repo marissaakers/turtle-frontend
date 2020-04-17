@@ -31,6 +31,9 @@ import Offshore from './pages/offshore';
 import TridentMetadata from './pages/trident-metadata';
 import LagoonMetadata from './pages/lagoon-metadata';
 import SurveyMidreach from './pages/survey-midreach';
+import SurveyPAFB from './pages/survey-pafb';
+import SurveySouthReach from './pages/survey-south-reach';
+
 import SurveyDepredations from './pages/survey-depredations';
 import SurveyScarp from './pages/survey-scarp';
 import SurveyFalseCrawl from './pages/survey-false-crawls';
@@ -92,13 +95,14 @@ class App extends React.Component {
             <PrivateRoute exact path='/new-report/lagoon-metadata' component={LagoonMetadata} />
             <PrivateRoute exact path='/new-report/trident-metadata' component={TridentMetadata} />
             <PrivateRoute exact path='/new-report/survey-midreach' component={SurveyMidreach} />
+            <PrivateRoute exact path='/new-report/survey-pafb' component={SurveyPAFB} />
+            <PrivateRoute exact path='/new-report/survey-south-reach' component={SurveySouthReach} />
+
             <PrivateRoute exact path='/new-report/survey-depredations' component={SurveyDepredations} />
             <PrivateRoute exact path='/new-report/survey-scarp' component={SurveyScarp} />
             <PrivateRoute exact path='/new-report/survey-false-crawl' component={SurveyFalseCrawl} />
 
             <PrivateRoute exact path='/new-report/beach-inventory' component={BeachInventory} />
-
-            <PrivateRoute exact path='/api/capture/sample' component={TrackingEntryList} />
 
             <Route component={Error} />  {/* When no other route matches */}
           </Switch>

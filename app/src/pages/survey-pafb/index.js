@@ -8,7 +8,7 @@ import InternalFooter from '../../components/internal-footer';
 import axios from "axios";
 import '../shared/internal.css';
 
-const TITLE = 'Midreach Survey Sheet'
+const TITLE = 'PAFB Survey Sheet'
 
 const inputNamesArr_nestsStart = 0;
 const inputNamesArr_falseCrawlsStart = 144;
@@ -591,7 +591,7 @@ const inputNamesArr = [
   "km_14_on_a_cm_fc" // 432 OR 576 total (i think)
 ];
 
-class SurveyMidreach extends Component {
+class SurveyPAFB extends Component {
 
   constructor(props){
     super(props)
@@ -599,8 +599,8 @@ class SurveyMidreach extends Component {
     this.state = {
       data : [],
       redirect: false,
-      startKm: 2.5,
-      endKm: 14.5
+      startKm: 0,
+      endKm: 7.0
     }
 
     this.nest_rowSumArr = [];
@@ -655,7 +655,7 @@ class SurveyMidreach extends Component {
     console.log("In handleSubmit.");
 
     const data = {
-      type : "mid",
+      type : "pafb",
       date : this.state.date,
       initials : this.state.initials,
       notes : this.state.notes,
@@ -1673,7 +1673,7 @@ class SurveyMidreach extends Component {
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
 
         <div className="container-fluid survey-container">
-          <h1><b>MIDREACH SURVEY SHEET</b></h1><br></br>
+          <h1><b>PATRICK AFB SURVEY SHEET</b></h1><br></br>
           <hr />
           <div className="pb-4"></div>
 
@@ -1838,4 +1838,4 @@ class SurveyMidreach extends Component {
 
 
 
-export default SurveyMidreach;
+export default SurveyPAFB;
