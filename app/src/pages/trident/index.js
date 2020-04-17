@@ -29,6 +29,7 @@ class Trident extends React.Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onTimeChangeHandler = this.onTimeChangeHandler.bind(this);
 
   }
 
@@ -48,6 +49,14 @@ class Trident extends React.Component {
     return (this.state.metadata.metadata_id)
   }
 
+
+
+  onTimeChangeHandler = (n, e) => {
+    const v = e;
+    console.log({[n]: v});
+    this.setState({[n]: v});
+
+  }
 
 
 
@@ -178,7 +187,7 @@ class Trident extends React.Component {
     let { tagsList, samplesList, data, metadata } = this.state;
 
     displayBlock = (
-      <div className="container-fluid">
+      <div className="fullform">
 
           <h1><b>TRIDENT DATA SHEET</b></h1>
 
@@ -493,6 +502,14 @@ class Trident extends React.Component {
         </Helmet>
         <InternalNavbar />
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
+        <style type="text/css">
+            {`
+            .fullform {
+              zoom: 70%;
+            }
+            `}
+          </style>
+
         {displayBlock}
         <InternalFooter />
       </>

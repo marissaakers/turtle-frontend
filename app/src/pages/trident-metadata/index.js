@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
+import TimeInput from 'react-time-input';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import axios from "axios";
@@ -23,12 +24,23 @@ class TridentMetadata extends Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onTimeChangeHandler = this.onTimeChangeHandler.bind(this);
+
 
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value })
   }
+
+  onTimeChangeHandler (n, e) {
+    const v = e;
+    console.log({[n]: v});
+    this.setState({[n]: v});
+
+  }
+
+
 
   renderRedirect = () => {
    if (this.state.redirect) {
@@ -39,6 +51,10 @@ class TridentMetadata extends Component {
 
   handleSubmit = async(e) => {
      e.preventDefault();
+
+     if(this.state.weather == ""){
+       this.state.weather = this.state.weather_other;
+     }
 
 
      const data = {
@@ -185,9 +201,18 @@ class TridentMetadata extends Component {
         <p align="right" className="pr-5"><a href="/new-report/trident">see trident data sheet →</a></p>
 
 
+        <style type="text/css">
+            {`
+            .fullform {
+              zoom: 70%;
+            }
+            `}
+          </style>
+
+      <div className="fullform">
+      <form action="" onSubmit={this.handleSubmit}>
       <h2><b>TRIDENT BASIN METADATA SHEET</b></h2>
 
-      <form action="" onSubmit={this.handleSubmit}>
 
       <div className="container-fluid text-left">
 
@@ -222,14 +247,14 @@ class TridentMetadata extends Component {
 
             <div className="container border pt-3 mb-3">
                 <div className="form-group row">
-                  <label htmlFor="example-text-input" className="col-4 col-form-label">Cc:</label>
+                  <label htmlFor="example-text-input" className="col-4 col-form-label">Caretta caretta:</label>
                   <div className="col-7">
                     <input className="form-control" type="text" name= "number_of_cc_captured" onChange={e => this.onChange(e)} />
                   </div>
                 </div>
 
                 <div className="form-group row">
-                  <label htmlFor="example-text-input" className="col-4 col-form-label">Cm:</label>
+                  <label htmlFor="example-text-input" className="col-4 col-form-label">Chelonia mydas:</label>
                   <div className="col-7">
                     <input className="form-control" type="text" name= "number_of_cm_captured" onChange={e => this.onChange(e)} />
                   </div>
@@ -251,31 +276,53 @@ class TridentMetadata extends Component {
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_deploy_start_time1" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_deploy_start_time1"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_start_time1", e)}
+                      />
+
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_deploy_end_time1" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_deploy_end_time1"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_end_time1", e)}
+                      />
+
                       </div>
                     </div>
 
-                    <h7><b>Net Retreival #1: </b></h7>
+                    <h7><b>Net Retrieval #1: </b></h7>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_start_time1" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_start_time1"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_start_time1", e)}
+                      />
+
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_end_time1" onChange={e => this.onChange(e)} />
-                      </div>
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_end_time1"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_end_time1", e)}
+                      />                      </div>
                     </div>
                 </div>
 
@@ -285,30 +332,50 @@ class TridentMetadata extends Component {
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time"  name="net_deploy_start_time2" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_deploy_start_time2"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_start_time2", e)}
+                      />
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_deploy_end_time2" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_end_time2"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_end_time2", e)}
+                      />
                       </div>
                     </div>
 
-                    <h7><b>Net Retreival #2: </b></h7>
+                    <h7><b>Net Retrieval #2: </b></h7>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_start_time2" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_start_time2"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_start_time2", e)}
+                      />
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_end_time2" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_end_time2"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_end_time2", e)}
+                      />
                       </div>
                     </div>
                 </div>
@@ -322,31 +389,50 @@ class TridentMetadata extends Component {
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time"  name="net_deploy_start_time3" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_deploy_start_time3"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_start_time3", e)}
+                      />
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_deploy_end_time3" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_deploy_end_time3"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_end_time3", e)}
+                      />
                       </div>
                     </div>
 
-                    <h7><b>Net Retreival #3: </b></h7>
+                    <h7><b>Net Retrieval #3: </b></h7>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_start_time3" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_start_time3"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_start_time3", e)}
+                      />
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_end_time3" onChange={e => this.onChange(e)} />
-
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_end_time3"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_end_time3", e)}
+                      />
                       </div>
                     </div>
               </div>
@@ -357,30 +443,50 @@ class TridentMetadata extends Component {
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_deploy_start_time4"  onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_deploy_start_time4"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_start_time4", e)}
+                      />
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_deploy_end_time4" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_deploy_end_time4"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_end_time4", e)}
+                      />
                       </div>
                     </div>
 
-                    <h7><b>Net Retreival #4: </b></h7>
+                    <h7><b>Net Retrieval #4: </b></h7>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_start_time4" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_start_time4"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_start_time4", e)}
+                      />
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_end_time4" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_end_time4"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_end_time4", e)}
+                      />
 
                       </div>
                     </div>
@@ -392,30 +498,50 @@ class TridentMetadata extends Component {
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_deploy_start_time5" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_deploy_start_time5"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_start_time5", e)}
+                      />
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_deploy_end_time5" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_deploy_end_time5"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_end_time5", e)}
+                      />
                       </div>
                     </div>
 
-                    <h7><b>Net Retreival #5: </b></h7>
+                    <h7><b>Net Retrieval #5: </b></h7>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">Start:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_start_time5" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_start_time5"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_start_time5", e)}
+                      />
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label htmlFor="example-text-input" className="col-4 col-form-label">End:</label>
                       <div className="col-7">
-                        <input className="form-control" type="time" name="net_retrieval_end_time5" onChange={e => this.onChange(e)} />
+                      <TimeInput className="form-control"
+                        ref="tref"
+                        name="net_retrieval_end_time5"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_end_time5", e)}
+                      />
 
                       </div>
                     </div>
@@ -429,10 +555,10 @@ class TridentMetadata extends Component {
                   <form>
                   <div className="container border pt-3">
                     <div className="form-row">
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <label htmlFor="water-sample">Water Sample:</label>
                             <select className="form-control" name="water_sample" value={this.value} onChange={e => this.onChange(e)}>
-                            <option value="true">Yes/No</option>
+                            <option></option>
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                             </select>
@@ -442,12 +568,24 @@ class TridentMetadata extends Component {
                         <input className="form-control" type="text" name="wind_speed" onChange={e => this.onChange(e)} />
                         </div>
                       <div className="form-group col-md-2">
+                        <label htmlFor="wind-Spd">mph m/s</label>
+                        <select className="form-control" name="wind_speed_types" value={this.value} onChange={e => this.onChange(e)}>
+                        <option></option>
+                        <option value="mph">mph</option>
+                        <option value="m/s">m/s</option>
+                        </select>                        </div>
+                      <div className="form-group col-md-2">
                         <label htmlFor="wind-Spd">Wind Dir:</label>
                         <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
                         </div>
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <label htmlFor="time">Time:</label>
-                        <input className="form-control" type="time" name="environment_time" onChange={e => this.onChange(e)}/>
+                        <TimeInput className="form-control"
+                          ref="tref"
+                          name="environment_time"
+                          placeholder="--:--"
+                          onTimeChange={(e) => this.onTimeChangeHandler("environment_time", e)}
+                        />
                       </div>
                     </div>
 
@@ -462,18 +600,15 @@ class TridentMetadata extends Component {
                         </select>
                         </div>
                       <div className="form-group col-md-4">
-                        <label htmlFor="other-weather">Other:</label>
+                        <label htmlFor="other-weather">Weather - Other:</label>
                         <input className="form-control" type="text" name="weather" onChange={e => this.onChange(e)} />
+                        </div>
+                      <div className="form-group col-md-4">
+                      <label htmlFor="air-temp">Air Temp:</label>
+                      <input className="form-control" type="text" name="air_temp" onChange={e => this.onChange(e)} />
                         </div>
                     </div>
 
-
-                <div className="form-group row">
-                      <label htmlFor="air-temp" className="col-3 col-form-label">Air Temp:</label>
-                      <div className="col-4">
-                          <input className="form-control" type="text" name="air_temp" onChange={e => this.onChange(e)} />
-                      </div>
-                </div>
 
                   <div className="row">
                     <div className="col pr-0">
@@ -562,7 +697,12 @@ class TridentMetadata extends Component {
                   <div className="form-group row">
                     <label htmlFor="incidental" className="col-4 col-form-label">Time:</label>
                     <div className="col-6">
-                    <input className="form-control" type="time" name="capture_time" onChange={e => this.onChange(e)} />
+                    <TimeInput className="form-control"
+                      ref="tref"
+                      name="capture_time"
+                      placeholder="--:--"
+                      onTimeChange={(e) => this.onTimeChangeHandler("capture_time", e)}
+                    />
                     </div>
                   </div>
 
@@ -590,6 +730,7 @@ class TridentMetadata extends Component {
           <button type="submit" className="btn btn-primary">SUBMIT</button>
 
       </form>
+      </div>
 
 
         <InternalFooter />

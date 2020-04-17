@@ -162,7 +162,16 @@ class Offshore extends Component {
         <InternalNavbar />
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
 
-        <div className="container-fluid">
+
+        <style type="text/css">
+            {`
+            .fullform {
+              zoom: 70%;
+            }
+            `}
+          </style>
+
+        <div className="fullform">
 
             <h1><b>OFFSHORE DATA SHEET</b></h1>
 

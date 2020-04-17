@@ -94,9 +94,18 @@ class BeachInventory extends Component {
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
 
 
+        <style type="text/css">
+            {`
+            .fullform {
+              zoom: 70%;
+            }
+            `}
+          </style>
+
+
+      <div class="fullform">
       <h1><b>BEACH INVENTORY SHEET</b></h1>
 
-      <div class="container-fluid">
       <form action="" onSubmit={this.handleSubmit}>
 
       <div className="justify-content-center row pb-2 pt-2">
@@ -105,7 +114,32 @@ class BeachInventory extends Component {
 
 
       <div class="container-fluid text-left">
-        <div class="row">
+        <div class="row border-bottom mb-3">
+
+        <div class="form-group col-sm-3">
+          <label for="text">Data entered by:</label>
+          <input type="text" class="form-control" />
+        </div>
+
+          <div class="form-group col-sm-3">
+            <label for="text">Date:</label>
+            <input class="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
+          </div>
+
+          <div class="form-group col-sm-3">
+            <label for="text">Verified by:</label>
+            <input type="text" class="form-control" />
+          </div>
+
+          <div class="form-group col-sm-3">
+            <label for="text">Date:</label>
+            <input class="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
+          </div>
+
+
+      </div>
+      <div class="row">
+
           <div class="col-sm-6">
 
           <div class="row">
@@ -114,20 +148,30 @@ class BeachInventory extends Component {
           <div class="form-group row">
             <label for="example-text-input" class="col-5 col-form-label">Stake #:</label>
             <div class="col-7">
-            <input class="form-control" type="text" id="example-text-input"/>
+            <input class="form-control" type="text" />
             </div>
           </div>
+
+          </div>
+
+          <div class="col-sm-6">
 
           <div class="form-group row">
             <label for="example-text-input" class="col-5 col-form-label">Species:</label>
             <div class="col-7">
-            <select class="form-control" id="exampleFormControlSelect1">
+            <select class="form-control" >
                <option>Cc</option>
                <option>Cm</option>
                <option>Dm</option>
              </select>
             </div>
           </div>
+
+          </div>
+          </div>
+
+          <div class="row">
+          <div class="col-sm-6">
 
 
           <div class="form-group row">
@@ -137,6 +181,9 @@ class BeachInventory extends Component {
             </div>
           </div>
 
+          </div>
+          <div class="col-sm-6">
+
           <div class="form-group row">
             <label for="example-date-input" class="col-5 col-form-label">Inventory Date:</label>
             <div class="col-7">
@@ -144,233 +191,121 @@ class BeachInventory extends Component {
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-5 col-form-label">Stakes in place?:</label>
-            <div class="col-7">
-                <select class="form-control" id="exampleFormControlSelect1">
-                    <option>HID</option>
-                    <option>OBV</option>
-                </select>
-              </div>
-            </div>
+          </div>
+          </div>
 
 
+          <div class="row">
+          <div class="col-sm-6">
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-5 col-form-label">Hatched:</label>
-            <div class="col-7">
-              <input class="form-control" type="text" onChange={e => this.onChange(e)} />
-            </div>
+          </div>
           </div>
 
           <p><h5><b>HATCHLINGS:</b></h5></p>
           <div class="form-row">
-            <div class="form-group col-md-6">
+          <div class="form-group col-md-3">
+            <label for="curved-length">Hatched:</label>
+            <input class="form-control" type="text" onChange={e => this.onChange(e)} />
+          </div>
+            <div class="form-group col-md-3">
               <label for="curved-length">Live:</label>
-              <input class="form-control" type="text" id="example-text-input"/>
+              <input class="form-control" type="text" />
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-3">
               <label for="curved-width">Dead:</label>
-              <input class="form-control" type="text" id="example-text-input"/>
+              <input class="form-control" type="text" />
             </div>
-            <div class="form-group col-md-12">
-              <label for="curved-width">Hatchlings Emerged:</label>
-              <input class="form-control" type="text" id="example-text-input"/>
+            <div class="form-group col-md-3">
+              <label for="curved-width">Emerged:</label>
+              <input class="form-control" type="text" />
             </div>
           </div>
 
 
 
-          <p><h5><b>PIPPED:</b></h5></p>
           <div class="form-row">
-            <div class="form-group col-md-5">
-              <label for="curved-length">Pipped Live:</label>
-              <input class="form-control" type="text" id="example-text-input"/>
+            <div class="form-group col-md-3">
+            <label for="pipped"></label>
+            <p><h5><b>PIPPED:</b></h5></p>
             </div>
-            <div class="form-group col-md-5">
-              <label for="curved-width">Pipped Dead:</label>
-              <input class="form-control" type="text" id="example-text-input"/>
+            <div class="form-group col-md-3">
+              <label for="pipped">Live:</label>
+              <input class="form-control" type="text" />
             </div>
-          </div>
-
-
-          </div>
-          <div class="col-sm-6">
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-6 col-form-label">Inventoried by:</label>
-            <div class="col-6">
-            <input class="form-control" type="text" id="example-text-input"/>
+            <div class="form-group col-md-3">
+              <label for="pipped">Dead:</label>
+              <input class="form-control" type="text" />
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="example-text-input" class="col-6 col-form-label">Emergence:</label>
-            <div class="col-6">
-                <select class="form-control" id="exampleFormControlSelect1">
-                    <option>Yes</option>
-                    <option>No</option>
-                </select>
+          <h5><b>WHOLE EGGS:</b></h5>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Addled:</label>
+                <input type="text" class="form-control" />
+
+                </div>
+              <div class="form-group col-md-4">
+                <label for="text">Undeveloped:</label>
+                <input type="text" class="form-control" />
+                </div>
+              <div class="form-group col-md-4">
+                <label for="text">Sampled for SAC:</label>
+                <input type="text" class="form-control" />
               </div>
             </div>
 
-            <div class="form-group row">
-              <label for="example-text-input" class="col-6 col-form-label">Can(s) in place:</label>
-              <div class="col-6">
-                  <select class="form-control" id="exampleFormControlSelect1">
-                      <option>S</option>
-                      <option>N</option>
-                  </select>
+            <h5><b>EMBRYOS:</b></h5>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="inputEmail4">1/4 Embryo:</label>
+                <input type="text" class="form-control" />
                 </div>
-              </div>
-
-            <div class="form-group row">
-              <label for="example-text-input" class="col-6 col-form-label">Predated:</label>
-              <div class="col-6">
-                  <select class="form-control" id="exampleFormControlSelect1">
-                      <option>Yes</option>
-                      <option>No</option>
-                  </select>
+              <div class="form-group col-md-3">
+                <label for="text">1/2 Embryo:</label>
+                <input type="text" class="form-control" />
                 </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="example-text-input" class="col-6 col-form-label">Post Hatch:</label>
-                <div class="col-6">
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Yes</option>
-                        <option>No</option>
-                    </select>
-                  </div>
+              <div class="form-group col-md-3">
+                <label for="inputEmail4">3/4 Embryo:</label>
+                <input type="text" class="form-control" />
                 </div>
-
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-6 col-form-label">Washed over:</label>
-                  <div class="col-6">
-                      <select class="form-control" id="exampleFormControlSelect1">
-                          <option>Yes</option>
-                          <option>No</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-6 col-form-label">Inundated:</label>
-                    <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
-                      </div>
-                    </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-6 col-form-label">Washed out:</label>
-                    <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Complete</option>
-                            <option>Partial</option>
-                            <option>No</option>
-                        </select>
-                      </div>
-                    </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-6 col-form-label">Washed out post hatch:</label>
-                    <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
-                      </div>
-                    </div>
-
-                  <div class="form-group row">
-                    <label for="example-text-input" class="col-6 col-form-label">Poached:</label>
-                    <div class="col-6">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
-                      </div>
-                    </div>
+              <div class="form-group col-md-3">
+                <label for="text">Full Embryo:</label>
+                <input type="text" class="form-control" />
                 </div>
             </div>
 
-            <h5><b>WHOLE EGGS:</b></h5>
 
-            <form>
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                  <label for="inputEmail4">Addled:</label>
-                  <input type="password" class="form-control" id="inputPassword4" />
+            <h5><b>DAMAGED EGGS:</b></h5>
 
-                  </div>
-                <div class="form-group col-md-4">
-                  <label for="inputPassword4">Undeveloped:</label>
-                  <input type="password" class="form-control" id="inputPassword4" />
-                  </div>
-                <div class="form-group col-md-4">
-                  <label for="inputPassword4">Sampled for SAC:</label>
-                  <input type="password" class="form-control" id="inputPassword4" />
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                  <label for="inputEmail4">1/4 Embryo:</label>
-                  <input type="password" class="form-control" id="inputPassword4" />
-                  </div>
-                <div class="form-group col-md-4">
-                  <label for="inputPassword4">1/2 Embryo:</label>
-                  <input type="password" class="form-control" id="inputPassword4" />
-                  </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                  <label for="inputEmail4">3/4 Embryo:</label>
-                  <input type="password" class="form-control" id="inputPassword4" />
-                  </div>
-                <div class="form-group col-md-4">
-                  <label for="inputPassword4">Full Embryo:</label>
-                  <input type="password" class="form-control" id="inputPassword4" />
-                  </div>
-              </div>
-            </form>
-
-
-          </div>
-          <div class="col-sm-6 pl-3">
-
-          <h5><b>DAMAGED EGGS:</b></h5>
-
-          <form>
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="inputEmail4">Raccoons:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <input type="text" class="form-control" />
 
                 </div>
               <div class="form-group col-md-4">
-                <label for="inputPassword4">Ghost crabs:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <label for="text">Ghost crabs:</label>
+                <input type="text" class="form-control" />
                 </div>
               <div class="form-group col-md-4">
-                <label for="inputPassword4">Plant roots*:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <label for="text">Plant roots*:</label>
+                <input type="text" class="form-control" />
               </div>
             </div>
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="inputEmail4">Another turtle:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <input type="text" class="form-control" />
                 </div>
               <div class="form-group col-md-4">
-                <label for="inputPassword4">Bobcat:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <label for="text">Bobcat:</label>
+                <input type="text" class="form-control" />
                 </div>
               <div class="form-group col-md-4">
-                <label for="inputPassword4">Other:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <label for="text">Other:</label>
+                <input type="text" class="form-control" />
                 </div>
             </div>
             <div class="form-row">
@@ -396,49 +331,50 @@ class BeachInventory extends Component {
               <label class="form-check-label" for="inlineCheckbox2">seagrape</label>
             </div>
             </div>
-          </form>
+
+
+
+
+          </div>
+          <div class="col-sm-6 pl-3">
+
 
 
           <h5><b>OTHER:</b></h5>
 
-          <form>
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="inputEmail4">Broken:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <input type="text" class="form-control" />
 
                 </div>
               <div class="form-group col-md-4">
-                <label for="inputPassword4">Washout:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <label for="text">Washout:</label>
+                <input type="text" class="form-control" />
                 </div>
               <div class="form-group col-md-4">
-                <label for="inputPassword4">**Other:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <label for="text">**Other:</label>
+                <input type="text" class="form-control" />
               </div>
             </div>
             <h5>** Specify other details:</h5>
             <div class="col-sm-15 mb-3">
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
-          </form>
 
           <h5><b>YOLKLESS: (not included in clutch total)</b></h5>
-          <form>
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="inputEmail4">Hydrated:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <input type="text" class="form-control" />
 
                 </div>
               <div class="form-group col-md-4">
-                <label for="inputPassword4">Dehydrated:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
+                <label for="text">Dehydrated:</label>
+                <input type="text" class="form-control" />
                 </div>
             </div>
-          </form>
 
-          <form>
             <div class="form-group row">
             <label for="example-text-input" class="col-4 col-form-label"><h5>Inventoried clutch total:</h5></label>
               <div class="col-5">
@@ -447,13 +383,11 @@ class BeachInventory extends Component {
               <label for="example-text-input" class="ml-3">(=Hatched + Pipped + Whole eggs + Damaged eggs + Other)</label>
 
             </div>
-          </form>
 
-          <form>
             <div class="form-group row">
             <label for="example-text-input" class="col-2 col-form-label"><h5>SUBSTRATE:</h5></label>
               <div class="col-4">
-                  <select class="form-control" id="exampleFormControlSelect1">
+                  <select class="form-control" >
                   <option>Natural Beach Sand</option>
                   <option>Artificial Sand</option>
                   </select>
@@ -462,41 +396,140 @@ class BeachInventory extends Component {
                 <input type="text" class="form-control" placeholder="Other"/>
               </div>
             </div>
-          </form>
 
           <h5>NOTES:</h5>
           <div class="col-sm-15 mb-3">
               <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
           </div>
 
-            <form>
-              <div class="form-row">
-              <div class="form-group col-md-3">
-                <label for="inputPassword4">Data entered by:</label>
-                <input type="password" class="form-control" id="inputPassword4" />
-              </div>
-
-                <div class="form-group col-md-3">
-                  <label for="inputPassword4">Date:</label>
-                  <input class="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
-                </div>
-
-                <div class="form-group col-md-3">
-                  <label for="inputPassword4">Verified by:</label>
-                  <input type="password" class="form-control" id="inputPassword4" />
-                </div>
-
-                <div class="form-group col-md-3">
-                  <label for="inputPassword4">Date:</label>
-                  <input class="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
-                </div>
-
-            </div>
-          </form>
-
 
           </div>
         </div>
+
+        <div class="row border-top">
+          <div class="col-sm-3 pt-3">
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-6 col-form-label">Stakes in place?</label>
+                    <div class="col-6">
+                        <select class="form-control" >
+                            <option>HID</option>
+                            <option>OBV</option>
+                        </select>
+                      </div>
+                    </div>
+
+
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-6 col-form-label">Inventoried by:</label>
+                    <div class="col-6">
+                    <input class="form-control" type="text" />
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-6 col-form-label">Emergence:</label>
+                    <div class="col-6">
+                        <select class="form-control" >
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                  </div>
+                    <div class="col-sm-3 pt-3">
+
+                    <div class="form-group row">
+                      <label for="example-text-input" class="col-6 col-form-label">Can(s) in place:</label>
+                      <div class="col-6">
+                          <select class="form-control" >
+                              <option>S</option>
+                              <option>N</option>
+                          </select>
+                        </div>
+                      </div>
+
+                    <div class="form-group row">
+                      <label for="example-text-input" class="col-6 col-form-label">Predated:</label>
+                      <div class="col-6">
+                          <select class="form-control" >
+                              <option>Yes</option>
+                              <option>No</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="example-text-input" class="col-6 col-form-label">Post Hatch:</label>
+                        <div class="col-6">
+                            <select class="form-control" >
+                                <option>Yes</option>
+                                <option>No</option>
+                            </select>
+                          </div>
+                        </div>
+
+                  </div>
+                  <div class="col-sm-3 pt-3">
+
+                        <div class="form-group row">
+                          <label for="example-text-input" class="col-6 col-form-label">Washed over:</label>
+                          <div class="col-6">
+                              <select class="form-control" >
+                                  <option>Yes</option>
+                                  <option>No</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="example-text-input" class="col-6 col-form-label">Inundated:</label>
+                            <div class="col-6">
+                                <select class="form-control" >
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                              </div>
+                            </div>
+
+                          <div class="form-group row">
+                            <label for="example-text-input" class="col-6 col-form-label">Washed out:</label>
+                            <div class="col-6">
+                                <select class="form-control" >
+                                    <option>Complete</option>
+                                    <option>Partial</option>
+                                    <option>No</option>
+                                </select>
+                              </div>
+                            </div>
+
+                          </div>
+                          <div class="col-sm-3 pt-3">
+
+                          <div class="form-group row">
+                            <label for="example-text-input" class="col-6 col-form-label">Washed out post hatch:</label>
+                            <div class="col-6">
+                                <select class="form-control" >
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                              </div>
+                            </div>
+
+                          <div class="form-group row">
+                            <label for="example-text-input" class="col-6 col-form-label">Poached:</label>
+                            <div class="col-6">
+                                <select class="form-control" >
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                              </div>
+                            </div>
+                        </div>
+                        </div>
+
         </div>
         </div>
 

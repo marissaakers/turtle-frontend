@@ -6,12 +6,13 @@ import { Helmet } from 'react-helmet';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import axios from "axios";
+import TimeInput from 'react-time-input';
 
 
 const metadata_investigators = 'MTRG - Lagoon Metadata'
 
 
-class LagoonMetadata extends Component {
+class LagoonMetadata extends React.Component {
 
   constructor(props){
     super(props)
@@ -23,11 +24,21 @@ class LagoonMetadata extends Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onTimeChangeHandler = this.onTimeChangeHandler.bind(this);
 
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value })
+  }
+
+
+  onTimeChangeHandler (n, e) {
+    const v = e;
+    console.log({[n]: v});
+    this.setState({[n]: v});
+
   }
 
   renderRedirect = () => {
@@ -110,7 +121,7 @@ class LagoonMetadata extends Component {
   }
   render() {
 
-
+    const {dates} = this.props;
 
     return(
       <>
@@ -123,9 +134,17 @@ class LagoonMetadata extends Component {
         <p align="right" className="pr-5"><a href="/new-report/lagoon">see lagoon sheet →</a></p>
 
 
-          <h1><b>LAGOON METADATA SHEET</b></h1>
+        <style type="text/css">
+            {`
+            .fullform {
+              zoom: 70%;
+            }
+            `}
+          </style>
 
-          <div className="container-fluid">
+
+          <div className="fullform">
+          <h1><b>LAGOON METADATA SHEET</b></h1>
           <form onSubmit={this.handleSubmit}>
 
 
@@ -169,14 +188,14 @@ class LagoonMetadata extends Component {
             <div class="container border pt-3 mb-3">
 
               <div className="form-group row">
-                <label htmlFor="cc-number" className="col-4 col-form-label">Cc:</label>
+                <label htmlFor="cc-number" className="col-4 col-form-label">Caretta caretta:</label>
                 <div className="col-6">
                   <input className="form-control" type="text" name="number_of_cc_captured" onChange={e => this.onChange(e)} />
                 </div>
               </div>
 
               <div className="form-group row">
-                <label htmlFor="cm-number" className="col-4 col-form-label">Cm:</label>
+                <label htmlFor="cm-number" className="col-4 col-form-label">Chelonia mydas:</label>
                 <div className="col-6">
                   <input className="form-control" type="text" name= "number_of_cm_captured" onChange={e => this.onChange(e)} />
                 </div>
@@ -196,17 +215,31 @@ class LagoonMetadata extends Component {
             <div class="container border pt-3 mb-3">
 
             <h5><b>Net Deploy: </b></h5>
+
             <div className="form-group row">
               <label htmlFor="net-start" className="col-4 col-form-label">Start:</label>
               <div className="col-6">
-              <input className="form-control" type="time" name="net_deploy_start_time" onChange={e => this.onChange(e)} />
+
+              <TimeInput className="form-control"
+                ref="tref"
+                name="net_deploy_start_time"
+                placeholder="--:--"
+                onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_start_time", e)}
+              />
+
+
               </div>
             </div>
 
             <div className="form-group row">
               <label htmlFor="net-end" className="col-4 col-form-label">End:</label>
               <div className="col-6">
-              <input className="form-control" type="time" name="net_deploy_end_time"  id="example-time-input" onChange={e => this.onChange(e)} />
+              <TimeInput className="form-control"
+                name="net_deploy_end_time"
+                placeholder="--:--"
+                onTimeChange={(e) => this.onTimeChangeHandler("net_deploy_end_time", e)}
+              />
+
               </div>
             </div>
 
@@ -215,14 +248,22 @@ class LagoonMetadata extends Component {
             <div className="form-group row">
               <label htmlFor="net-start" className="col-4 col-form-label">Start:</label>
               <div className="col-6">
-              <input className="form-control" type="time" name="net_retrieval_start_time" id="example-time-input" onChange={e => this.onChange(e)} />
+              <TimeInput className="form-control"
+                name="net_retrieval_start_time"
+                placeholder="--:--"
+                onTimeChange={(e) =>this.onTimeChangeHandler("net_retrieval_start_time", e)}
+              />
               </div>
             </div>
 
             <div className="form-group row">
               <label htmlFor="net-end" className="col-4 col-form-label">End:</label>
               <div className="col-6">
-              <input className="form-control" type="time" name="net_retrieval_end_time" id="example-time-input" onChange={e => this.onChange(e)} />
+              <TimeInput className="form-control"
+                name="net_retrieval_end_time"
+                placeholder="--:--"
+                onTimeChange={(e) => this.onTimeChangeHandler("net_retrieval_end_time", e)}
+              />
               </div>
             </div>
 </div>
@@ -234,9 +275,10 @@ class LagoonMetadata extends Component {
             <div class="container border pt-3 mb-3">
 
                   <div className="form-row">
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-3">
                       <label htmlFor="water-sample">Water Sample:</label>
                           <select className="form-control" name="water_sample" onChange={e => this.onChange(e)}>
+                          <option></option>
                           <option value="1">Yes</option>
                           <option value="0">No</option>
                           </select>
@@ -246,12 +288,24 @@ class LagoonMetadata extends Component {
                       <input className="form-control" type="text" name="wind_speed" onChange={e => this.onChange(e)} />
                       </div>
                     <div className="form-group col-md-2">
+                    <label htmlFor="wind-spd">mph or m/s</label>
+                          <select className="form-control" name="wind_speed_types" onChange={e => this.onChange(e)}>
+                          <option></option>
+                          <option value="mph">mph</option>
+                          <option value="m/s">m/s</option>
+                          </select>
+                      </div>
+                    <div className="form-group col-md-2">
                       <label htmlFor="wind-dir">Wind Dir:</label>
                       <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
                       </div>
-                    <div className="form-group col-md-4">
+                    <div className="form-group col-md-2">
                       <label htmlFor="environment_time">Time:</label>
-                      <input className="form-control" type="time" name="environment_time" onChange={e => this.onChange(e)}/>
+                      <TimeInput className="form-control"
+                        name="environment_time"
+                        placeholder="--:--"
+                        onTimeChange={(e) => this.onTimeChangeHandler("environment_time", e)}
+                      />
                     </div>
                   </div>
 
@@ -368,7 +422,11 @@ class LagoonMetadata extends Component {
               <div className="form-group row">
                 <label htmlFor="incidental-time" className="col-4 col-form-label">Time:</label>
                 <div className="col-6">
-                <input className="form-control" type="time" name="capture_time" onChange={e => this.onChange(e)} />
+                <TimeInput className="form-control"
+                  name="capture_time"
+                  placeholder="--:--"
+                  onTimeChange={(e) => this.onTimeChangeHandler("capture_time", e)}
+                />
                 </div>
               </div>
 

@@ -9,6 +9,7 @@ import InternalFooter from '../../components/internal-footer';
 import axios from "axios";
 
 
+
 const metadata_investigators = 'MTRG - Beach Data'
 
 
@@ -107,13 +108,22 @@ class Beach extends Component {
         <p align="right" className="pr-5"><a href="/new-report/beach-inventory">see beach inventory sheet →</a></p>
 
 
+        <style type="text/css">
+            {`
+            .fullform {
+              zoom: 70%;
+            }
+            `}
+          </style>
+
+
+      <div className="fullform">
       <h1><b>BEACH DATA SHEET</b></h1>
 
-      <div className="container-fluid">
       <form action="" onSubmit={this.handleSubmit}>
 
       <div className="justify-content-center row pb-2 pt-2">
-      <div className="col-sm-10 mr-2 ml-2 border pr-2 pl-2 pb-3 pt-3">
+      <div className="col-sm-10 mr-2 ml-2 border pr-2 pl-2 pb-3 pt-3" >
 
 
 

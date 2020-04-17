@@ -21,14 +21,17 @@ class Lagoon extends React.Component {
     super(props)
 
     this.state = {
-      tagsList: [{tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "", magnet_off: null}],
+      tagsList: [{tag_number: "", isNew: "", active: true, tag_type: "", pit: ""}],
       samplesList: [{sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
       data : [],
       metadata: undefined,
+      date: undefined,
       redirect: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onTimeChangeHandler = this.onTimeChangeHandler.bind(this);
+
 
   }
 
@@ -43,17 +46,28 @@ class Lagoon extends React.Component {
 
     this.setState({metadata: metadata.data});
 
+    var someDate = new Date();
+    var today = someDate.getFullYear()+"-"+someDate.getMonth()+"-"+someDate.getDate();
+    console.log(today);
+    this.setState({date: today})
+
     console.log("this.state.metadata = ");
     console.log(this.state.metadata);
     return (this.state.metadata.metadata_id)
   }
 
+  onTimeChangeHandler (n, e) {
+    const v = e;
+    console.log({[n]: v});
+    this.setState({[n]: v});
+
+  }
 
 
 
   onChange = (e) => {
 
-    if(["tag_number", "tag_type", "active", "tag_scars", "pit", "scanned", "scanner_number"].includes(e.target.name)){
+    if(["tag_number", "isNew", "tag_type", "active", "pit"].includes(e.target.name)){
       let tagsList = [...this.state.tagsList];
       let updatedValue = e.target.value;
       if (updatedValue === "true" || updatedValue == "false") {
@@ -73,7 +87,7 @@ class Lagoon extends React.Component {
 
   addTagRow = (e) => {
     this.setState((prevState) => ({
-      tagsList: [...prevState.tagsList, {tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "" , magnet_off: null}],
+      tagsList: [...prevState.tagsList, {tag_number: "", isNew: "", tag_type: "", active: true, pit: ""}],
     }));
   };
 
@@ -114,6 +128,7 @@ class Lagoon extends React.Component {
 
        const data = {
         species: this.state.species,
+        sex: this.state.sex,
         metadata_id: getMetadataID,
        	entered_date: this.state.entered_date_2,
        	entered_by: this.state.entered_by_2,
@@ -121,7 +136,7 @@ class Lagoon extends React.Component {
        	verified_by: this.state.verified_by,
        	encounter_date: this.state.encounter_date,
        	encounter_time: this.state.encounter_time,
-       	investigated_by: "me",
+       	investigated_by: this.state.inventoried_by,
        	capture_type: this.state.capture_type,
        	living_tags: this.state.living_tags,
        	pap_category: parseFloat(this.state.pap_category),
@@ -133,6 +148,8 @@ class Lagoon extends React.Component {
        	leeches_where: this.state.leeches_where,
        	pap_photos: JSON.parse(this.state.pap_photos),
        	photos: JSON.parse(this.state.photos),
+        scanned: this.state.scanned,
+        tag_scars: this.state.tag_scars,
        	samples: this.state.samplesList,
        	notes: this.state.notes_2,
        	other: this.state.other,
@@ -175,10 +192,10 @@ class Lagoon extends React.Component {
   render() {
     let displayBlock;
     let _metadata = this.state.metadata;
-    let { tagsList, samplesList, data, metadata } = this.state;
+    let { tagsList, samplesList, data, metadata, date } = this.state;
 
     displayBlock = (
-      <div className="container-fluid">
+      <div className="fullform">
 
           <h1><b>LAGOON DATA SHEET</b></h1>
 
@@ -190,15 +207,15 @@ class Lagoon extends React.Component {
             <div className="col-sm-6 text-left">
 
           <div className="form-row">
-          <label htmlFor="species" className="col-3 col-form-label">Species:</label>
-              <div className="col-2">
+          <label htmlFor="species" className="col-2 col-form-label">Species:</label>
+              <div className="col-4">
               <select className="form-control" name="species" value={this.value}>
-                 <option value="Caretta caretta">Cc</option>
-                 <option value="Chelonia mydas">Cm</option>
+                 <option value="Caretta caretta">Caretta caretta</option>
+                 <option value="Chelonia mydas">Chelonia mydas</option>
                  <option value="other">Other</option>
                </select>
               </div>
-              <div className="col-5">
+              <div className="col-4">
                 <input type="text" className="form-control" placeholder="other" name="species_other"/>
               </div>
           </div>
@@ -219,7 +236,7 @@ class Lagoon extends React.Component {
           <div className="form-group col-md-3">
             <label htmlFor="capture-type">Capture Type:</label>
               <select className="form-control" name="capture_type" value={this.state.value} >
-                  <option>New/Old/Strange</option>
+                  <option></option>
                   <option value="New">New</option>
                   <option value="Old">Old</option>
                   <option value="Strange Recap">Strange Recap</option>
@@ -235,7 +252,7 @@ class Lagoon extends React.Component {
             </div>
             <div className="form-group col-md-5">
               <label htmlFor="data-entered-date">Data Entered Date:</label>
-              <input className="form-control" type="date"  name="entered_date_2"/>
+              <input className="form-control" type="date" value={this.props.today} name="entered_date_2"/>
               </div>
           </div>
 
@@ -260,13 +277,33 @@ class Lagoon extends React.Component {
 
 
 
+    <div className="form-group row">
+      <label htmlFor="living-tags" className="col-4 col-form-label">Tag Scars:</label>
+      <div className="col-4">
+      <select className="form-control" name="scanned" value={this.state.value}>
+      <option></option>
+         <option value="true">Yes</option>
+         <option value="false">No</option>
+       </select>
+      </div>
+    </div>
 
+    <div className="form-group row">
+      <label htmlFor="living-tags" className="col-4 col-form-label">Pit Tag Scanned:</label>
+      <div className="col-4">
+      <select className="form-control" name="scanned" value={this.state.value}>
+      <option></option>
+         <option value="true">Yes</option>
+         <option value="false">No</option>
+       </select>
+      </div>
+    </div>
 
           <div className="form-group row">
             <label htmlFor="living-tags" className="col-4 col-form-label">Living Tags:</label>
             <div className="col-4">
             <select className="form-control" name="living_tags" value={this.state.value}>
-                <option>Yes/No</option>
+            <option></option>
                <option value="true">Yes</option>
                <option value="false">No</option>
              </select>
@@ -276,7 +313,7 @@ class Lagoon extends React.Component {
 
             <h4>Morphometrics:</h4>
 
-            <div class="container border pt-3 mb-3">
+            <div className="container border pt-3 mb-3">
 
               <div className="form-row">
                 <div className="form-group col-md-6">
@@ -337,7 +374,7 @@ class Lagoon extends React.Component {
 
               <h4>Samples:</h4>
 
-              <div class="container border pt-3 mb-3 pb-3">
+              <div className="container border pt-3 mb-3 pb-3">
 
               <SampleInputs add={this.addSampleRow} samplesList={samplesList} />
               <button onClick={this.addSampleRow} type="button" className="btn btn-primary text-center mb-3" samplesList={samplesList}>ADD NEW SAMPLE</button>
@@ -383,7 +420,7 @@ class Lagoon extends React.Component {
                       <label htmlFor="photos" className="col-4 col-form-label">Photos:</label>
                       <div className="col-6">
                       <select className="form-control" name="photos" value={this.value}>
-                      <option>Yes/No</option>
+                      <option></option>
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                        </select>
@@ -394,7 +431,7 @@ class Lagoon extends React.Component {
                       <label htmlFor="pap-photos" className="col-4 col-form-label">Pap Photos:</label>
                       <div className="col-6">
                       <select className="form-control" name="pap_photos" value={this.value}>
-                      <option>Yes/No</option>
+                      <option></option>
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                        </select>
@@ -406,7 +443,7 @@ class Lagoon extends React.Component {
                       <label htmlFor="example-text-input" className="col-3 col-form-label">Leeches:</label>
                           <div className="col-3">
                           <select className="form-control" name="leeches" value={this.value}>
-                          <option>Yes/No</option>
+                          <option></option>
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                            </select>
@@ -424,7 +461,7 @@ class Lagoon extends React.Component {
                       <label htmlFor="leech-eggs" className="col-3 col-form-label">Leech Eggs:</label>
                           <div className="col-3">
                           <select className="form-control" name="leech_eggs" value={this.value}>
-                          <option>Yes/No</option>
+                          <option></option>
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                            </select>
@@ -452,6 +489,18 @@ class Lagoon extends React.Component {
                       <textarea className="form-control" name="notes_2" id="exampleFormControlTextarea1" rows="3"></textarea>
                       </div>
 
+                      <br></br>
+
+                      <div className="input-group">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                        </div>
+                        <div className="custom-file">
+                          <input type="file" className="custom-file-input" id="inputGroupFile01"
+                            aria-describedby="inputGroupFileAddon01"/>
+                          <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
+                      </div>
 
                       </div>
                   </div>
@@ -480,6 +529,16 @@ class Lagoon extends React.Component {
         </Helmet>
         <InternalNavbar />
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
+
+        <style type="text/css">
+            {`
+            .fullform {
+              zoom: 70%;
+            }
+            `}
+          </style>
+
+
         {displayBlock}
         <InternalFooter />
       </>
