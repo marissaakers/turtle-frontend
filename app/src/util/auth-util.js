@@ -3,8 +3,14 @@ import { Route, Redirect } from 'react-router-dom';
 import React from 'react';
 
 export async function getUsername() {
+  try {
     const userInfo = await Auth.currentAuthenticatedUser();
     return userInfo["username"];
+  } catch(err) {
+    window.setTimeout(() => {
+      getUsername();
+    }, 500);
+  }
 }
 
 export async function getAccessToken() {

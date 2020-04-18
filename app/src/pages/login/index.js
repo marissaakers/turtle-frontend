@@ -152,7 +152,9 @@ class Login extends React.Component {
       // If we get this far, they are logged in. Add their token to local storage
       const session = await Auth.currentSession();
       localStorage.setItem('userToken', session.getAccessToken());
-      this.props.history.push('/home');
+      window.setTimeout(() => {
+        this.props.history.push('/home')
+      }, 500);
     } catch(err) {
       // No match for the username/password
       if ("code" in err && err["code"] === "NotAuthorizedException") {
