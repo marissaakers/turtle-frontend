@@ -19,9 +19,9 @@ class InternalNavbar extends React.Component {
   }
 
   async componentDidMount() {
-    let name = await getUsername();
-    console.log("name = " + name );
-    this.setState({username : name});
+    // let name = await getUsername();
+    // console.log("name = " + name );
+    // this.setState({username : name});
   }
 
   render() {
