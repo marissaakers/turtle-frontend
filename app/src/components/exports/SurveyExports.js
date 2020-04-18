@@ -91,7 +91,8 @@ export class SurveyExports extends React.Component {
           }
           outgoingJson[table][col] = this.state.selected[table][col + "_filter"];
           // do quick replace on number columns... - becomes _
-          if (data[table][col] === "int" || data[table][col] === "float") {
+          if (data[table][col] === "int" || data[table][col] === "float" 
+                  || data[table][col] === "date" || data[table][col] === "time") {
             outgoingJson[table][col] = outgoingJson[table][col].replace("-", "_");
           }
         }

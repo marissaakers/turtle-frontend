@@ -27,7 +27,7 @@ class InternalNavbar extends React.Component {
     return(
       <>
         <nav className="navbar navbar-expand-md">
-           <a className="navbar-brand" href="/"><img src="https://media.discordapp.net/attachments/612118988083822612/634929890273132557/turtle.png" width="60" />MTRG Database</a>
+           <a className="navbar-brand" href="/home"><img src="https://media.discordapp.net/attachments/612118988083822612/634929890273132557/turtle.png" width="60" />MTRG Database</a>
            <button className="navbar-toggler navbar-light" type="button" data-toggle="collapse" data-target="#main-navigation">
               <span className="navbar-toggler-icon"></span>
            </button>

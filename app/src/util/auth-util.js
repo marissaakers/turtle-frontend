@@ -2,13 +2,15 @@ import { Auth } from 'aws-amplify';
 import { Route, Redirect } from 'react-router-dom';
 import React from 'react';
 
-export async function getUsername() {
+export async function getUsername(attempt = 0) {
   try {
     const userInfo = await Auth.currentAuthenticatedUser();
     return userInfo["username"];
   } catch(err) {
     window.setTimeout(() => {
-      getUsername();
+      if (attempt < 5) {
+        getUsername(attempt + 1);
+      }
     }, 500);
   }
 }
