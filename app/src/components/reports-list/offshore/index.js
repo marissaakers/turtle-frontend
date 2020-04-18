@@ -12,11 +12,26 @@ class ReportsListOffshore extends React.Component {
   constructor(props) {
     super(props);
 
+    // Get starting date
+    let date = 1;
+    let month = new Date().getMonth() + 1;
+    let year = new Date().getFullYear();
+
+    // Subtract default number of months
+    let defaultNumMonths = 12;
+    month -= defaultNumMonths;
+    while (month < 1) {
+      month += 12;
+      year--;
+    }
+    let startDate = month + "/" + date + "/" + year;
+
+    this.startDateRef = React.createRef();
     this.formRef = React.createRef();
     this.formDefaults = {
       'tags': [],
       'species': 'all',
-      'encounter_date_start': '',
+      'encounter_date_start': startDate,
       'encounter_date_end': '',
 
       'turtle_id': '',
@@ -54,7 +69,7 @@ class ReportsListOffshore extends React.Component {
 
   async loadReportsList(json) {
     this.setState({isLoading: true});
-    console.log("Sent JSON = " + json);
+    console.log("Offshore sent JSON = " + json);
     const data = await axios.post(
       'https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/offshore/mini_query',
       json,
@@ -68,6 +83,7 @@ class ReportsListOffshore extends React.Component {
 
   async componentDidMount() {
     this.loadReportsList('{}');
+    this.startDateRef.current.value = this.getStartDate();
   }
 
   // HANDLERS
@@ -136,8 +152,15 @@ class ReportsListOffshore extends React.Component {
     // Reset values
     this.formRef.current.reset();
     this.setState({form: this.formDefaults});
+    // Reset tags
+    let myForm = { ...this.state.form };
+    for (let i = 0; i < myForm['tags'].length; i++) {
+      myForm['tags'][i] = '';
+    }
+    this.setState({form: myForm});
     this.setState({numTagInputs: 1});
     this.loadReportsList('{}');
+    this.startDateRef.current.value = this.getStartDate();
   }
 
   setPageNum = (newNum) => {
@@ -163,7 +186,7 @@ class ReportsListOffshore extends React.Component {
   removeTagInput = (event) => {
     event.preventDefault();
     let n = this.state.numTagInputs;
-    if (n > 0) {
+    if (n > 1) {
       this.setState({numTagInputs: n-1});
     }
     this.state.form.tags.pop();
@@ -363,6 +386,7 @@ class ReportsListOffshore extends React.Component {
   getTagInputBlock (m_key) {
     let key = m_key.key;
     let tagInputBlock = [];
+    let myForm = { ...this.state.form };
 
     // Tag input fields
     for (let i = 0; i < this.state.numTagInputs; i++) {
@@ -372,7 +396,8 @@ class ReportsListOffshore extends React.Component {
             <input className="form-control"
               type="text"
               name={'tag-' +  i}
-              onChange={this.myChangeHandler} />
+              onChange={this.myChangeHandler}
+              value={ myForm['tags'][i] } />
           </div>
         </div>
       );
@@ -396,6 +421,26 @@ class ReportsListOffshore extends React.Component {
 
     m_key.key = key;
     return tagInputBlock;
+  }
+
+  getStartDate () {
+    // 4/1/2019 to
+    // 2000-01-01
+    let val = this.state.form.encounter_date_start;
+
+    let arr = val.split('/');
+    let year = arr[2];
+    let month = arr[0];
+    let date = arr[1];
+
+    if (month < 10) {
+      month = '0' + month;
+    }
+    if (date < 10) {
+      date = '0' + date;
+    }
+
+    return year + "-" + month + "-" + date;
   }
 
   render() {
@@ -475,6 +520,7 @@ class ReportsListOffshore extends React.Component {
                       <input className="form-control"
                         type="date"
                         name='encounter_date_start'
+                        ref={this.startDateRef}
                         onChange={this.myChangeHandler} />
                     </div>
                   </div>
