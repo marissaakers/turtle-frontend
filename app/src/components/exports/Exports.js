@@ -4,6 +4,7 @@ import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import { Button, FormControl, Form } from 'react-bootstrap';
 import LoadingSpinner from '../loading-spinner';
+import { getUsername } from '../../util/auth-util';
 
 let data = {}
 let filters = {}
@@ -16,7 +17,8 @@ export class Exports extends React.Component {
       selected: {},
       isLoading: true,
       showLoadFiltersModal: false,
-      showSaveFiltersModal: false
+      showSaveFiltersModal: false,
+      filterSetForAllUsers: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -28,6 +30,7 @@ export class Exports extends React.Component {
     this.saveFilters = this.saveFilters.bind(this);
     this.refreshFilters = this.refreshFilters.bind(this);
     this.loadFilterSet = this.loadFilterSet.bind(this);
+    this.updateAllUsersFlag = this.updateAllUsersFlag.bind(this);
   }
 
   async componentDidMount() {
@@ -51,6 +54,10 @@ export class Exports extends React.Component {
     const incomingFilters = await axios.post("https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/exports/filters/get-by-username", refreshFiltersJson);
     filters = incomingFilters.data;
     this.forceUpdate();
+  }
+
+  updateAllUsersFlag(e) {
+    this.setState({ filterSetForAllUsers: e.target["checked"]} );
   }
 
   handleChange(e) {
@@ -110,11 +117,12 @@ export class Exports extends React.Component {
   async saveFilters() {
     const filter_set = {
         filter_set_name: this.filterSetName.value,
-        username: "",
+        username: this.state.filterSetForAllUsers ? "" : await getUsername(),
         survey_filter_set: "N",
         filter_data: JSON.stringify(this.state.selected)
     }
       await axios.post("https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/exports/filters/save", filter_set);
+      this.setState({ filterSetForAllUsers: false });
       this.toggleSaveFiltersModal();
       this.refreshFilters();
   }
@@ -223,7 +231,8 @@ export class Exports extends React.Component {
                             />
                         </Form.Group>
                         <Form.Group controlId="shareCheckbox">
-                            <Form.Check type="checkbox" label="Make this filter set visible to all users" />
+                            <Form.Check type="checkbox" label="Make this filter set visible to all users" 
+                              onChange={this.updateAllUsersFlag} />
                         </Form.Group>
                         <Button onClick={this.saveFilters} variant="success">Save</Button>
                         <Button onClick={this.toggleSaveFiltersModal} className="ml-1" variant="info">Close</Button>
