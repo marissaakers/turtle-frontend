@@ -23,7 +23,7 @@ const SampleInputs = (props) => {
 
           <div className="form-row mb-3">
           <div className="col-2">
-          <select name="sample_type" id={sample_type} data-id={idx} className="form-control" >
+          <select name="sample_type" id={sample_type} data-id={idx} value={val.sample_type} className="form-control" >
                         <option value="">-</option>
                         <option value="Blood">Blood</option>
                         <option value="Skin">Skin</option>

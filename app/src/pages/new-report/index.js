@@ -14,7 +14,7 @@ class NewReport extends React.Component {
     super(props);
 
     this.handleShowLagoon = this.handleShowLagoon.bind(this);
-    this.handleSubmitLagoon = this.handleSubmitLagoon.bind(this);
+    this.handleLagoonChange = this.handleLagoonChange.bind(this);
     this.handleCloseLagoon = this.handleCloseLagoon.bind(this);
     this.handleShowTrident = this.handleShowTrident.bind(this);
     this.handleCloseTrident = this.handleCloseTrident.bind(this);
@@ -35,10 +35,11 @@ class NewReport extends React.Component {
       ],
       highlightedBoxNum: 0,
       metadata: undefined,
+      meta_id: undefined,
       showLagoon:false,
       showTrident:false,
-      redirectLagoon: false,
-      redirectTrident: false
+      redirectLagoon: undefined,
+      redirectTrident: undefined
     }
   }
 
@@ -49,33 +50,31 @@ class NewReport extends React.Component {
       { headers: {'Content-Type': 'application/json'} }
     );
 
+    console.log(json);
     this.setState({metadata: metadata.data});
     return (this.state.metadata.metadata_id);
   }
-
-  renderRedirect = () => {
-   if (this.state.redirectLagoon) {
-     return <Redirect to='/new-report/lagoon-metadata' />
-   } else if (this.state.redirectTrident) {
-     return <Redirect to='/new-report/trident-metadata' />
-   }
- }
 
   	handleCloseLagoon() {
   		this.setState({ showLagoon: false });
   	}
 
-    handleSubmitLagoon = async(e) => {
+    handleLagoonChange = async(e) => {
       this.setState({ [e.target.name]: e.target.value })
       const getMetadataID = await this.loadMetadata({metadata_date: this.state.metadata_date})
 
+      this.setState({meta_id: getMetadataID})
+
       if(getMetadataID != undefined){
         this.setState({redirectLagoon: true})
+      } else {
+        this.setState({redirectLagoon:false})
       }
 
       console.log(getMetadataID);
 
     }
+
 
   	handleShowLagoon() {
   		this.setState({ showLagoon: true });
@@ -107,6 +106,22 @@ class NewReport extends React.Component {
       return returnStr;
     }
   }
+
+  renderRedirect = () => {
+   if (this.state.redirectLagoon) {
+     return <Redirect to={{
+              pathname:'/new-report/lagoon',
+              state: {metadata: this.state.metadata}
+            }}/>
+    } else if (this.state.redirectLagoon==false){
+      return <Redirect to={{
+               pathname:'/new-report/lagoon-metadata',
+               state: {date: this.state.metadata_date}
+             }}/>
+    } else if (this.state.redirectTrident) {
+     return <Redirect to='/new-report/trident-metadata' />
+   }
+ }
 
 
   render() {
@@ -146,7 +161,7 @@ class NewReport extends React.Component {
 						<Modal.Title>Lagoon Metadata Date</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>Enter a date from the input box below. <br></br>
-          <input className="form-control" type="date" name="metadata_date" onClick={e => this.handleSubmitLagoon(e)}/> <br></br>
+          <input className="form-control" type="date" name="metadata_date" onChange={e => this.handleLagoonChange(e)}/> <br></br>
           If metadata for that date exists, you will be forwarded to the encounter sheet.
           If not, you must enter metadata for that date in order to enter an encounter.
           </Modal.Body>
@@ -154,11 +169,9 @@ class NewReport extends React.Component {
 						<Button variant="secondary" onClick={this.handleCloseLagoon}>
 							Close
             </Button>
-						<Button variant="primary" onClick={e => this.handleSubmitLagoon(e)}>
+						<Button variant="primary">
 							Go
             </Button>
-            {this.renderRedirect()}
-
 					</Modal.Footer>
 				</Modal>
 

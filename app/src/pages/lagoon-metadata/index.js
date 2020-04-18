@@ -20,13 +20,25 @@ class LagoonMetadata extends React.Component {
     this.state = {
       data : [],
       error: false,
-      redirect:false
+      redirect:false,
+      _isMounted: false,
+      date : ''
     };
+
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onTimeChangeHandler = this.onTimeChangeHandler.bind(this);
 
+  }
+
+  componentDidMount() {
+    console.log("state was passed!" +this.props.location.state.date)
+    this.setState({date: this.props.location.state.date})
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   onChange(e) {
@@ -156,29 +168,33 @@ class LagoonMetadata extends React.Component {
 
             <div className="form-group row">
               <label htmlFor="date" className="col-4 col-form-label">Date</label>
-              <div className="col-6">
-                <input className="form-control" type="date" name="metadata_date" onChange={e => this.onChange(e)} />
+              <div className="col-7">
+                <input className="form-control" type="date" value={this.state.date} name="metadata_date" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div className="form-group row">
               <label htmlFor="location" className="col-4 col-form-label">Location</label>
-              <div className="col-6">
+              <div className="col-7">
                 <input className="form-control" type="text" name= "metadata_location" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div className="form-group row">
               <label htmlFor="investigators" className="col-4 col-form-label">Investigators</label>
-              <div className="col-6">
+              <div className="col-7">
                 <input className="form-control" type="text" name= "metadata_investigators" onChange={e => this.onChange(e)} />
               </div>
             </div>
 
             <div className="form-group row">
-              <label htmlFor="investigators" className="col-4 col-form-label">Entered by</label>
-              <div className="col-6">
-                <input className="form-control" type="text" name= "entered_by" onChange={e => this.onChange(e)} />
+              <label htmlFor="investigators" className="col-4 col-form-label">Time</label>
+              <div className="col-7">
+                <TimeInput className="form-control"
+                  name="environment_time"
+                  placeholder="--:--"
+                  onTimeChange={(e) => this.onTimeChangeHandler("environment_time", e)}
+                />
               </div>
             </div>
 
@@ -283,11 +299,11 @@ class LagoonMetadata extends React.Component {
                           <option value="0">No</option>
                           </select>
                       </div>
-                    <div className="form-group col-md-2">
+                    <div className="form-group col-md-3">
                       <label htmlFor="wind-spd">Wind Spd:</label>
                       <input className="form-control" type="text" name="wind_speed" onChange={e => this.onChange(e)} />
                       </div>
-                    <div className="form-group col-md-2">
+                    <div className="form-group col-md-3">
                     <label htmlFor="wind-spd">mph or m/s</label>
                           <select className="form-control" name="wind_speed_types" onChange={e => this.onChange(e)}>
                           <option></option>
@@ -295,18 +311,11 @@ class LagoonMetadata extends React.Component {
                           <option value="m/s">m/s</option>
                           </select>
                       </div>
-                    <div className="form-group col-md-2">
+                    <div className="form-group col-md-3">
                       <label htmlFor="wind-dir">Wind Dir:</label>
                       <input className="form-control" type="text" name="wind_dir" onChange={e => this.onChange(e)} />
                       </div>
-                    <div className="form-group col-md-2">
-                      <label htmlFor="environment_time">Time:</label>
-                      <TimeInput className="form-control"
-                        name="environment_time"
-                        placeholder="--:--"
-                        onTimeChange={(e) => this.onTimeChangeHandler("environment_time", e)}
-                      />
-                    </div>
+
                   </div>
 
 
@@ -315,7 +324,7 @@ class LagoonMetadata extends React.Component {
                     <div className="form-group col-md-4">
                       <label htmlFor="weather">Weather:</label>
                       <select className="form-control" name="weather" onChange={e => this.onChange(e)}>
-                        <option value="">-</option>
+                        <option value=""></option>
                         <option value="Sunny">Sunny</option>
                         <option value="Partly Cloudy">Partly Cloudy</option>
                         <option value="Overcast">Overcast</option>
@@ -323,19 +332,15 @@ class LagoonMetadata extends React.Component {
                       </select>
                       </div>
                     <div className="form-group col-md-4">
-                      <label htmlFor="other-weather">Other:</label>
-                      <input className="form-control" type="text" name="weather_other" onChange={e => this.onChange(e)} />
+                      <label htmlFor="other-weather">other:</label>
+                      <input className="form-control" type="text" name="weather_other" placeholder="other weather" onChange={e => this.onChange(e)} />
+                      </div>
+
+                    <div className="form-group col-md-4">
+                      <label htmlFor="other-weather">Air Temp:</label>
+                      <input className="form-control" type="text" name="air_temp" onChange={e => this.onChange(e)} />
                       </div>
                   </div>
-
-
-
-              <div className="form-group row">
-                    <label htmlFor="air-temp" className="col-2 col-form-label">Air Temp:</label>
-                    <div className="col-3">
-                        <input className="form-control" type="text" name="air_temp" onChange={e => this.onChange(e)} />
-                    </div>
-              </div>
 
 
 
@@ -410,6 +415,7 @@ class LagoonMetadata extends React.Component {
 
               </div>
 
+              <h5><b>Incidental Captures: </b></h5>
               <div class="container border pt-3 mb-3">
 
               <div className="form-group row">

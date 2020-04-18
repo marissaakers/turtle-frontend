@@ -14,15 +14,15 @@ const TagInputs = (props) => {
           <div className="form-group row">
             <label htmlFor="tag-numbers" className="col-3 col-form-label">Tag #:</label>
             <label htmlFor="tag-type" className="col-3 col-form-label">Location:</label>
-            <label htmlFor="tag-type" className="col-2 col-form-label">New:</label>
+            <label htmlFor="tag-type" className="col-2 col-form-label">Type:</label>
             <label htmlFor="tag-type" className="col-2 col-form-label">Status:</label>
             <label htmlFor="tag-type" className="col-2 col-form-label">PIT:</label>
 
-            <div className="col-3">
+            <div className="col-3 pr-0">
             <input type="text"  name="tag_number" data-id={idx} id={tag_number} className="form-control " />
 
             </div>
-            <div className="col-3">
+            <div className="col-3 pr-0">
             <select name="tag_type" id={tag_type} data-id={idx} className="form-control" >
                           <option ></option>
                           <option value="LF">LF</option>
@@ -30,14 +30,14 @@ const TagInputs = (props) => {
             </select>
 
             </div>
-            <div className="col-2">
+            <div className="col-2 pr-0">
             <select name="tag_scars" id={isNew} data-id={idx} className="form-control" >
                           <option></option>
-                          <option value="true">Yes</option>
-                          <option value="false">No</option>
+                          <option value="true">New</option>
+                          <option value="false">Old</option>
             </select>
             </div>
-            <div className="col-2">
+            <div className="col-2 pr-0">
             <select name="tag_scars" id={isNew} data-id={idx} className="form-control" >
                           <option></option>
                           <option value="true">Active</option>

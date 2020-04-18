@@ -7,12 +7,13 @@ import { confirmAlert } from 'react-confirm-alert';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
-import TagInputs from '../../pages/lagoon/tagInputs.js'
-import SampleInputs from '../../pages/lagoon/sampleInputs.js'
+import TagInputs from './tagInputs.js'
+import SampleInputs from './sampleInputs.js'
 import axios from "axios";
+import TimeInput from 'react-time-input';
 import SubmitConfirmModal from '../../components/submit-confirm-modal';
 
-const TITLE = 'New Trident report'
+const TITLE = 'New Trident Report'
 
 
 class Trident extends React.Component {
@@ -20,16 +21,27 @@ class Trident extends React.Component {
   constructor(props){
     super(props)
 
+    var someDate = new Date();
+    var today = someDate.getFullYear()+"-"+someDate.getMonth()+"-"+someDate.getDate();
+
     this.state = {
-      tagsList: [{tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "" }],
+      tagsList: [{tag_number: "", isNew: "", active: true, tag_type: "", pit: ""}],
       samplesList: [{sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
       data : [],
       metadata: undefined,
+      date: today,
       redirect: false
     };
 
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onTimeChangeHandler = this.onTimeChangeHandler.bind(this);
+
+
+  }
+
+  componentDidMount() {
+    console.log("date:"+this.state.date);
 
   }
 
@@ -37,7 +49,7 @@ class Trident extends React.Component {
     console.log("loadMetadata sent JSON = " + json);
 
     const metadata = await axios.post(
-      'https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/lagoon/metadata/query',
+      'https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/trident/metadata/query',
       json,
       { headers: {'Content-Type': 'application/json'} }
     );
@@ -49,9 +61,7 @@ class Trident extends React.Component {
     return (this.state.metadata.metadata_id)
   }
 
-
-
-  onTimeChangeHandler = (n, e) => {
+  onTimeChangeHandler (n, e) {
     const v = e;
     console.log({[n]: v});
     this.setState({[n]: v});
@@ -59,10 +69,9 @@ class Trident extends React.Component {
   }
 
 
-
   onChange = (e) => {
 
-    if(["tag_number", "tag_type", "active", "tag_scars", "pit", "scanned", "scanner_number"].includes(e.target.name)){
+    if(["tag_number", "isNew", "tag_type", "active", "pit"].includes(e.target.name)){
       let tagsList = [...this.state.tagsList];
       let updatedValue = e.target.value;
       if (updatedValue === "true" || updatedValue == "false") {
@@ -70,7 +79,7 @@ class Trident extends React.Component {
     }
       tagsList[e.target.dataset.id][e.target.name] = updatedValue;
       this.setState({ tagsList }, () => console.log(this.state.tagsList))
-    } else if(["sample_type", "received_by", "purpose_of_sample", "notes", "entered_date", "entered_by"].includes(e.target.name)){
+    } else if(["sample_type", "received_by", "purpose_of_sample", "notes"].includes(e.target.name)){
       let samplesList = [...this.state.samplesList];
       samplesList[e.target.dataset.id][e.target.name] = e.target.value;
       this.setState({ samplesList }, () => console.log(this.state.samplesList))
@@ -82,13 +91,13 @@ class Trident extends React.Component {
 
   addTagRow = (e) => {
     this.setState((prevState) => ({
-      tagsList: [...prevState.tagsList, {tag_number: "", tag_type: "", active: true, tag_scars: "", pit: "", scanned: "", scanner_number: "" }],
+      tagsList: [...prevState.tagsList, {tag_number: "", isNew: "", tag_type: "", active: true, pit: ""}],
     }));
   };
 
   addSampleRow = (e) => {
     this.setState((prevState) => ({
-      samplesList: [...prevState.samplesList, {sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
+      samplesList: [...prevState.samplesList, {sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: this.state.date, entered_by: ""}],
     }));
   };
 
@@ -97,12 +106,12 @@ class Trident extends React.Component {
 
        const getMetadataID = await this.loadMetadata({metadata_date: this.state.encounter_date})
 
-       if(this.state.species == "other"){
+       if(this.state.species == "hybrid"){
          this.state.species = this.state.species_other
        }
 
        for(var i=0; i< this.state.samplesList.length; i++){
-         this.state.samplesList[i].entered_date = this.state.entered_date_2;
+         this.state.samplesList[i].entered_date = this.state.date;
          this.state.samplesList[i].entered_by = this.state.entered_by_2;
        }
 
@@ -116,14 +125,15 @@ class Trident extends React.Component {
 
        const data = {
         species: this.state.species,
+        sex: this.state.sex,
         metadata_id: getMetadataID,
-       	entered_date: this.state.entered_date_2,
+       	entered_date: this.state.date,
        	entered_by: this.state.entered_by_2,
        	verified_date: this.state.verified_date,
        	verified_by: this.state.verified_by,
        	encounter_date: this.state.encounter_date,
        	encounter_time: this.state.encounter_time,
-       	investigated_by: "me",
+       	investigated_by: this.state.inventoried_by,
        	capture_type: this.state.capture_type,
        	living_tags: this.state.living_tags,
        	pap_category: parseFloat(this.state.pap_category),
@@ -135,6 +145,8 @@ class Trident extends React.Component {
        	leeches_where: this.state.leeches_where,
        	pap_photos: JSON.parse(this.state.pap_photos),
        	photos: JSON.parse(this.state.photos),
+        scanned: this.state.scanned,
+        tag_scars: this.state.tag_scars,
        	samples: this.state.samplesList,
        	notes: this.state.notes_2,
        	other: this.state.other,
@@ -159,7 +171,7 @@ class Trident extends React.Component {
        console.log(data);
 
 
-      axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/lagoon/insert',
+      axios.post('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/trident/insert',
       data, { headers: {'Content-Type': 'application/json'} })
       .then(res => {
         console.log(data)
@@ -177,7 +189,7 @@ class Trident extends React.Component {
   render() {
     let displayBlock;
     let _metadata = this.state.metadata;
-    let { tagsList, samplesList, data, metadata } = this.state;
+    let { tagsList, samplesList, data, metadata, date } = this.state;
 
     displayBlock = (
       <div className="fullform">
@@ -188,106 +200,120 @@ class Trident extends React.Component {
           <div className="justify-content-center row pb-2 pt-2">
           <div className="col-sm-10 mr-2 ml-2 border pr-5 pl-5 pb-3 pt-3">
 
+          <div class="container-fluid text-left">
+            <div class="row border-bottom mb-3">
+            <div className="col-sm-6 text-left">
+
+            <div className="form-row mb-3">
+            <label htmlFor="species" className="col-2 col-form-label">Species:</label>
+                <div className="col-5">
+                <select className="form-control" name="species" value={this.value}>
+                  <option></option>
+                   <option value="Caretta caretta">Caretta caretta</option>
+                   <option value="Chelonia mydas">Chelonia mydas</option>
+                   <option value="Chelonia mydas">Eretmochelys imbricata</option>
+                   <option value="Chelonia mydas">Lepidochelys kempii</option>
+                   <option value="Chelonia mydas">Lepidochelys olivacea</option>
+                   <option value="hybrid">hybrid</option>
+                 </select>
+                </div>
+                <div className="col-5">
+                  <input type="text" className="form-control" placeholder="hybrid" name="species_other"/>
+                </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group col-md-5">
+                <label htmlFor="date">Encounter Date:</label>
+                    <input className="form-control" type="date" name="encounter_date"  onChange={e => this.onChange(e)}/>
+              </div>
+            <div className="form-group col-md-3">
+              <label htmlFor="capture-time">Capture Time:</label>
+                  <TimeInput className="form-control"
+                    name="encounter_time"
+                    placeholder="--:--"
+                    onTimeChange={(e) => this.onTimeChangeHandler("encounter_time", e)}
+                  />
+                </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="capture-type">Capture Type:</label>
+              <input className="form-control" disabled value={this.state.capture_type} name="capture_type" />
+
+              </div>
+            </div>
+
+
+            </div>
+            <div className="col-sm-6 text-left">
+
+            <div className="form-row mb-3">
+            <label htmlFor="capturelocation" className="col-4 col-form-label">Capture Location:</label>
+                <div className="col-6">
+                  <input type="text" disabled className="form-control" value={this.state.capture_location} name="capture_location"/>
+                </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group col-md-5">
+                <label htmlFor="date">Capture Method:</label>
+                <select className="form-control" name="living_tags" value={this.state.value}>
+                <option></option>
+                   <option value="Dip net">Dip net</option>
+                   <option value="Tangle net">Tangle net</option>
+                 </select>              </div>
+            <div className="form-group col-md-5">
+              <label htmlFor="capture-type">No. on Carapace:</label>
+              <input className="form-control" value={this.state.capture_type} name="capture_type" />
+
+              </div>
+            </div>
+
+
+
+
+            </div>
+
+
+              </div>
+            </div>
+
+          <div className="border-bottom">
           <div className="form-row">
             <div className="col-sm-6 text-left">
 
-          <div className="form-row">
-          <label htmlFor="species" className="col-3 col-form-label">Species:</label>
-              <div className="col-2">
-              <select className="form-control" name="species" value={this.value}>
-                 <option value="Caretta caretta">Cc</option>
-                 <option value="Chelonia mydas">Cm</option>
-                 <option value="other">Other</option>
-               </select>
-              </div>
-              <div className="col-5">
-                <input type="text" className="form-control" placeholder="other" name="species_other"/>
-              </div>
-          </div>
-
-              <br></br>
-
-
-
-          <div className="form-row">
-            <div className="form-group col-md-4">
-              <label htmlFor="date">Date:</label>
-                  <input className="form-control" type="date" name="encounter_date"  onChange={e => this.onChange(e)}/>
-            </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="capture-time">Capture Time:</label>
-                  <input className="form-control" type="time" name="encounter_time" />
-              </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="capture-type">Capture Type:</label>
-              <select className="form-control" name="capture_type" value={this.state.value} >
-                  <option>New/Old/Strange</option>
-                  <option value="New">New</option>
-                  <option value="Old">Old</option>
-                  <option value="Strange Recap">Strange Recap</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group col-md-4">
-              <label htmlFor="date">Capture Location:</label>
-                  <input className="form-control" type="text" name="capture_location"  onChange={e => this.onChange(e)}/>
-            </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="capture-time">Capture Method:</label>
-              <select className="form-control" name="capture_method" value={this.state.value} >
-                  <option></option>
-                  <option value="Dip Net">Dip Net</option>
-                  <option value="Tangle Net">Tangle Net</option>
-              </select>
-              </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="capture-type">No. on Carapace:</label>
-            <input className="form-control" type="text" name="number_on_carapace" />
-            </div>
-          </div>
-
-
-          <div className="form-row">
-            <div className="form-group col-md-5">
-              <label htmlFor="data-entered-by">Data Entered By:</label>
-              <input className="form-control" type="text" name="entered_by_2"/>
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="data-entered-date">Data Entered Date:</label>
-              <input className="form-control" type="date"  name="entered_date_2"/>
-              </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group col-md-5">
-              <label htmlFor="data-verified-by">Data Verified By:</label>
-              <input className="form-control" type="text" name="verified_by"/>
-            </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="data-verified-date">Data Verified Date:</label>
-              <input className="form-control" type="date"  name="verified_date" />
-              </div>
-          </div>
 
 
           <h4>Tags:</h4>
 
 
-    <TagInputs add={this.addTagRow} tagsList={tagsList} />
-    <button onClick={this.addTagRow} type="button" className="btn btn-primary text-center" tagsList={tagsList}>ADD NEW TAGS</button>
+          <TagInputs add={this.addTagRow} tagsList={tagsList} />
+          <button onClick={this.addTagRow} type="button" className="btn btn-primary text-center" tagsList={tagsList}>ADD NEW TAGS</button>
 
 
-
-
-
-
-          <div className="form-group row">
-            <label htmlFor="living-tags" className="col-4 col-form-label">Living Tags:</label>
-            <div className="col-4">
+          <div className="form-row pt-3">
+            <div className="form-group col-md-4">
+              <label htmlFor="date">Tag Scars:</label>
+              <select className="form-control" name="scanned" value={this.state.value}>
+              <option></option>
+                 <option value="LF Scar">LF Scar</option>
+                 <option value="RF Scar">RF Scar</option>
+                 <option value="RR Scar">RR Scar</option>
+                 <option value="Both scarred">Both scarred</option>
+                 <option value="No scar">No scar</option>
+                 <option value="Unreported">Unreported</option>
+               </select>
+               </div>
+          <div className="form-group col-md-4">
+            <label htmlFor="capture-time">Scanned:</label>
+            <select className="form-control" name="scanned" value={this.state.value}>
+            <option></option>
+               <option value="true">Yes</option>
+               <option value="false">No</option>
+             </select>              </div>
+          <div className="form-group col-md-4">
+            <label htmlFor="capture-type">Living Tags:</label>
             <select className="form-control" name="living_tags" value={this.state.value}>
-                <option>Yes/No</option>
+            <option></option>
                <option value="true">Yes</option>
                <option value="false">No</option>
              </select>
@@ -297,56 +323,121 @@ class Trident extends React.Component {
 
             <h4>Morphometrics:</h4>
 
-            <div class="container border pt-3 mb-3">
+            <div className="container border pt-3 mb-3">
 
               <div className="form-row">
-                <div className="form-group col-md-6">
-                  <label htmlFor="curved-length">Curved Length (notch-tip):</label>
+              <div className="col-md-6">
+
+              <div className="row mb-3">
+                <div className="col-md-6 pr-0">
+                  <label htmlFor="curved-lwngth">Curved Length:</label>
                   <input className="form-control" type="text" name="curved_length" placeholder="in cm"/>
+                  </div>
+                  <div className="col-md-6 pl-0">
+                  <label htmlFor="curved-length">over barnacles:</label>
+                  <select className="form-control" name="curved_length_over_barnacles" value={this.state.value}>
+                  <option></option>
+                     <option value="true">Yes</option>
+                   </select>
+                   </div>
                 </div>
-                <div className="form-group col-md-5">
-                  <label htmlFor="curved-width">Curved Width (widest):</label>
-                  <input className="form-control" type="text" name="curved_width" placeholder="in cm"/>
-                </div>
-                <div className="form-group col-md-6">
+
+                <div className="form-group">
                   <label htmlFor="straight-length">Straight Length (notch-tip):</label>
                   <input className="form-control" type="text" name="straight_length" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-5">
-                  <label htmlFor="straight-width">Straight Width (widest):</label>
-                  <input type="form-control" name="straight_width" className="form-control" placeholder="in cm"/>
-                </div>
-                <div className="form-group col-md-6">
+
+                <div className="form-group">
                   <label htmlFor="min-length">Minimum Length (notch-notch):</label>
                   <input type="form-control" name="minimum_length" className="form-control" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-5">
+
+
+                <div className="row mb-3">
+                <div className="col-md-6 pr-0">
+                  <label htmlFor="curved-width">Plastron Length:</label>
+                  <input type="form-control" name="plastron_length" className="form-control" placeholder="in cm"/>
+                  </div>
+                  <div className="col-md-6 pl-0">
+                  <label htmlFor="curved-width">over barnacles:</label>
+                  <select className="form-control" name="plastron_length_over_barnacles" value={this.state.value}>
+                  <option></option>
+                     <option value="true">Yes</option>
+                   </select>
+                   </div>
+                </div>
+
+
+                <div className="form-group">
+                  <label htmlFor="weight">Weight in kg:</label>
+                  <input type="form-control" name="weight" className="form-control" placeholder="in kg"/>
+                </div>
+
+                <div className="form-group">
+                <label htmlFor="sex">Sex:</label>
+                <select className="form-control" name="sex" value={this.state.value}>
+                <option></option>
+                   <option value="true">Male</option>
+                   <option value="false">Female</option>
+                 </select>
+                </div>
+
+
+                </div>
+                <div className="col-md-6">
+
+                <div className="form-group">
+
+                <div className="row mb-3">
+                <div className="col-md-6 pr-0">
+                  <label htmlFor="curved-width">Curved Width:</label>
+                  <input className="form-control" type="text" name="curved_width" placeholder="in cm"/>
+                  </div>
+                  <div className="col-md-6 pl-0">
+                  <label htmlFor="curved-width">over barnacles:</label>
+                  <select className="form-control" name="curved_width_over_barnacles" value={this.state.value}>
+                  <option></option>
+                     <option value="true">Yes</option>
+                   </select>
+                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="straight-width">Straight Width:</label>
+                  <input type="form-control" name="straight_width" className="form-control" placeholder="in cm"/>
+                </div>
+
                   <label htmlFor="tail-length">Tail Length: PL-vent</label>
                   <input type="form-control" name="tail_length_pl_vent" className="form-control" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-6">
-                  <label htmlFor="plastron-length">Plastron Length (tape):</label>
-                  <input type="form-control" name="plastron_length" className="form-control" placeholder="in cm"/>
-                </div>
-                <div className="form-group col-md-5">
+
+                <div className="form-group">
                   <label htmlFor="pl-tip">PL-Tip:</label>
                   <input type="form-control" name="tail_length_pl_tip" className="form-control" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-6">
-                  <label htmlFor="weight">Weight in kg: *tare scale</label>
-                  <input type="form-control" name="weight" className="form-control" placeholder="in kg"/>
-                </div>
-                <div className="form-group col-md-5">
+
+                <div className="form-group">
                   <label htmlFor="head-width">Head Width (straight):</label>
                   <input type="form-control" name="head_width" className="form-control" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-6">
 
-                </div>
-                <div className="form-group col-md-5">
-                  <label htmlFor="body-depth">Body Depth (straight):</label>
+
+                <div className="row mb-3">
+                <div className="col-md-6 pr-0">
+                <label htmlFor="body-depth">Body Depth:</label>
                   <input type="form-control" name="body_depth" className="form-control" placeholder="in cm"/>
+                  </div>
+                  <div className="col-md-6 pl-0">
+                  <label htmlFor="curved-width">over barnacles:</label>
+                  <select className="form-control" name="body_depth_over_barnacles" value={this.state.value}>
+                  <option></option>
+                     <option value="true">Yes</option>
+                   </select>
+                   </div>
                 </div>
+
+
+              </div>
               </div>
               </div>
 
@@ -358,11 +449,17 @@ class Trident extends React.Component {
 
               <h4>Samples:</h4>
 
-              <div class="container border pt-3 mb-3 pb-3">
+              <div className="container border pt-3 mb-3 pb-3">
 
               <SampleInputs add={this.addSampleRow} samplesList={samplesList} />
               <button onClick={this.addSampleRow} type="button" className="btn btn-primary text-center mb-3" samplesList={samplesList}>ADD NEW SAMPLE</button>
 
+
+
+                <h5>Other Samples:</h5>
+                <div className="col-sm-10">
+                <textarea className="form-control" name="other" rows="2"></textarea>
+                </div>
 
                 </div>
 
@@ -398,7 +495,7 @@ class Trident extends React.Component {
                       <label htmlFor="photos" className="col-4 col-form-label">Photos:</label>
                       <div className="col-6">
                       <select className="form-control" name="photos" value={this.value}>
-                      <option>Yes/No</option>
+                      <option></option>
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                        </select>
@@ -409,7 +506,7 @@ class Trident extends React.Component {
                       <label htmlFor="pap-photos" className="col-4 col-form-label">Pap Photos:</label>
                       <div className="col-6">
                       <select className="form-control" name="pap_photos" value={this.value}>
-                      <option>Yes/No</option>
+                      <option></option>
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                        </select>
@@ -421,7 +518,7 @@ class Trident extends React.Component {
                       <label htmlFor="example-text-input" className="col-3 col-form-label">Leeches:</label>
                           <div className="col-3">
                           <select className="form-control" name="leeches" value={this.value}>
-                          <option>Yes/No</option>
+                          <option></option>
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                            </select>
@@ -439,7 +536,7 @@ class Trident extends React.Component {
                       <label htmlFor="leech-eggs" className="col-3 col-form-label">Leech Eggs:</label>
                           <div className="col-3">
                           <select className="form-control" name="leech_eggs" value={this.value}>
-                          <option>Yes/No</option>
+                          <option></option>
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                            </select>
@@ -461,14 +558,49 @@ class Trident extends React.Component {
                       <div className="col-sm-12 mb-3">
                       <textarea className="form-control" name="carapace_damage" id="exampleFormControlTextarea1" rows="3"></textarea>
                       </div>
+
+                      </div>
+                      </div>
+                    </div>
+
+                    <div class="row pt-2">
+
+                    <div className="col-md-6 text-left">
                     <h4>Notes:</h4>
                       <div className="col-sm-12">
                       <p><i>Describe scale and scute abnormalities, condition of turtle, etc.</i></p>
                       <textarea className="form-control" name="notes_2" id="exampleFormControlTextarea1" rows="3"></textarea>
                       </div>
 
+                      <br></br>
 
+                    </div>
+
+                    <div className="col-md-6 text-left">
+                    <h4>Upload Files:</h4>
+                      <div className="input-group mt-3">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                        </div>
+                        <div className="custom-file">
+                          <input type="file" className="custom-file-input" id="inputGroupFile01"
+                            aria-describedby="inputGroupFileAddon01"/>
+                          <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
                       </div>
+
+                      <div className="input-group mt-3">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                        </div>
+                        <div className="custom-file">
+                          <input type="file" className="custom-file-input" id="inputGroupFile01"
+                            aria-describedby="inputGroupFileAddon01"/>
+                          <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
+                      </div>
+
+                    </div>
                   </div>
                 </div>
             </div>
@@ -498,6 +630,7 @@ class Trident extends React.Component {
         </Helmet>
         <InternalNavbar />
         <p align="left" className="pl-4"><a href="/new-report">← back</a></p>
+
         <style type="text/css">
             {`
             .fullform {
@@ -505,6 +638,7 @@ class Trident extends React.Component {
             }
             `}
           </style>
+
 
         {displayBlock}
         <InternalFooter />

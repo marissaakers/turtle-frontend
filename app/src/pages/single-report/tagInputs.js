@@ -19,7 +19,7 @@ const TagInputs = (props) => {
             <label htmlFor="tag-type" className="col-3 col-form-label">Pit Tag #:</label>
 
             <div className="col-3">
-            <input type="text"  name="tag_number" data-id={idx} id={tag_number} className="form-control " />
+            <input type="text"  name="tag_number" data-id={idx} id={tag_number} value={val.tag_number} className="form-control " />
 
             </div>
             <div className="col-2">

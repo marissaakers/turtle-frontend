@@ -7,9 +7,11 @@ import { confirmAlert } from 'react-confirm-alert';
 import InternalNavbar from '../../components/internal-navbar';
 import InternalFooter from '../../components/internal-footer';
 import '../shared/internal.css';
+import {getUsername} from '../../util/auth-util.js';
 import TagInputs from './tagInputs.js'
 import SampleInputs from './sampleInputs.js'
 import axios from "axios";
+import TimeInput from 'react-time-input';
 import SubmitConfirmModal from '../../components/submit-confirm-modal';
 
 const TITLE = 'New Lagoon report'
@@ -20,18 +22,31 @@ class Lagoon extends React.Component {
   constructor(props){
     super(props)
 
+    var someDate = new Date();
+    var today = someDate.getFullYear()+"-"+someDate.getMonth()+"-"+someDate.getDate();
+
     this.state = {
       tagsList: [{tag_number: "", isNew: "", active: true, tag_type: "", pit: ""}],
       samplesList: [{sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
       data : [],
       metadata: undefined,
-      date: undefined,
+      date: today,
+      pdfFile: null,
+      picFile: null,
       redirect: false
     };
+
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onTimeChangeHandler = this.onTimeChangeHandler.bind(this);
 
+
+  }
+
+
+  componentDidMount() {
+    //console.log(getUsername());
+    console.log("date:"+this.state.date);
 
   }
 
@@ -46,11 +61,6 @@ class Lagoon extends React.Component {
 
     this.setState({metadata: metadata.data});
 
-    var someDate = new Date();
-    var today = someDate.getFullYear()+"-"+someDate.getMonth()+"-"+someDate.getDate();
-    console.log(today);
-    this.setState({date: today})
-
     console.log("this.state.metadata = ");
     console.log(this.state.metadata);
     return (this.state.metadata.metadata_id)
@@ -64,6 +74,77 @@ class Lagoon extends React.Component {
   }
 
 
+    getBase64 = file => {
+    return new Promise(resolve => {
+      let fileInfo;
+      let baseURL = "";
+      // Make new FileReader
+      let reader = new FileReader();
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(file);
+
+      // on reader load somthing...
+      reader.onload = () => {
+        // Make a fileInfo Object
+        console.log("Called", reader);
+        baseURL = reader.result;
+        console.log(baseURL);
+        resolve(baseURL);
+      };
+      console.log(fileInfo);
+    });
+  };
+
+  handlePDFInputChange = e => {
+      console.log(e.target.files[0]);
+      let { pdfFile } = this.state;
+
+      pdfFile = e.target.files[0];
+
+      this.getBase64(pdfFile)
+        .then(result => {
+          pdfFile["base64"] = result;
+          console.log("File Is", pdfFile);
+          this.setState({
+            "filedata": result,
+            pdfFile
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      this.setState({
+        pdfFile: e.target.files[0]
+      });
+    };
+
+    handlePicInputChange = e => {
+        console.log(e.target.files[0]);
+        let { picFile } = this.state;
+
+        picFile = e.target.files[0];
+
+        this.getBase64(picFile)
+          .then(result => {
+            picFile["base64"] = result;
+            console.log("File Is",picFile);
+            this.setState({
+              "filedata": result,
+              picFile
+            });
+          })
+          .catch(err => {
+            console.log(err);
+          });
+
+        this.setState({
+          picFile: e.target.files[0]
+        });
+      };
+
+
 
   onChange = (e) => {
 
@@ -75,7 +156,7 @@ class Lagoon extends React.Component {
     }
       tagsList[e.target.dataset.id][e.target.name] = updatedValue;
       this.setState({ tagsList }, () => console.log(this.state.tagsList))
-    } else if(["sample_type", "received_by", "purpose_of_sample", "notes", "entered_date", "entered_by"].includes(e.target.name)){
+    } else if(["sample_type", "received_by", "purpose_of_sample", "notes"].includes(e.target.name)){
       let samplesList = [...this.state.samplesList];
       samplesList[e.target.dataset.id][e.target.name] = e.target.value;
       this.setState({ samplesList }, () => console.log(this.state.samplesList))
@@ -93,7 +174,7 @@ class Lagoon extends React.Component {
 
   addSampleRow = (e) => {
     this.setState((prevState) => ({
-      samplesList: [...prevState.samplesList, {sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
+      samplesList: [...prevState.samplesList, {sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: this.state.date, entered_by: ""}],
     }));
   };
 
@@ -102,12 +183,12 @@ class Lagoon extends React.Component {
 
        const getMetadataID = await this.loadMetadata({metadata_date: this.state.encounter_date})
 
-       if(this.state.species == "other"){
+       if(this.state.species == "hybrid"){
          this.state.species = this.state.species_other
        }
 
        for(var i=0; i< this.state.samplesList.length; i++){
-         this.state.samplesList[i].entered_date = this.state.entered_date_2;
+         this.state.samplesList[i].entered_date = this.state.date;
          this.state.samplesList[i].entered_by = this.state.entered_by_2;
        }
 
@@ -123,7 +204,7 @@ class Lagoon extends React.Component {
         species: this.state.species,
         sex: this.state.sex,
         metadata_id: getMetadataID,
-       	entered_date: this.state.entered_date_2,
+       	entered_date: this.state.date,
        	entered_by: this.state.entered_by_2,
        	verified_date: this.state.verified_date,
        	verified_by: this.state.verified_by,
@@ -180,6 +261,18 @@ class Lagoon extends React.Component {
         console.log(error.response)
         console.log("Error.")
       });
+
+
+      try {
+             const res = await axios.put('https://no1unm6ijk.execute-api.us-east-1.amazonaws.com/dev/api/capture/file/put', {
+                  encounter_id: 0,
+                  img_filename: "test"
+             });
+             console.log(res.data);
+         } catch (err) {
+             console.error(err);
+         }
+
     }
 
   render() {
@@ -196,20 +289,25 @@ class Lagoon extends React.Component {
           <div className="justify-content-center row pb-2 pt-2">
           <div className="col-sm-10 mr-2 ml-2 border pr-5 pl-5 pb-3 pt-3">
 
+          <div className="border-bottom">
           <div className="form-row">
             <div className="col-sm-6 text-left">
 
           <div className="form-row">
           <label htmlFor="species" className="col-2 col-form-label">Species:</label>
-              <div className="col-4">
+              <div className="col-5">
               <select className="form-control" name="species" value={this.value}>
+                <option></option>
                  <option value="Caretta caretta">Caretta caretta</option>
                  <option value="Chelonia mydas">Chelonia mydas</option>
-                 <option value="other">Other</option>
+                 <option value="Chelonia mydas">Eretmochelys imbricata</option>
+                 <option value="Chelonia mydas">Lepidochelys kempii</option>
+                 <option value="Chelonia mydas">Lepidochelys olivacea</option>
+                 <option value="hybrid">hybrid</option>
                </select>
               </div>
-              <div className="col-4">
-                <input type="text" className="form-control" placeholder="other" name="species_other"/>
+              <div className="col-5">
+                <input type="text" className="form-control" placeholder="hybrid" name="species_other"/>
               </div>
           </div>
 
@@ -218,35 +316,23 @@ class Lagoon extends React.Component {
 
 
           <div className="form-row">
-            <div className="form-group col-md-4">
+            <div className="form-group col-md-5">
               <label htmlFor="date">Encounter Date:</label>
                   <input className="form-control" type="date" name="encounter_date"  onChange={e => this.onChange(e)}/>
             </div>
           <div className="form-group col-md-3">
             <label htmlFor="capture-time">Capture Time:</label>
-                  <input className="form-control" type="time" name="encounter_time" />
+                <TimeInput className="form-control"
+                  name="encounter_time"
+                  placeholder="--:--"
+                  onTimeChange={(e) => this.onTimeChangeHandler("encounter_time", e)}
+                />
               </div>
-          <div className="form-group col-md-3">
+          <div className="form-group col-md-4">
             <label htmlFor="capture-type">Capture Type:</label>
-              <select className="form-control" name="capture_type" value={this.state.value} >
-                  <option></option>
-                  <option value="New">New</option>
-                  <option value="Old">Old</option>
-                  <option value="Strange Recap">Strange Recap</option>
-              </select>
-            </div>
-          </div>
+            <input className="form-control" disabled value={this.state.capture_type} name="capture_type" />
 
-
-          <div className="form-row">
-            <div className="form-group col-md-5">
-              <label htmlFor="data-entered-by">Data Entered By:</label>
-              <input className="form-control" type="text" name="entered_by_2"/>
             </div>
-            <div className="form-group col-md-5">
-              <label htmlFor="data-entered-date">Data Entered Date:</label>
-              <input className="form-control" type="date" value={this.props.today} name="entered_date_2"/>
-              </div>
           </div>
 
           <div className="form-row">
@@ -264,37 +350,32 @@ class Lagoon extends React.Component {
           <h4>Tags:</h4>
 
 
-    <TagInputs add={this.addTagRow} tagsList={tagsList} />
-    <button onClick={this.addTagRow} type="button" className="btn btn-primary text-center" tagsList={tagsList}>ADD NEW TAGS</button>
+          <TagInputs add={this.addTagRow} tagsList={tagsList} />
+          <button onClick={this.addTagRow} type="button" className="btn btn-primary text-center" tagsList={tagsList}>ADD NEW TAGS</button>
 
 
-
-
-    <div className="form-group row">
-      <label htmlFor="living-tags" className="col-4 col-form-label">Tag Scars:</label>
-      <div className="col-4">
-      <select className="form-control" name="scanned" value={this.state.value}>
-      <option></option>
-         <option value="true">Yes</option>
-         <option value="false">No</option>
-       </select>
-      </div>
-    </div>
-
-    <div className="form-group row">
-      <label htmlFor="living-tags" className="col-4 col-form-label">Pit Tag Scanned:</label>
-      <div className="col-4">
-      <select className="form-control" name="scanned" value={this.state.value}>
-      <option></option>
-         <option value="true">Yes</option>
-         <option value="false">No</option>
-       </select>
-      </div>
-    </div>
-
-          <div className="form-group row">
-            <label htmlFor="living-tags" className="col-4 col-form-label">Living Tags:</label>
-            <div className="col-4">
+          <div className="form-row pt-3">
+            <div className="form-group col-md-4">
+              <label htmlFor="date">Tag Scars:</label>
+              <select className="form-control" name="scanned" value={this.state.value}>
+              <option></option>
+                 <option value="LF Scar">LF Scar</option>
+                 <option value="RF Scar">RF Scar</option>
+                 <option value="RR Scar">RR Scar</option>
+                 <option value="Both scarred">Both scarred</option>
+                 <option value="No scar">No scar</option>
+                 <option value="Unreported">Unreported</option>
+               </select>
+               </div>
+          <div className="form-group col-md-4">
+            <label htmlFor="capture-time">Scanned:</label>
+            <select className="form-control" name="scanned" value={this.state.value}>
+            <option></option>
+               <option value="true">Yes</option>
+               <option value="false">No</option>
+             </select>              </div>
+          <div className="form-group col-md-4">
+            <label htmlFor="capture-type">Living Tags:</label>
             <select className="form-control" name="living_tags" value={this.state.value}>
             <option></option>
                <option value="true">Yes</option>
@@ -309,53 +390,118 @@ class Lagoon extends React.Component {
             <div className="container border pt-3 mb-3">
 
               <div className="form-row">
-                <div className="form-group col-md-6">
-                  <label htmlFor="curved-length">Curved Length (notch-tip):</label>
+              <div className="col-md-6">
+
+              <div className="row mb-3">
+                <div className="col-md-6 pr-0">
+                  <label htmlFor="curved-length">Curved Length:</label>
                   <input className="form-control" type="text" name="curved_length" placeholder="in cm"/>
+                  </div>
+                  <div className="col-md-6 pl-0">
+                  <label htmlFor="curved-length">over barnacles:</label>
+                  <select className="form-control" name="curved_length_over_barnacles" value={this.state.value}>
+                  <option></option>
+                     <option value="true">Yes</option>
+                   </select>
+                   </div>
                 </div>
-                <div className="form-group col-md-5">
-                  <label htmlFor="curved-width">Curved Width (widest):</label>
-                  <input className="form-control" type="text" name="curved_width" placeholder="in cm"/>
-                </div>
-                <div className="form-group col-md-6">
+
+                <div className="form-group">
                   <label htmlFor="straight-length">Straight Length (notch-tip):</label>
                   <input className="form-control" type="text" name="straight_length" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-5">
-                  <label htmlFor="straight-width">Straight Width (widest):</label>
-                  <input type="form-control" name="straight_width" className="form-control" placeholder="in cm"/>
-                </div>
-                <div className="form-group col-md-6">
+
+                <div className="form-group">
                   <label htmlFor="min-length">Minimum Length (notch-notch):</label>
                   <input type="form-control" name="minimum_length" className="form-control" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-5">
+
+
+                <div className="row mb-3">
+                <div className="col-md-6 pr-0">
+                  <label htmlFor="curved-width">Plastron Length:</label>
+                  <input type="form-control" name="plastron_length" className="form-control" placeholder="in cm"/>
+                  </div>
+                  <div className="col-md-6 pl-0">
+                  <label htmlFor="curved-width">over barnacles:</label>
+                  <select className="form-control" name="plastron_length_over_barnacles" value={this.state.value}>
+                  <option></option>
+                     <option value="true">Yes</option>
+                   </select>
+                   </div>
+                </div>
+
+
+                <div className="form-group">
+                  <label htmlFor="weight">Weight in kg:</label>
+                  <input type="form-control" name="weight" className="form-control" placeholder="in kg"/>
+                </div>
+
+                <div className="form-group">
+                <label htmlFor="sex">Sex:</label>
+                <select className="form-control" name="sex" value={this.state.value}>
+                <option></option>
+                   <option value="true">Male</option>
+                   <option value="false">Female</option>
+                 </select>
+                </div>
+
+
+                </div>
+                <div className="col-md-6">
+
+                <div className="form-group">
+
+                <div className="row mb-3">
+                <div className="col-md-6 pr-0">
+                  <label htmlFor="curved-width">Curved Width:</label>
+                  <input className="form-control" type="text" name="curved_width" placeholder="in cm"/>
+                  </div>
+                  <div className="col-md-6 pl-0">
+                  <label htmlFor="curved-width">over barnacles:</label>
+                  <select className="form-control" name="curved_width_over_barnacles" value={this.state.value}>
+                  <option></option>
+                     <option value="true">Yes</option>
+                   </select>
+                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="straight-width">Straight Width:</label>
+                  <input type="form-control" name="straight_width" className="form-control" placeholder="in cm"/>
+                </div>
+
                   <label htmlFor="tail-length">Tail Length: PL-vent</label>
                   <input type="form-control" name="tail_length_pl_vent" className="form-control" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-6">
-                  <label htmlFor="plastron-length">Plastron Length (tape):</label>
-                  <input type="form-control" name="plastron_length" className="form-control" placeholder="in cm"/>
-                </div>
-                <div className="form-group col-md-5">
+
+                <div className="form-group">
                   <label htmlFor="pl-tip">PL-Tip:</label>
                   <input type="form-control" name="tail_length_pl_tip" className="form-control" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-6">
-                  <label htmlFor="weight">Weight in kg: *tare scale</label>
-                  <input type="form-control" name="weight" className="form-control" placeholder="in kg"/>
-                </div>
-                <div className="form-group col-md-5">
+
+                <div className="form-group">
                   <label htmlFor="head-width">Head Width (straight):</label>
                   <input type="form-control" name="head_width" className="form-control" placeholder="in cm"/>
                 </div>
-                <div className="form-group col-md-6">
 
-                </div>
-                <div className="form-group col-md-5">
-                  <label htmlFor="body-depth">Body Depth (straight):</label>
+
+                <div className="row mb-3">
+                <div className="col-md-6 pr-0">
+                <label htmlFor="body-depth">Body Depth:</label>
                   <input type="form-control" name="body_depth" className="form-control" placeholder="in cm"/>
+                  </div>
+                  <div className="col-md-6 pl-0">
+                  <label htmlFor="curved-width">over barnacles:</label>
+                  <select className="form-control" name="body_depth_over_barnacles" value={this.state.value}>
+                  <option></option>
+                     <option value="true">Yes</option>
+                   </select>
+                   </div>
                 </div>
+
+
+              </div>
               </div>
               </div>
 
@@ -386,7 +532,7 @@ class Lagoon extends React.Component {
                     <label htmlFor="paps" className="col-4 col-form-label">Paps:</label>
                         <div className="col-6">
                         <select className="form-control" name="pap_category" value={this.value}>
-                        <option>-</option>
+                        <option></option>
                             <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -399,7 +545,7 @@ class Lagoon extends React.Component {
                       <label htmlFor="regression" className="col-4 col-form-label">Regression:</label>
                       <div className="col-6">
                       <select className="form-control" name="paps_regression" value={this.value}>
-                      <option>-</option>
+                      <option></option>
                          <option value="Yes">Yes</option>
                          <option value="No">No</option>
                          <option value="Other">Other</option>
@@ -469,33 +615,54 @@ class Lagoon extends React.Component {
 
                     <h5>Flipper Damage:</h5>
                       <div className="col-sm-12 mb-3">
-                      <textarea className="form-control" name="flipper_damage" id="exampleFormControlTextarea1" rows="3"></textarea>
+                      <textarea className="form-control" name="flipper_damage" rows="3"></textarea>
                       </div>
 
                     <h5>Shell Damage:</h5>
                       <div className="col-sm-12 mb-3">
-                      <textarea className="form-control" name="carapace_damage" id="exampleFormControlTextarea1" rows="3"></textarea>
+                      <textarea className="form-control" name="carapace_damage" rows="3"></textarea>
                       </div>
+
+                      </div>
+                      </div>
+                    </div>
+
+                    <div class="row pt-2">
+
+                    <div className="col-md-6 text-left">
                     <h4>Notes:</h4>
                       <div className="col-sm-12">
                       <p><i>Describe scale and scute abnormalities, condition of turtle, etc.</i></p>
-                      <textarea className="form-control" name="notes_2" id="exampleFormControlTextarea1" rows="3"></textarea>
+                      <textarea className="form-control" name="notes_2" rows="3"></textarea>
                       </div>
 
                       <br></br>
 
+                    </div>
+
+                    <div className="col-md-6 text-left">
+                    <h4>Upload Files:</h4> <br></br>
                       <div className="input-group">
                         <div className="input-group-prepend">
-                          <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                          <span className="input-group-text" >Upload PDF</span>
                         </div>
                         <div className="custom-file">
-                          <input type="file" className="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01"/>
-                          <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                          <input type="file" className="custom-file-input" name="pdfFile" aria-describedby="inputGroupFileAddon01" onChange={this.handlePDFInputChange}/>
+                          <label className="custom-file-label">Choose file</label>
                         </div>
                       </div>
 
+                      <div className="input-group pt-3">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text" >Upload Image</span>
+                        </div>
+                        <div className="custom-file">
+                          <input type="file" className="custom-file-input" name="picFile" aria-describedby="inputGroupFileAddon01" onChange={this.handlePicInputChange}/>
+                          <label className="custom-file-label">Choose file</label>
+                        </div>
                       </div>
+
+                    </div>
                   </div>
                 </div>
             </div>
