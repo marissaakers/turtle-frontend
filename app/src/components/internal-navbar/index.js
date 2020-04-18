@@ -5,9 +5,23 @@ import { getUsername } from '../../util/auth-util';
 
 class InternalNavbar extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username : ''
+    }
+  }
+
   handleLogout = async event => {
     await Auth.signOut();
     localStorage.removeItem('userToken');
+  }
+
+  async componentDidMount() {
+    let name = await getUsername();
+    console.log("name = " + name );
+    this.setState({username : name});
   }
 
   render() {
@@ -19,6 +33,7 @@ class InternalNavbar extends React.Component {
               <span className="navbar-toggler-icon"></span>
            </button>
            <div className="collapse navbar-collapse" id="main-navigation">
+              <h5 className="pr-3 mt-2">Welcome, { this.state.username }!</h5>
               <ul className="navbar-nav">
               </ul>
               <a href="/login">

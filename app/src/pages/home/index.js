@@ -21,7 +21,7 @@ class Home extends React.Component {
         <InternalNavbar />
         <h3>MTRG - User homepage</h3>
 
-        <div class="container-fluid bg-white">
+        <div class="container bg-white">
           <div class="row pt-4 pb-4">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
@@ -36,6 +36,12 @@ class Home extends React.Component {
                   <a href="/reports-list">
                     <img src={require('./search.png')} width='90%' />
                     <h4 class="pt-4">View data</h4>
+                  </a>
+                </div>
+                <div class="col-sm p-6">
+                  <a href="/export">
+                    <img src={require('./graph.png')} width='90%' />
+                    <h4 class="pt-4">Export data</h4>
                   </a>
                 </div>
               </div>
