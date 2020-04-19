@@ -8,18 +8,19 @@ import { Amplify, Auth } from 'aws-amplify';
 import config from "./aws-exports";
 
 // Import pages
+import Error from './pages/error';
+
 // Unlogged in pages
 import LandingPage from './pages/landing-page';
 import About from './pages/about';
 import Contact from './pages/contact';
 import Login from './pages/login';
+
 // Logged in pages
 import Home from './pages/home';
 import ReportsListHub from './pages/reports-list-hub';
-
 import SingleReport from './pages/single-report';
-import DataAnalytics from './pages/data-analytics'
-import Error from './pages/error';
+
 // New report pages
 import NewReport from './pages/new-report';
 import Lagoon from './pages/lagoon';
@@ -39,6 +40,11 @@ import SurveyScarp from './pages/survey-scarp';
 import SurveyFalseCrawl from './pages/survey-false-crawls';
 import TrackingEntryList from './pages/samples/tracking-entry-list.js';
 
+
+// Export pages
+import ExportPick from './pages/export-pick';
+import ExportCapture from './pages/export-capture';
+import ExportSurvey from './pages/export-survey';
 
 Amplify.configure(config);
 
@@ -84,7 +90,6 @@ class App extends React.Component {
             <PrivateRoute exact path='/reports-list' component={ReportsListHub} />
             <PrivateRoute exact path='/reports/example-turtle' component={SingleReport} />
             <PrivateRoute exact path='/reports/:id' component={SingleReport} />
-            <PrivateRoute exact path='/data-analytics' component={DataAnalytics} />
 
             <PrivateRoute exact path='/new-report' component={NewReport} />
             <PrivateRoute exact path='/new-report/lagoon' component={Lagoon} />
@@ -103,6 +108,10 @@ class App extends React.Component {
             <PrivateRoute exact path='/new-report/survey-false-crawl' component={SurveyFalseCrawl} />
 
             <PrivateRoute exact path='/new-report/beach-inventory' component={BeachInventory} />
+
+            <PrivateRoute exact path='/export' component={ExportPick} />
+            <PrivateRoute exact path='/export/capture' component={ExportCapture} />
+            <PrivateRoute exact path='/export/survey' component={ExportSurvey} />
 
             <Route component={Error} />  {/* When no other route matches */}
           </Switch>
