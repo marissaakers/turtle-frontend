@@ -585,7 +585,7 @@ class Trident extends React.Component {
                         <div className="custom-file">
                           <input type="file" className="custom-file-input" id="inputGroupFile01"
                             aria-describedby="inputGroupFileAddon01"/>
-                          <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                          <label className="custom-file-label">Choose file</label>
                         </div>
                       </div>
 
@@ -596,7 +596,7 @@ class Trident extends React.Component {
                         <div className="custom-file">
                           <input type="file" className="custom-file-input" id="inputGroupFile01"
                             aria-describedby="inputGroupFileAddon01"/>
-                          <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                          <label className="custom-file-label">Choose file</label>
                         </div>
                       </div>
 

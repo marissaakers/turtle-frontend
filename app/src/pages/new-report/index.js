@@ -18,6 +18,8 @@ class NewReport extends React.Component {
     this.handleCloseLagoon = this.handleCloseLagoon.bind(this);
     this.handleShowTrident = this.handleShowTrident.bind(this);
     this.handleCloseTrident = this.handleCloseTrident.bind(this);
+    this.renderRedirect = this.renderRedirect.bind(this);
+
 
     this.state = {
       previewImage: require('./lagoon-preview.png'),
@@ -51,6 +53,9 @@ class NewReport extends React.Component {
     );
 
     console.log(json);
+
+
+    console.log(metadata.data);
     this.setState({metadata: metadata.data});
     return (this.state.metadata.metadata_id);
   }
@@ -60,15 +65,15 @@ class NewReport extends React.Component {
   	}
 
     handleLagoonChange = async(e) => {
+
       this.setState({ [e.target.name]: e.target.value })
+
       const getMetadataID = await this.loadMetadata({metadata_date: this.state.metadata_date})
 
       this.setState({meta_id: getMetadataID})
 
-      if(getMetadataID != undefined){
+      if(this.state.meta_id != undefined){
         this.setState({redirectLagoon: true})
-      } else {
-        this.setState({redirectLagoon:false})
       }
 
       console.log(getMetadataID);
@@ -113,11 +118,11 @@ class NewReport extends React.Component {
               pathname:'/new-report/lagoon',
               state: {metadata: this.state.metadata}
             }}/>
-    } else if (this.state.redirectLagoon==false){
-      return <Redirect to={{
-               pathname:'/new-report/lagoon-metadata',
-               state: {date: this.state.metadata_date}
-             }}/>
+  //  } else if (this.state.redirectLagoon==false){
+  //    return <Redirect to={{
+  //             pathname:'/new-report/lagoon-metadata',
+  //             state: {date: this.state.metadata_date}
+  //           }}/>
     } else if (this.state.redirectTrident) {
      return <Redirect to='/new-report/trident-metadata' />
    }
@@ -169,9 +174,11 @@ class NewReport extends React.Component {
 						<Button variant="secondary" onClick={this.handleCloseLagoon}>
 							Close
             </Button>
-						<Button variant="primary">
+						<Button variant="primary" onClick={e => this.handleLagoonChange(e)}>
 							Go
             </Button>
+            {this.renderRedirect()}
+
 					</Modal.Footer>
 				</Modal>
 

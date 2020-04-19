@@ -30,15 +30,16 @@ class Lagoon extends React.Component {
       samplesList: [{sample_type: "", received_by: "",purpose_of_sample: "", notes: "", entered_date: "", entered_by: ""}],
       data : [],
       metadata: undefined,
-      date: today,
       pdfFile: null,
       picFile: null,
-      redirect: false
+      redirect: false,
+      _isMounted: false
     };
 
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onTimeChangeHandler = this.onTimeChangeHandler.bind(this);
+    this.onChange = this.onChange.bind(this);
 
 
   }
@@ -46,9 +47,16 @@ class Lagoon extends React.Component {
 
   componentDidMount() {
     //console.log(getUsername());
-    console.log("date:"+this.state.date);
+   console.log("state was passed!" +this.props.location)
+    //this.setState({date: this.props.location.state.date})
+    this._isMounted = true;
 
   }
+
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
 
   async loadMetadata(json) {
     console.log("loadMetadata sent JSON = " + json);
@@ -60,6 +68,7 @@ class Lagoon extends React.Component {
     );
 
     this.setState({metadata: metadata.data});
+
 
     console.log("this.state.metadata = ");
     console.log(this.state.metadata);
@@ -208,7 +217,7 @@ class Lagoon extends React.Component {
        	entered_by: this.state.entered_by_2,
        	verified_date: this.state.verified_date,
        	verified_by: this.state.verified_by,
-       	encounter_date: this.state.encounter_date,
+       	encounter_date: this.state.metadata_date,
        	encounter_time: this.state.encounter_time,
        	investigated_by: this.state.inventoried_by,
        	capture_type: this.state.capture_type,
@@ -318,7 +327,7 @@ class Lagoon extends React.Component {
           <div className="form-row">
             <div className="form-group col-md-5">
               <label htmlFor="date">Encounter Date:</label>
-                  <input className="form-control" type="date" name="encounter_date"  onChange={e => this.onChange(e)}/>
+                  <input className="form-control" type="date" name="encounter_date" value={this.state.metadata_date} onChange={e => this.onChange(e)}/>
             </div>
           <div className="form-group col-md-3">
             <label htmlFor="capture-time">Capture Time:</label>

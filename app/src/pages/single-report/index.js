@@ -630,16 +630,10 @@ class SingleReport extends React.Component {
               <div className="form-group row">
                 <label htmlFor="location" className="col-4 col-form-label">Location</label>
                 <div className="col-7">
-                  <input className="form-control" type="text" name= "metadata_location" value={ _metadata.metadata_location } value={ _encounter.investigated_by } onChange={e => this.onChange(e)} />
+                  <input className="form-control" type="text" name= "metadata_location" value={ _metadata.metadata_location } onChange={e => this.onChange(e)} />
                 </div>
               </div>
 
-              <div className="form-group row">
-                <label htmlFor="investigators" className="col-4 col-form-label">Investigators</label>
-                <div className="col-7">
-                  <input className="form-control" type="text" name= "metadata_investigators" value={ _encounter.investigated_by } onChange={e => this.onChange(e)} />
-                </div>
-              </div>
 
               <div className="form-group row">
                 <label htmlFor="investigators" className="col-4 col-form-label">Time</label>
@@ -762,6 +756,13 @@ class SingleReport extends React.Component {
 
               <div class="container border pt-3 mb-3">
 
+              <div className="form-group row">
+                <label htmlFor="investigators" className="col-3 col-form-label">Investigators</label>
+                <div className="col-12">
+                  <input className="form-control" type="text" name= "metadata_investigators" value={ _encounter.investigated_by } onChange={e => this.onChange(e)} />
+                </div>
+              </div>
+
                     <div className="form-row">
                       <div className="form-group col-md-3">
                         <label htmlFor="water-sample">Water Sample:</label>
@@ -805,7 +806,7 @@ class SingleReport extends React.Component {
                         </div>
                       <div className="form-group col-md-4">
                         <label htmlFor="other-weather">other:</label>
-                        <input className="form-control" type="text" name="weather_other" value={ _metadata.weather=="" ?  _metadata.other : "other"} placeholder="other weather" onChange={e => this.onChange(e)} />
+                        <input className="form-control" type="text" name="weather_other"value={ _metadata.weather} placeholder="other weather" onChange={e => this.onChange(e)} />
                         </div>
 
                       <div className="form-group col-md-4">
